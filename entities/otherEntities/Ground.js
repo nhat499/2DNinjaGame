@@ -3,7 +3,7 @@ class Ground {
         Object.assign(this, { game, x, y, w, h });
         this.spritesheet = ASSET_MANAGER.getAssset("./sprites/floorTileSet.png");
 
-        this.BB = new BoundingBox(this.x, this.y, this.w, 1);
+        this.BB = new BoundingBox(this.x, this.y, this.w, 128);
         //this.leftBB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
         //this.rightBB = new BoundingBox(this.x + this.w - PARAMS.BLOCKWIDTH, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
     };

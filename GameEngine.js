@@ -1,7 +1,7 @@
 class GameEngine {
     constructor() {
         this.entities = []; // all the thing that are in the game
-        this.entitiesToAdd = [];
+        //this.entitiesToAdd = [];
         this.ctx = null;
         this.surfaceWidth = null;
         this.surfaceHeight = null;
@@ -92,12 +92,13 @@ class GameEngine {
     };
 
     addEntity(entity) {
-        this.entitiesToAdd.push(entity);
+        //this.entitiesToAdd.push(entity);
+        this.entities.push(entity);
     };
 
     draw() {
         this.ctx.clearRect(0,0, this.ctx.canvas.width, this.ctx.canvas.height);
-        this.ctx.save();
+        //this.ctx.save();
         for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);                  // thing that are draw last are on top
         }
@@ -119,8 +120,8 @@ class GameEngine {
         }
 
         // add new things
-        this.entities = this.entities.concat(this.entitiesToAdd);
-        this.entitiesToAdd = [];
+        // this.entities = this.entities.concat(this.entitiesToAdd);
+        // this.entitiesToAdd = [];
     }
 
     loop() {

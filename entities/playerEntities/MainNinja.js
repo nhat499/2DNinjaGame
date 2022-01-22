@@ -1,14 +1,14 @@
-class Ninja {                      
+class MainNinja {                      
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ninja.png");
-        this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ninjaMainSpriteSheet.png");
+        //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
         this.scale = 1;
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
         // state variable
-        this.facing = "left"; // 0 right, 1 = left;
-        this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.facing = "right"; // 0 right, 1 = left;
+        this.action = "dizzy"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
 
         this.doubleJump = true;
         this.updateBB();
@@ -23,36 +23,41 @@ class Ninja {
     };
 
     loadAnimations() {
-        this.animations["idle" + "right"] = new Animator(this.spritesheet, 5360, 1457, 232, 439, 10, 0.2, 0, false, true);
-        this.animations["idle" + "left"] = new Animator(this.spritesheet, 3040, 1457, 232, 439, 10, 0.2, 0, true, true);
+        this.animations["couch" + "right"] = new Animator(this.spritesheet, 2510, 0, 154.5, 300, 3, 0.3, 0, false, true);
+        this.animations["couch" + "left"] = new Animator(this.spritesheet, 2026.5, 0, 154.5, 300, 3, 0.3, 0, true, true);
 
-        this.animations["attack" + "right"] = new Animator(this.spritesheet, 5360, 0, 536, 495, 10, 0.05, 0, false, true);
-        this.animations["attack" + "left"] = new Animator(this.spritesheet, 5360, 0, -536, 495, 10, 0.05, 0, false, true);
+        this.animations["dizzy" + "right"] = new Animator(this.spritesheet, 2545, 300, 146, 300, 3, 1, 25, false, true);
+        this.animations["couch" + "left"] = new Animator(this.spritesheet, 1900, 300, 200, 300, 3, 0.3, 0, true, true);
 
-        this.animations["climb" + "right"] = new Animator(this.spritesheet, 5360, 495, 282, 464, 10, 0.1, 0, false, true);
-        this.animations["climb" + "left"] = new Animator(this.spritesheet, 2540, 495, 282, 464, 10, 0.1, 0, true, true);
+        // this.animations["attack" + "right"] = new Animator(this.spritesheet, 5360, 0, 536, 495, 10, 0.05, 0, false, true);
+        // this.animations["attack" + "left"] = new Animator(this.spritesheet, 5360, 0, -536, 495, 10, 0.05, 0, false, true);
 
-        this.animations["slash" + "left"] = new Animator(this.slashSheet,-1024, 0, 1024, 1024,10, .05, 0, true, true);
-        this.animations["slash" + "right"] = new Animator(this.slashSheet,-1024, 1024, 1024, 1024,10, .05, 0, false, true);
+        // this.animations["climb" + "right"] = new Animator(this.spritesheet, 5360, 495, 282, 464, 10, 0.1, 0, false, true);
+        // this.animations["climb" + "left"] = new Animator(this.spritesheet, 2540, 495, 282, 464, 10, 0.1, 0, true, true);
 
-        this.animations["die" + "right"] =  new Animator(this.spritesheet, 5360, 959, 482, 498, 10, 0.1, 0, false, true);
-        this.animations["die" + "left"] =  new Animator(this.spritesheet, 540, 959, 482, 498, 10, 0.1, 0, false, true);
+        // this.animations["slash" + "left"] = new Animator(this.slashSheet,-1024, 0, 1024, 1024,10, .05, 0, true, true);
+        // this.animations["slash" + "right"] = new Animator(this.slashSheet,-1024, 1024, 1024, 1024,10, .05, 0, false, true);
+
+        // this.animations["die" + "right"] =  new Animator(this.spritesheet, 5360, 959, 482, 498, 10, 0.1, 0, false, true);
+        // this.animations["die" + "left"] =  new Animator(this.spritesheet, 540, 959, 482, 498, 10, 0.1, 0, false, true);
         
-        this.animations["run" + "right"] =  new Animator(this.spritesheet, 5360, 2901, 363, 452, 10, 0.05, 0, false, true);
-        this.animations["run" + "left"] =  new Animator(this.spritesheet, 1730, 2901, 363, 452, 10, 0.05, 0, true, true);
+        // this.animations["run" + "right"] =  new Animator(this.spritesheet, 5360, 2901, 363, 452, 10, 0.05, 0, false, true);
+        // this.animations["run" + "left"] =  new Animator(this.spritesheet, 1730, 2901, 363, 452, 10, 0.05, 0, true, true);
 
-        this.animations["slide" + "right"] =  new Animator(this.spritesheet, 5360, 3359, 373, 351, 10, 0.1, 0, false, true);
-        this.animations["slide" + "left"] =  new Animator(this.spritesheet, 1630, 3359, 373, 351, 10, 0.1, 0, true, true);
+        // this.animations["slide" + "right"] =  new Animator(this.spritesheet, 5360, 3359, 373, 351, 10, 0.1, 0, false, true);
+        // this.animations["slide" + "left"] =  new Animator(this.spritesheet, 1630, 3359, 373, 351, 10, 0.1, 0, true, true);
 
-        this.animations["jump" + "right"] = new Animator(this.spritesheet, 5360, 1896, 362, 483, 10, 0.1, 0, false, true);
-        this.animations["jump" + "left"] =  new Animator(this.spritesheet, 1740, 1896, 362, 483, 10, 0.1, 0, true, true);
+        // this.animations["jump" + "right"] = new Animator(this.spritesheet, 5360, 1896, 362, 483, 10, 0.1, 0, false, true);
+        // this.animations["jump" + "left"] =  new Animator(this.spritesheet, 1740, 1896, 362, 483, 10, 0.1, 0, true, true);
 
-        this.animations["jumpAttack" + "right"] = new Animator(this.spritesheet, 5360, 2379, 504, 522, 10, 0.1, 0, false, true);
-        this.animations["jumpAttack" + "left"] =  new Animator(this.spritesheet, 320, 2379, 504, 522, 10, 0.1, 0, true, true);
+        // this.animations["jumpAttack" + "right"] = new Animator(this.spritesheet, 5360, 2379, 504, 522, 10, 0.1, 0, false, true);
+        // this.animations["jumpAttack" + "left"] =  new Animator(this.spritesheet, 320, 2379, 504, 522, 10, 0.1, 0, true, true);
     };
 
 
-    update() {                  // must have update method
+    update() {                  
+        /*
+        // must have update method
         // logic to update it's state, background have no state, just have x,y
         const TICK = this.game.clockTick;
 
@@ -170,26 +175,27 @@ class Ninja {
         if (this.velocity.x >= MAX_RUN)  this.velocity.x = MAX_RUN + doubleJumpBonus;
         if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN - doubleJumpBonus;
 
-
+        if (this.game.attack) {           // attack
+            this.action = "attack";
+        }
         // update position
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
 
-        if (this.game.attack) {           // attack
-            this.action = "attack";
-        }
+
         
 // collision handeling
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
-                if (self.velocity.y > 0) { // falling
+                if (self.velocity.y >= 0) { // falling
                     if ((entity instanceof Ground) &&  // add more ground stuff here;
-                    (self.lastBB.bottom >= entity.BB.top)) { // landing
+                    (self.lastBB.bottom <= entity.BB.top)) { // landing
                         self.doubleJump = true;
                         self.velocity.y = 0;
-                        self.y = entity.y - 220;
+                        self.y = entity.BB.top - 220;
+                        self.updateBB();
                         if (self.action === "jump") self.action = "idle"; 
                         
                         //self.updateBB();
@@ -200,31 +206,34 @@ class Ninja {
                 }
             }
         });
+        */
     };
 
     updateBB() {
-        let slideBuffer = 0;
-        if(this.action === "slide") slideBuffer = 64;
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y + slideBuffer, 110, 220 - slideBuffer);
+        // let slideBuffer = 0;
+        // if(this.action === "slide") slideBuffer = 64;
+        // this.lastBB = this.BB;
+        // this.BB = new BoundingBox(this.x, this.y + slideBuffer, 110, 220 - slideBuffer);
     }
 
     draw(ctx) {                 // must have draw method
-        let slideBuffer = 0
-        if (this.action === "slide") slideBuffer = 64;
-        let attackLeftBuff = 0;
-        if (this.action === "attack" && this.facing === "left") attackLeftBuff = 150;
-        this.animations[this.action + this.facing].drawFrame(
-            this.game.clockTick, ctx, this.x + attackLeftBuff - this.game.camera.x, this.y + slideBuffer, 0.5);
+        // let slideBuffer = 0
+        // if (this.action === "slide") slideBuffer = 64;
+        // let attackLeftBuff = 0;
+        // if (this.action === "attack" && this.facing === "left") attackLeftBuff = 150;
+        // this.animations[this.action + this.facing].drawFrame(
+        //     this.game.clockTick, ctx, this.x + attackLeftBuff - this.game.camera.x, this.y + slideBuffer, 0.5);
 
-        //this.animations["slashleft"].drawFrame(this.game.clockTick, ctx, this.x + attackLeftBuff, 0, 0.50);
+        // //this.animations["slashleft"].drawFrame(this.game.clockTick, ctx, this.x + attackLeftBuff, 0, 0.50);
 
-        if (this.action === "attack") {
-            let buffer = 0;
-            if (this.facing == "left") buffer = -20;
-            this.animations["slash" + this.facing].drawFrame(this.game.clockTick, ctx, this.x + buffer - 120, this.y - 100, 0.40);
-        }
+        // if (this.action === "attack") {
+        //     let buffer = 0;
+        //     if (this.facing == "left") buffer = -20;
+        //     this.animations["slash" + this.facing].drawFrame(this.game.clockTick, ctx, this.x + buffer - 120, this.y - 100, 0.40);
+        // }
 
+
+        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, .5);
 
         // left debug
         ctx.strokeStlye = "black";
@@ -286,8 +295,8 @@ class Ninja {
         // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
         // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
 
-        this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        // this.game.ctx.strokeStyle = "red"; // the outline of shape
+        // this.game.ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
 
     };
 

@@ -9,6 +9,9 @@ ASSET_MANAGER.queueDownLoad("sprites/theSlashSheet.png");
 ASSET_MANAGER.queueDownLoad("sprites/ninja.png");
 ASSET_MANAGER.queueDownLoad("sprites/slashBlue.png");
 ASSET_MANAGER.queueDownLoad("./sprites/floorTileSet.png");
+ASSET_MANAGER.queueDownLoad("sprites/blueFlameRow.png");
+ASSET_MANAGER.queueDownLoad("sprites/orangeFireRow.png");
+ASSET_MANAGER.queueDownLoad("sprites/ninjaMainSpriteSheet.png");
 // ASSET_MANAGER.queueDownLoad();
 // ASSET_MANAGER.queueDownLoad();
 

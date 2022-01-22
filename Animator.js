@@ -1,6 +1,6 @@
 class Animator {
     constructor(spriteSheet, xStart, yStart, width, height, 
-        frameCount, frameDuration, framePadding, reverse, loop) {
+        frameCount, frameDuration, framePadding, reverse, loop, specialCase) {
 
         Object.assign(this, {spriteSheet, xStart, 
             yStart, width, height, frameCount, frameDuration, framePadding, 
@@ -25,6 +25,9 @@ class Animator {
         let frame = this.currentFrame();
         if (this.reverse) frame = this.frameCount - frame - 1;
 
+        if (specialCase) {
+            
+        }
         
         ctx.drawImage(this.spriteSheet,
             this.xStart + frame * (this.width + this.framePadding), this.yStart, //source from sheet
