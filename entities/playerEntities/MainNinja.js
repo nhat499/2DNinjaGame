@@ -277,58 +277,58 @@ class MainNinja {
             .5);
 
         // left debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.left ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(10, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("L", 20, this.game.surfaceHeight - 20);
 
         // down debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.down ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(50, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("d", 60, this.game.surfaceHeight - 20);
 
         // up debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.up ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(50, this.game.surfaceHeight -80, 30, 30);
         ctx.fillText("u", 60, this.game.surfaceHeight - 60);
 
         // right debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.right ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(90, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("r", 100, this.game.surfaceHeight - 20);
 
         // jump debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.jump ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(130, this.game.surfaceHeight -40, 50, 30);
         ctx.fillText("space", 140, this.game.surfaceHeight - 20);
 
         // attack debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.attack ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(190, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("a", 200, this.game.surfaceHeight - 20);
 
         // slide debug
-        ctx.strokeStlye = "black";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.slide ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
+        ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(230, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("s", 240, this.game.surfaceHeight - 20);      
         
