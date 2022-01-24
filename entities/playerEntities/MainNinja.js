@@ -108,36 +108,36 @@ class MainNinja {
         if (this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
             //&& this.action != "attack0"
             ) {
-            // ground physics
+            // ground physics (aka: character is not airborne)
 
-            if ( ! this.game.slide) {
-                this.velocity.x = 0;
-                this.action = "idle";
-                if (this.game.left && !this.game.right && !this.game.attack) {
-                    this.facing = "left";
-                    this.action = "run";
-                    this.velocity.x -= MAX_RUN;
+            if ( ! this.game.slide) { // if slide key is not down (which is always true at the start of the game) then...
+                this.velocity.x = 0; // set horizontal velocity to 0
+                this.action = "idle"; // be in "idle" state
+                if (this.game.left && !this.game.right && !this.game.attack) { // if only the left-arrow key is down then...
+                    this.facing = "left"; // make character face left
+                    this.action = "run"; // make character run
+                    this.velocity.x -= MAX_RUN; // negative horizontal velocity so that character moves towards the left
                 }
-                if (this.game.right && !this.game.left && !this.game.attack) {
-                    this.facing = "right";
-                    this.action = "run";
-                    this.velocity.x += MAX_RUN;
+                if (this.game.right && !this.game.left && !this.game.attack) { // if only the right-arrow key is down then...
+                    this.facing = "right"; // make character face left
+                    this.action = "run"; // make character run 
+                    this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
                 }
-            } else if ( this.game.slide) {
-                if (this.facing === "right" && this.velocity.x > 0) {
-                    this.action = "slide";
-                    this.velocity.x -= DEC_REL * 2 * TICK;  
+            } else if ( this.game.slide) { // else if slide key is down then...
+                if (this.facing === "right" && this.velocity.x > 0) { // if chacter is moving right then...
+                    this.action = "slide"; // make character slide
+                    this.velocity.x -= DEC_REL * 2 * TICK;  // reduce character's positive (moving right) horizontal velocity over time
                 } 
-                if (this.facing === "left" && this.velocity.x < 0) {
-                    this.action = "slide";
-                    this.velocity.x += DEC_REL * 2 * TICK;
+                if (this.facing === "left" && this.velocity.x < 0) { // if character is moving left then...
+                    this.action = "slide"; // make character slide
+                    this.velocity.x += DEC_REL * 2 * TICK; // reduce character's negative (moving left) velocity over time
                 }
-            } else if (Math.abs(this.velocity.x) >= MAX_RUN && !this.game.slide) {
-                if (this.facing === "right") {
-                    this.velocity.x -= DEC_REL * 5 * TICK;  
+            } else if (Math.abs(this.velocity.x) >= MAX_RUN && !this.game.slide) { // else if character is in a slide && horizontal velocity is greater than running velocity && slide key is NOT down then...
+                if (this.facing === "right") { // if character is facing right then...
+                    this.velocity.x -= DEC_REL * 5 * TICK; // reduce character's negative (moving left) velocity over time
                 } 
-                if (this.facing === "left") {
-                    this.velocity.x += DEC_REL * 5 * TICK;
+                if (this.facing === "left") { // if character is facing left then... 
+                    this.velocity.x += DEC_REL * 5 * TICK; // reduce character's positive (moving right) velocity over time
                 }
             }
             
@@ -157,7 +157,7 @@ class MainNinja {
                 this.game.jump = false;
             }
         } else {
-            // in the air
+            // character is already in the air
             // double jump
 
             this.velocity.y += this.fallAcc * TICK;
@@ -208,7 +208,7 @@ class MainNinja {
 
 
         
-// collision handeling
+// collision handling
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
