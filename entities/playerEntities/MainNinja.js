@@ -208,7 +208,7 @@ class MainNinja {
 
 
         
-// collision handling
+        // collision handling
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
