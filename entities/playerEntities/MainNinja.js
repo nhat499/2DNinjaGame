@@ -194,9 +194,8 @@ class MainNinja {
             if (this.velocity.y != 0) {
                 this.action = "jumpAttack";
                 this.hitBox = new BoundingBox(
-                    this.x - 60 - this.game.camera.x, this.y,
+                    this.x - 70 - this.game.camera.x, this.y - 20,
                     200, 200)
-                this.game.attack = false;
             } else {
                 this.action = "attack" + this.attack;
                 if (this.facing === "right") {
@@ -262,6 +261,7 @@ class MainNinja {
                             self.updateBB();
                             if (self.action === "jumpAttack") {
                                 self.hitBox = undefined
+                                self.game.attack = false;
                             }
                             //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
                         
