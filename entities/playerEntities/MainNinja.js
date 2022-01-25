@@ -8,10 +8,10 @@ class MainNinja {
         this.fallAcc = 562 * 3;
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
-        this.action = "jump2"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
-        this.attack = 0;
-        this.attacking = 0;
-        this.attackEnd = 7 * this.game.clockTick;
+        this.action = "attack2"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.attack = 0; // there 3 attack
+        // this.attacking = 0;
+        // this.attackEnd = 7 * this.game.clockTick;
         this.doubleJump = true;
         this.updateBB();
 
@@ -24,7 +24,6 @@ class MainNinja {
 
     };
 
-    
 
     loadAnimations() {
         this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 +30, 0, 154.5, 300, 3, 0.3, 0, false, true);
@@ -37,8 +36,8 @@ class MainNinja {
         this.animations["die" + "right"] =  new Animator(this.spritesheet, 3800 +45, 600, 220, 300, 5, 1, 0, false, true);
         this.animations["die" + "left"] =  new Animator(this.spritesheet, 2655, 600, 220, 300, 5, 1, 0, true, true);
 
-        this.animations["grabWall" + "right"] =  new Animator(this.spritesheet, 3800 +37, 900, 130, 300, 1, 1, 0, false, true);
-        this.animations["grabWall" + "left"] =  new Animator(this.spritesheet, 3633, 900, 130, 300, 1, 1, 0, true, true);
+        this.animations["grabWall" + "left"] =  new Animator(this.spritesheet, 3800 +37, 900, 130, 300, 1, 1, 0, false, true);
+        this.animations["grabWall" + "right"] =  new Animator(this.spritesheet, 3633, 900, 130, 300, 1, 1, 0, true, true);
 
         this.animations["idle" + "right"] =  new Animator(this.spritesheet, 3800 +30, 1500, 135, 300, 4, 0.3, 10, false, true);
         this.animations["idle" + "left"] =  new Animator(this.spritesheet, 3200, 1500, 135, 300, 4, 0.3, 10, true, true);
@@ -141,16 +140,7 @@ class MainNinja {
                 }
             }
             
-            if (this.game.attack || this.action === "attack0") {
-                this.action = "attack" + this.attack;
-
-                // console.log(this.attacking);
-                // if (this.attacking >= this.attackEnd) {
-                //     this.action = "idle";
-                // }
-            }
-
-            if (this.game.jump && this.velocity.y === 0) { // jump key press
+            if (this.game.jump && this.velocity.y === 0 && !this.game.attack) { // jump key press
                 this.velocity.y -= 3000;  // 1st jump
                 ///this.fallAcc = STOP_FALL;
                 this.action = "jump";
@@ -163,6 +153,7 @@ class MainNinja {
             this.velocity.y += this.fallAcc * TICK;
 
             if (this.doubleJump && this.game.jump) {
+                if (this.action === "jumpAttack") this.hitBox = undefined;
                 this.velocity.y = -3000;
                 this.action = "jump2";
                 if (this.facing === "right" && this.velocity.x <= 0) this.velocity.x = 100;
@@ -190,6 +181,54 @@ class MainNinja {
             }
         }
 
+        // throw mechanic
+        if (this.game.throw) {
+            this.action = "throw"
+            if (this.animations["throw" + this.facing].animationFinish) {
+                this.game.throw = false;
+            }
+        }
+
+        // attack mechanic
+        if (this.game.attack) {
+            if (this.velocity.y != 0) {
+                this.action = "jumpAttack";
+                this.hitBox = new BoundingBox(
+                    this.x - 60 - this.game.camera.x, this.y,
+                    200, 200)
+                this.game.attack = false;
+            } else {
+                this.action = "attack" + this.attack;
+                if (this.facing === "right") {
+                    this.hitBox = new BoundingBox(
+                        this.x + 60 - this.game.camera.x
+                        , this.y + 20,
+                        130,100);
+                } else {
+                    this.hitBox = new BoundingBox(
+                        this.x - 130 - this.game.camera.x
+                        , this.y + 20,
+                        130,100);
+                }
+                if (this.animations["attack0" + this.facing].animationFinish) {
+                    this.game.attack = false;
+                    this.attack = (this.attack + 1) % 3
+                    this.hitBox=undefined
+                } else if (this.animations["attack1" + this.facing].animationFinish) {
+                    this.game.attack = false;
+                    this.attack = (this.attack + 1) % 3
+                    this.hitBox=undefined
+                } else if (this.animations["attack2" + this.facing].animationFinish) {
+                    this.game.attack = false;
+                    this.attack = (this.attack + 1) % 3
+                    this.hitBox=undefined
+                }
+
+                
+            }
+        }
+
+
         this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
@@ -211,19 +250,45 @@ class MainNinja {
 // collision handeling
         let self = this;
         this.game.entities.forEach(function (entity) {
-            if (entity.BB && self.BB.collide(entity.BB)) {
-                if (self.velocity.y >= 0) { // falling
-                    if (entity instanceof Ground &&  // add more ground stuff here;
-                        (self.lastBB.bottom <= entity.BB.top)) { // landing
-                        self.doubleJump = true;
-                        self.velocity.y = 0;
-                        self.y = entity.BB.top - 130;
-                        self.updateBB();
-                        if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
+            if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
+                //if (self.velocity.y >= 0) { // falling
+                    if (entity instanceof Ground) {  // add more ground stuff here;
+
+                        if (self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+                            self.doubleJump = true;
+                            self.velocity.y = 0;
+                            self.y = entity.BB.top - 130;
+                            
+                            self.updateBB();
+                            if (self.action === "jumpAttack") {
+                                self.hitBox = undefined
+                            }
+                            //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
                         
-                        //self.updateBB();
+                            //self.updateBB();
+                        
+                        }else if (self.lastBB.right >= entity.BB.left){ // right collision
+                            console.log("case1")
+                        
+                            //self.action = "grabWall";
+                            // self.velocity.x = 0;
+                            // self.x = entity.BB.left - 60 + self.game.camera.x;
+                  
+                            //self.updateBB();
+                            
+                        } else if (self.lastBB.left >= entity.BB.right) { // left collision
+                            console.log("other case")
+                            // self.action = "grabWall";
+                            // self.velocity.x = 0;
+                            // self.x = entity.BB.right + 60;
+                            //self.updateBB();
+                        }
                     }
-                }
+                //}
+
+                
+
+                
             }
         });
     };
@@ -236,7 +301,9 @@ class MainNinja {
         let slideBuffer = 0;
         if(this.action === "slide") slideBuffer = 32;
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y + 20 +slideBuffer, 60, 110 - slideBuffer);
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y + 20 +slideBuffer, 
+            60, 
+            110 - slideBuffer);
     }
 
     draw(ctx) {                 // must have draw method
@@ -255,25 +322,46 @@ class MainNinja {
         //     this.animations["slash" + this.facing].drawFrame(this.game.clockTick, ctx, this.x + buffer - 120, this.y - 100, 0.40);
         // }
 
-        let jumpBuffer = 0, attack1y = 0, attack3y = 0, slidey = 0;
-        let attack1x = 0, slidex = 0;
+        let jumpBuffer = 0, attacky = 0, slidey = 0;
+        let attackx = 0,slidex = 0, throwx = 0;
         if (this.action === "jump") jumpBuffer = 60;
-        if (this.action === "attack2") attack3y = 40;
         if (this.action === "slide") { 
             if (this.facing === "right") slidex = -40; else if (this.facing === "left") slidex = -15;
             slidey = 15
         };
+
+        // attack0 adjustment
         if (this.action === "attack0") {
-            if (this.facing === "right") {
-                attack1x = -30;
-            } else if (this.facing === "left") {
-                attack1x = 100;
-            }
-            attack1y = 13;
+            if (this.facing === "right") attackx = -30; 
+            if (this.facing === "left") attackx = 80;
+            attacky = 13;
         }
+
+        // attack 1 adjustment
+        if(this.action === "attack1") {
+            if (this.facing === "left") attackx = -100;
+            if (this.facing === "right") attackx = -30;
+            attacky = 7
+
+        }
+
+        // attack 2 ajustment
+        if (this.action === "attack2") {
+            if (this.facing === "left") attackx = -100;
+            if (this.facing === "right") attackx = -30;
+            attacky = 40;
+        }
+
+        // jump attack ajustment
+        if (this.action === "jumpAttack") {
+            attackx = -60;
+        
+            attacky = 30;
+        }
+
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
-            this.x + attack1x + slidex - this.game.camera.x,
-            this.y - jumpBuffer - attack3y - attack1y + slidey, 
+            this.x + attackx + slidex - this.game.camera.x + throwx,
+            this.y - jumpBuffer - attacky + slidey, 
             .5);
 
         // left debug
@@ -332,6 +420,12 @@ class MainNinja {
         ctx.strokeRect(230, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("s", 240, this.game.surfaceHeight - 20);      
         
+        ctx.strokeStlye = "black";
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = this.game.throw ? "White" : "Grey";
+        ctx.fillStyle = ctx.strokeStlye;
+        ctx.strokeRect(270, this.game.surfaceHeight -40, 30, 30);
+        ctx.fillText("d", 280, this.game.surfaceHeight - 20); 
 
         // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
         // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
@@ -339,6 +433,10 @@ class MainNinja {
         this.game.ctx.strokeStyle = "red"; // the outline of shape
         this.game.ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
 
+        if(this.hitBox) {
+            this.game.ctx.strokeStyle = "red"; // the outline of shape
+        this.game.ctx.strokeRect(this.hitBox.x, this.hitBox.y, this.hitBox.width, this.hitBox.height);
+        }
     };
 
 }

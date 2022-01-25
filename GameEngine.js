@@ -14,6 +14,7 @@ class GameEngine {
         this.jump = false;
         this.attack = false;
         this.slide = false;
+        this.throw = false;
     }
 
     init(ctx) { // call after the page has loaded
@@ -62,6 +63,9 @@ class GameEngine {
                     break;
                 case "KeyS":
                     self.slide = true;
+                    break;
+                case "KeyD":
+                    self.throw = true;
             }
         }, false);
 
@@ -82,9 +86,9 @@ class GameEngine {
                 case "Space":
                     self.jump = false;
                     break;
-                case "KeyA":
-                    self.attack = false;
-                    break;
+                // case "KeyA":
+                //     self.attack = false;
+                //     break;
                 case "KeyS":
                     self.slide = false;
             }

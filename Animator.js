@@ -6,14 +6,16 @@ class Animator {
             yStart, width, height, frameCount, frameDuration, framePadding, 
             reverse, loop});
         
+        this.animationFinish = false;
         this.elapsedTime = 0;
-        this.totalTime = this.frameCount * this.frameDuration;    
+        this.totalTime = this.frameCount * this.frameDuration;  
     }
 
     drawFrame(tick, ctx, x, y, scale) {
         this.elapsedTime += tick;
-
-        if (this.isDOne()) {
+        this.animationFinish = false;
+        if (this.isDone()) {
+            this.animationFinish = true;
             if (this.loop) {
                 this.elapsedTime -= this.totalTime;
             } else {
@@ -41,7 +43,7 @@ class Animator {
         return currFrame;
     };
 
-    isDOne() {
+    isDone() {
         let isDone = (this.elapsedTime >= this.totalTime)
         return isDone;
     };

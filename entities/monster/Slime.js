@@ -6,8 +6,8 @@ class Slime {
         this.scale = 1;
 
         // state variable
-        this.facing = "left"; // 0 right, 1 = left;
-        this.action = "dmg"; // 0 idle, 1 = moving, 2 = taking dmg, 3 = dying;
+        this.facing = "right"; // 0 right, 1 = left;
+        this.action = "walk"; // 0 idle, 1 = moving, 2 = taking dmg, 3 = dying;
 
         // animation
         this.animations = []; // list of animations
