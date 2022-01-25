@@ -15,7 +15,7 @@ class SceneManager {
         
         let leftPoint = this.game.surfaceWidth / 3;
         let rightPoint = this.game.surfaceWidth - leftPoint;
-        let midPoint = (this.game.surfaceWidth / 2); // 85 IS HALF OF THE NINJA
+        //let midPoint = (this.game.surfaceWidth / 2); // 85 IS HALF OF THE NINJA
         //this.x = this.ninja.x - midPoint;
         if ( this.ninja.facing === "right" && this.x < this.ninja.x - rightPoint) {
             this.x = this.ninja.x - rightPoint;
