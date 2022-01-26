@@ -6,7 +6,7 @@ class Ghost {
         this.scale = 1;
 
         // state variable
-        this.action = "idle"; // 0 idle, 1 = moving, 2 = dying;
+        this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
         this.facing = "right"; // 0 right, 1 = left;
 
         this.velocity = {x:0, y:0};
@@ -79,7 +79,7 @@ class Ghost {
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
-                console.log("I collided with something");
+                //console.log("I collided with something");
                 //if (self.velocity.y >= 0) { // falling
                     if (entity instanceof Ground) {  // add more ground stuff here;
 
