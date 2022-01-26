@@ -10,6 +10,7 @@ class Ghost {
         this.action = "idle"; // 0 idle, 1 = moving, 2 = dying;
 
         this.velocity = {x:0, y:0};
+        this.fallAcc = 562 * 3;
 
         this.updateBB();
 
@@ -55,9 +56,31 @@ class Ghost {
         const MAX_FALL = 270 * 3;
 
 
+        if (this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
+            //&& this.action != "attack0"
+        ) {} else {
+            this.velocity.y += this.fallAcc * TICK;
+        }
+
+        this.velocity.y += this.fallAcc * TICK;
+
+        // max speed calculation
+        //if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+        //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
+
+        // update position 
+        //*(if this is not included then the entity's velocity will not be reflected on the canvas)
+        // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
+        this.x += this.velocity.x * TICK;
+        this.y += this.velocity.y * TICK;
+        //this.updateBB(); //bounding box;
+
+        
+
+
     };
 
     draw(ctx) {                 // must have draw method
-        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, 0.75);
+        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
     };
 }
