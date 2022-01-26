@@ -2,8 +2,8 @@ class Coin {
   constructor(game, x, y) {
     Object.assign(this, { game, x, y });
 
-    this.spritesheet = ASSET_MANAGER.getAsset('sprites/assets.png');
-    this.scale = 1;
+    this.spritesheet = ASSET_MANAGER.getAssset('sprites/assets.png');
+    this.scale = 0.5;
 
     this.animations = [];
 
@@ -16,8 +16,8 @@ class Coin {
       76,
       76,
       4,
-      0.1,
-      0,
+      0.15,
+      16,
       false,
       true
     );
@@ -27,9 +27,9 @@ class Coin {
     this.animations[this.state].drawFrame(
       this.game.clockTick,
       ctx,
-      this.x,
+      this.x - this.game.camera.x,
       this.y,
-      1
+      this.scale
     );
   }
 
