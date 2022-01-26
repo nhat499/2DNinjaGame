@@ -62,7 +62,7 @@ class Ghost {
             this.velocity.y += this.fallAcc * TICK;
         }
 
-        this.velocity.y += this.fallAcc * TICK;
+        //this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
         //if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
@@ -79,7 +79,7 @@ class Ghost {
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
-                console.log("I collided with something");
+                //console.log("I collided with something");
                 //if (self.velocity.y >= 0) { // falling
                     if (entity instanceof Ground) {  // add more ground stuff here;
 

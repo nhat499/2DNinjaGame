@@ -21,7 +21,7 @@ class MainNinja {
 
         // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
         // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-
+        
     };
 
 
@@ -69,6 +69,8 @@ class MainNinja {
         this.animations["throw" + "right"] =  new Animator(this.spritesheet, 3800 +8, 4200, 208, 300, 3, 0.2, 16, false, true);
         this.animations["throw" + "left"] =  new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.2, 16, true, true);
     };
+
+
 
     //update() {}
 
@@ -228,7 +230,7 @@ class MainNinja {
         }
 
 
-        this.velocity.y += this.fallAcc * TICK;
+        //this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
         if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
@@ -249,26 +251,27 @@ class MainNinja {
         // collision handling
         let self = this;
         this.game.entities.forEach(function (entity) {
-            if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
-                //if (self.velocity.y >= 0) { // falling
-                    if (entity instanceof Ground) {  // add more ground stuff here;
+            if (entity.BB && self.BB.collide(entity.BB)) {
+                if (self.velocity.y > 0) { // falling
+                    console.log("i'm fallling");
+                    if (entity instanceof Ground && (self.lastBB.bottom <= entity.BB.top)) {  // add more ground stuff here;
+                        console.log("I'm hitting ground");
 
-                        if (self.lastBB.bottom <= entity.BB.top) { // landing, top collison
-                            self.doubleJump = true;
-                            self.velocity.y = 0;
-                            self.y = entity.BB.top - 130;
+                        self.doubleJump = true;
+                        self.y = entity.BB.top - 130;
+                        self.velocity.y = 0;
                             
-                            self.updateBB();
-                            if (self.action === "jumpAttack") {
-                                self.hitBox = undefined
-                                self.game.attack = false;
-                            }
-                            //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
+                        self.updateBB();
+                        if (self.action === "jumpAttack") {
+                            self.hitBox = undefined
+                            self.game.attack = false;
+                        }
+                        //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
                         
-                            //self.updateBB();
+                        //self.updateBB();
                         
-                        }else if (self.lastBB.right >= entity.BB.left){ // right collision
-                            console.log("case1")
+                    } else if (self.lastBB.right >= entity.BB.left) { // right collision
+                        console.log("case1")
                         
                             //self.action = "grabWall";
                             // self.velocity.x = 0;
@@ -276,19 +279,27 @@ class MainNinja {
                   
                             //self.updateBB();
                             
-                        } else if (self.lastBB.left >= entity.BB.right) { // left collision
-                            console.log("other case")
-                            // self.action = "grabWall";
-                            // self.velocity.x = 0;
-                            // self.x = entity.BB.right + 60;
-                            //self.updateBB();
-                        }
+                    } else if (self.lastBB.left >= entity.BB.right) { // left collision
+                        console.log("other case")
+                        // self.action = "grabWall";
+                        self.velocity.x = 0;
+                        // self.x = entity.BB.right + 60;
+                        //self.updateBB();
                     }
-                //}
-
+    
+                }
+                if (self.velocity.y <= 0) {
+                    if (entity instanceof Ghost) {
+                        if (self.BB.collide(entity.BB)) {
+                            console.log("I collided!");
+                            console.log(self.velocity.x);
+                            self.x = entity.BB.left;
+                            self.velocity.x = 0;
+                            self.updateBB();  
+                        } // was below last tick
                 
-
-                
+                    }
+                }                
             }
         });
     };
