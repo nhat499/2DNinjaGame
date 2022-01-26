@@ -6,8 +6,8 @@ class Ghost {
         this.scale = 1;
 
         // state variable
-        this.facing = "right"; // 0 right, 1 = left;
         this.action = "idle"; // 0 idle, 1 = moving, 2 = dying;
+        this.facing = "right"; // 0 right, 1 = left;
 
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
@@ -28,8 +28,8 @@ class Ghost {
     };
 
     updateBB() {
-        this.lastBB = this.lastBB;
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 60, 110);
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 50, 75); // height: 85
     }
 
 
@@ -73,14 +73,62 @@ class Ghost {
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
-        //this.updateBB(); //bounding box;
+        this.updateBB(); // updates the entity's bounding box as the entity's place on the canvas changes
 
-        
+        // collision handling
+        let self = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
+                console.log("I collided with something");
+                //if (self.velocity.y >= 0) { // falling
+                    if (entity instanceof Ground) {  // add more ground stuff here;
+
+                        if (self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+                            self.doubleJump = true;
+                            self.velocity.y = 0;
+                            self.y = entity.BB.top - 75;
+                            
+                            self.updateBB();
+                            if (self.action === "jumpAttack") {
+                                self.hitBox = undefined
+                                self.game.attack = false;
+                            }
+                            //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
+                        
+                            //self.updateBB();
+                        
+                        }else if (self.lastBB.right >= entity.BB.left){ // right collision
+                            console.log("case1")
+                        
+                            //self.action = "grabWall";
+                            // self.velocity.x = 0;
+                            // self.x = entity.BB.left - 60 + self.game.camera.x;
+                  
+                            //self.updateBB();
+                            
+                        } else if (self.lastBB.left >= entity.BB.right) { // left collision
+                            console.log("other case")
+                            // self.action = "grabWall";
+                            // self.velocity.x = 0;
+                            // self.x = entity.BB.right + 60;
+                            //self.updateBB();
+                        }
+                    }
+                //}
+
+                
+
+                
+            }
+        });
 
 
     };
 
     draw(ctx) {                 // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
+
+        this.game.ctx.strokeStyle = "red"; // the outline of shape
+        this.game.ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
     };
 }
