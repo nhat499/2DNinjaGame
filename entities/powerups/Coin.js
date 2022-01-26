@@ -11,12 +11,12 @@ class Coin {
 
     this.animations['spinning'] = new Animator(
       this.spritesheet,
-      0,
-      0,
+      519,
+      252,
       76,
       76,
       4,
-      0.3,
+      0.1,
       0,
       false,
       true
@@ -32,4 +32,6 @@ class Coin {
       1
     );
   }
+
+  update() {}
 }
