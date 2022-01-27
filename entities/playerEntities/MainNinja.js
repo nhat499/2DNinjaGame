@@ -283,8 +283,7 @@ class MainNinja {
                             // self.x = entity.BB.right + 60;
                             //self.updateBB();
                         }
-                    }
-                    
+                    }  
                 //}
 
                 
