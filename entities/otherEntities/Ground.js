@@ -9,7 +9,7 @@ class Ground {
     };
 
     update() {
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, this.w, this.h);
+        this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
     };
 
     // drawMinimap(ctx, mmX, mmY) {
@@ -32,6 +32,6 @@ class Ground {
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
     };;
 };
