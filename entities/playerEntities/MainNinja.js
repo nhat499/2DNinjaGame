@@ -284,6 +284,7 @@ class MainNinja {
                             //self.updateBB();
                         }
                     }  
+                    
                 //}
 
                 
