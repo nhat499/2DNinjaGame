@@ -30,14 +30,19 @@ class SceneManager {
 
     loadLevel1() {
         let ground = new Ground(this.game, -256, 700, 2560, 128);
-        let ground1 = new Ground(this.game, -256, 128, 640,580);
+        let ground1 = new Ground(this.game, -256, 128, 640,560);
+        let ground3 = new Ground(this.game, 1000, 128, 640,560)
         //let ground3 = new Ground(this.game, 0, this.game.surfaceHeight - 500, this.game.surfaceWidth- 500, 128);
         // let blueFlame = new BlueFlame(this.game, this.game.surfaceHeight-70, 30);
         // let orangeFlame = new OrangeFlame(this.game, this.game.surfaceHeight -70, 50);
-        this.game.addEntity(ground);
-        this.game.addEntity(ground1);
 
-        // this.game.addEntity(blueFlame);
+        // ground
+        this.game.addEntity(ground);
+        
+        // wall
+        this.game.addEntity(ground1);
+        this.game.addEntity(ground3);
+        
         // this.game.addEntity(orangeFlame);
         //this.game.addEntity(ground3);
     }
