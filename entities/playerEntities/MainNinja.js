@@ -45,8 +45,8 @@ class MainNinja {
         this.animations["jump" + "right"] =  new Animator(this.spritesheet, 3800 +55 + 200, 1800, 200, 400, 1, 0.5, 0, false, true);
         this.animations["jump" + "left"] =  new Animator(this.spritesheet, 1945 + 1400, 1800, 200, 400, 1, 0.5, 0, false, true);
 
-        this.animations["jump2" + "right"] =  new Animator(this.spritesheet, 3800 +55 + 400, 1800, 200, 400, 5, 0.1, 0, false, true);
-        this.animations["jump2" + "left"] =  new Animator(this.spritesheet, 1945 + 400, 1800, 200, 400, 5, 0.1, 0, true, true);
+        this.animations["jump2" + "right"] =  new Animator(this.spritesheet, 3800 +55 + 400, 1800, 200, 400, 5, 0.07, 0, false, true);
+        this.animations["jump2" + "left"] =  new Animator(this.spritesheet, 1945 + 400, 1800, 200, 400, 5, 0.07, 0, true, true);
 
         this.animations["run" + "right"] =  new Animator(this.spritesheet, 3800 +40, 2200, 200, 300, 6, 0.09, 15, false, true);
         this.animations["run" + "left"] =  new Animator(this.spritesheet, 2485, 2200, 200, 300, 6, 0.09, 15, true, true);
@@ -156,10 +156,10 @@ class MainNinja {
                 if (this.action === "jumpAttack") this.hitBox = undefined;
                 this.velocity.y = -6000;
                 this.action = "jump2";
-                if (this.facing === "right" && this.velocity.x <= 0) this.velocity.x = 200;
-                if (this.facing === "right" && this.velocity.x > 0) this.velocity.x += 200;
-                if (this.facing === "left" && this.velocity.x >= 0) this.velocity.x = -200;
-                if (this.facing === "left" && this.velocity.x < 0) this.velocity.x -= 200;
+                if (this.facing === "right" && this.velocity.x < 0) this.velocity.x = 400;
+                if (this.facing === "right" && this.velocity.x > 0) this.velocity.x = 400;
+                if (this.facing === "left" && this.velocity.x > 0) this.velocity.x = -400;
+                if (this.facing === "left" && this.velocity.x < 0) this.velocity.x = -400;
                 this.doubleJump = false;
             }
 
@@ -235,12 +235,11 @@ class MainNinja {
         if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
 
         let doubleJumpBonus = 0;
-        if (!this.doubleJump) doubleJumpBonus = 400;
+        if (!this.doubleJump) doubleJumpBonus = 50;
         if (this.velocity.x >= MAX_RUN)  this.velocity.x = MAX_RUN + doubleJumpBonus;
         if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN - doubleJumpBonus;
 
         // update position
-        this.updateBB();
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
@@ -252,21 +251,31 @@ class MainNinja {
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 //if (self.velocity.y >= 0) { // falling
-                    if (entity instanceof Ground) {  // add more ground stuff here;
+                      // add more ground stuff here
+                if ((entity instanceof Ground || entity instanceof Platform ) && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+                    self.doubleJump = true;
+                    self.velocity.y = 0;
+                    self.y = entity.BB.top - 130;
+                    if (self.action === "jumpAttack") {
+                        self.hitBox = undefined
+                        self.game.attack = false;
+                    }  
+                    self.updateBB();     
+                } 
 
-                        if (self.lastBB.left >= entity.BB.right) { // left collision
-                            console.log(" case")
-                            self.action = "grabWall";
-                            self.game.attack = false;
-                            self.hitBox = undefined
-                            self.doubleJump = true;
-                            self.velocity.x = 0;
-                            self.x = entity.BB.right;
-                            self.velocity.y = 0;
-                            self.y = self.y;
-                           // self.updateBB();
-                        } else if (self.lastBB.right <= entity.BB.left) { // right collision
-                            console.log("case 2")
+                if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                    if (self.lastBB.left >= entity.BB.right) { // left collision
+                        console.log(" case")
+                        self.action = "grabWall";
+                        self.game.attack = false;
+                        self.hitBox = undefined
+                        self.doubleJump = true;
+                        self.velocity.x = 0;
+                        self.x = entity.BB.right;
+                        self.velocity.y = 0;
+                        self.y = self.y;
+                    } else  if (self.lastBB.right <= entity.BB.left) {
+                        console.log("case 2")
                             self.action = "grabWall";
                             self.game.attack = false;
                             self.hitBox = undefined
@@ -275,23 +284,25 @@ class MainNinja {
                             self.x = entity.BB.left - 60;
                             self.velocity.y = 0;
                             self.y = self.y;
-                            //self.updateBB();
-                        }
-                        if (self.lastBB.bottom <= entity.BB.top) { // landing, top collison
-                            self.doubleJump = true;
-                            self.velocity.y = 0;
-                            self.y = entity.BB.top - 130;
-                            if (self.action === "jumpAttack") {
-                                self.hitBox = undefined
-                                self.game.attack = false;
-                            }  
-                            //self.updateBB();     
-                        } 
-                        self.updateBB();
-                    }  
-                //}
-   
+                    }
+                    self.updateBB();
+                }
+                // } else if (entity instanceof Wall && self.lastBB.right < entity.BB.left) { // right collision
+                //     console.log("case 2")
+                //     self.action = "grabWall";
+                //     self.game.attack = false;
+                //     self.hitBox = undefined
+                //     self.doubleJump = true;
+                //     self.velocity.x = 0;
+                //     self.x = entity.BB.left - 60;
+                //     self.velocity.y = 0;
+                //     self.y = self.y;
+                //     //self.updateBB();
+                // }
+
+        
             }
+
         });
     };
 
