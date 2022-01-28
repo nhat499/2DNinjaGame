@@ -108,7 +108,7 @@ class Slime {
                 }
             }
             if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
-                if (entity.BB.left >= self.BB.right) {
+                if (entity.facing === "left") {
                     self.facing = "right";
                     self.velocity.x = -100;
                 } else {

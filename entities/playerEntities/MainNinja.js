@@ -274,7 +274,7 @@ class MainNinja {
                         self.x = entity.BB.right;
                         self.velocity.y = 0;
                         self.y = self.y;
-                    } else  if (self.lastBB.right <= entity.BB.left) {
+                    } else  if (self.lastBB.right <= entity.BB.left) { // right collision
                         console.log("case 2")
                             self.action = "grabWall";
                             self.game.attack = false;
@@ -287,18 +287,16 @@ class MainNinja {
                     }
                     self.updateBB();
                 }
-                // } else if (entity instanceof Wall && self.lastBB.right < entity.BB.left) { // right collision
-                //     console.log("case 2")
-                //     self.action = "grabWall";
-                //     self.game.attack = false;
-                //     self.hitBox = undefined
-                //     self.doubleJump = true;
-                //     self.velocity.x = 0;
-                //     self.x = entity.BB.left - 60;
-                //     self.velocity.y = 0;
-                //     self.y = self.y;
-                //     //self.updateBB();
-                // }
+
+                if(entity instanceof Slime) {
+                    if (self.facing === "left") {
+                        self.velocity.x = 300;
+                    } else {
+                        self.velocity.x = -300;
+                    }
+                    self.action = "dizzy";
+                    self.velocity.y = -200;
+                }
 
         
             }

@@ -5,7 +5,7 @@ class SceneManager {
         this.x = 0 //horizontal scrolling
         //this.health = 0;
         // this.lives = 0; 
-        this.ninja = new MainNinja(this.game, 600,170);
+        this.ninja = new MainNinja(this.game, 0,170);
 
         this.loadLevel1();
         this.game.addEntity(this.ninja);
@@ -30,16 +30,16 @@ class SceneManager {
 
     loadLevel1() {
         let ground = new Ground(this.game, -256, 700, 2560);
-        let wall1 = new Wall(this.game, 100, 128, 512);
-        let wall2 = new Wall(this.game, 428, 128, 512);
-        let Platform1 = new Platform(this.game, 1500, 400, 128);
+        let wall1 = new Wall(this.game, 100, 0, 512);
+        let wall2 = new Wall(this.game, 400, 128, 512);
+        let Platform1 = new Platform(this.game, 700, 400, 128);
         
-        let slime1 = new Slime(this.game,500,300)
-        let slime2 = new Slime(this.game,600,300)
-        let slime3 = new Slime(this.game,700,300)
-        let slime4 = new Slime(this.game,800,300)
-        let slime5 = new Slime(this.game,900,300)
-        let slime6 = new Slime(this.game,1000,300)
+        let slime1 = new Slime(this.game,1300,300)
+        let slime2 = new Slime(this.game,1400,300)
+        let slime3 = new Slime(this.game,1500,300)
+        let slime4 = new Slime(this.game,1600,300)
+        let slime5 = new Slime(this.game,1700,300)
+        let slime6 = new Slime(this.game,1800,300)
         //let ground3 = new Ground(this.game, 0, this.game.surfaceHeight - 500, this.game.surfaceWidth- 500, 128);
         // let blueFlame = new BlueFlame(this.game, this.game.surfaceHeight-70, 30);
         // let orangeFlame = new OrangeFlame(this.game, this.game.surfaceHeight -70, 50);
