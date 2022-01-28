@@ -116,7 +116,6 @@ class Slime {
                 }
                 self.hp -= 0.5;
                 
-                console.log("got hit");
                 self.action = "dmg";
             }
         });
