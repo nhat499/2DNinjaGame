@@ -59,7 +59,6 @@ class Slime {
         if (this.action === "dmg") {
             if (this.animations["dmg" + this.facing].animationFinish) { // being hit animation
                 this.action = "idle";
-                console.log(this.hp);
             }
             if (this.hp <= 0) {
                 this.action = "dying";
