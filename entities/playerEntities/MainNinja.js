@@ -290,7 +290,7 @@ class MainNinja {
                     self.updateBB();
                 }
 
-                if(entity instanceof Slime) {
+                if(entity instanceof Slime || entity instanceof Ghost) {
                     if (self.facing === "left") {
                         self.velocity.x = 300;
                     } else {
