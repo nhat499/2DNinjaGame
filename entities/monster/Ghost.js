@@ -29,7 +29,7 @@ class Ghost {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x - this.game.camera.x, this.y, 50, 75); // height: 85
+        this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
     }
 
 
@@ -62,11 +62,11 @@ class Ghost {
             this.velocity.y += this.fallAcc * TICK;
         }
 
-        this.velocity.y += this.fallAcc * TICK;
+        //this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
-        //if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-        //if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
+        // if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+        // if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
 
         // update position 
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
@@ -77,50 +77,60 @@ class Ghost {
 
         // collision handling
         let self = this;
-        this.game.entities.forEach(function (entity) {
-            if (entity.BB && self.BB.collide(entity.BB) && entity != self) {
-                //console.log("I collided with something");
-                //if (self.velocity.y >= 0) { // falling
-                    if (entity instanceof Ground) {  // add more ground stuff here;
+        // this.game.entities.forEach(function (entity) {
+        //     if (entity.BB && self.BB.collide(entity.BB)) {
+        //         //if (self.velocity.y >= 0) { // falling
+        //               // add more ground stuff here
+        //         if ((entity instanceof Ground || entity instanceof Platform ) && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+        //             self.doubleJump = true;
+        //             self.velocity.y = 0;
+        //             self.y = entity.BB.top - 130;
+        //             if (self.action === "jumpAttack") {
+        //                 self.hitBox = undefined
+        //                 self.game.attack = false;
+        //             }  
+        //             self.updateBB();     
+        //         } 
 
-                        if (self.lastBB.bottom <= entity.BB.top) { // landing, top collison
-                            self.doubleJump = true;
-                            self.velocity.y = 0;
-                            self.y = entity.BB.top - 75;
-                            
-                            self.updateBB();
-                            if (self.action === "jumpAttack") {
-                                self.hitBox = undefined
-                                self.game.attack = false;
-                            }
-                            //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
-                        
-                            //self.updateBB();
-                        
-                        }else if (self.lastBB.right >= entity.BB.left){ // right collision
-                            console.log("case1")
-                        
-                            //self.action = "grabWall";
-                            // self.velocity.x = 0;
-                            // self.x = entity.BB.left - 60 + self.game.camera.x;
-                  
-                            //self.updateBB();
-                            
-                        } else if (self.lastBB.left >= entity.BB.right) { // left collision
-                            console.log("other case")
-                            // self.action = "grabWall";
-                            // self.velocity.x = 0;
-                            // self.x = entity.BB.right + 60;
-                            //self.updateBB();
-                        }
-                    }
-                //}
+        //         if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+        //             if (self.lastBB.left >= entity.BB.right) { // left collision
+        //                 //console.log(" case")
+        //                 self.action = "grabWall";
+        //                 self.game.attack = false;
+        //                 self.hitBox = undefined
+        //                 self.doubleJump = true;
+        //                 self.velocity.x = 0;
+        //                 self.x = entity.BB.right;
+        //                 self.velocity.y = 0;
+        //                 self.y = self.y;
+        //             } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+        //                 //console.log("case 2")
+        //                     self.action = "grabWall";
+        //                     self.game.attack = false;
+        //                     self.hitBox = undefined
+        //                     self.doubleJump = true;
+        //                     self.velocity.x = 0;
+        //                     self.x = entity.BB.left - 60;
+        //                     self.velocity.y = 0;
+        //                     self.y = self.y;
+        //             }
+        //             self.updateBB();
+        //         }
 
-                
+        //         if(entity instanceof Slime) {
+        //             if (self.facing === "left") {
+        //                 self.velocity.x = 300;
+        //             } else {
+        //                 self.velocity.x = -300;
+        //             }
+        //             self.action = "dizzy";
+        //             self.velocity.y = -200;
+        //         }
 
-                
-            }
-        });
+        
+        //     }
+
+        // });
 
 
     };
@@ -128,7 +138,7 @@ class Ghost {
     draw(ctx) {                 // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
 
-        this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        this.game.ctx.strokeStyle = "Red"; // the outline of shape
+        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
     };
 }
