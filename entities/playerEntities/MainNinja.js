@@ -252,56 +252,6 @@ class MainNinja {
         let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
-<<<<<<< HEAD
-                if (self.velocity.y > 0) { // falling
-                    console.log("i'm fallling");
-                    if (entity instanceof Ground && (self.lastBB.bottom <= entity.BB.top)) {  // add more ground stuff here;
-                        console.log("I'm hitting ground");
-
-                        self.doubleJump = true;
-                        self.y = entity.BB.top - 130;
-                        self.velocity.y = 0;
-                            
-                        self.updateBB();
-                        if (self.action === "jumpAttack") {
-                            self.hitBox = undefined
-                            self.game.attack = false;
-                        }
-                        //if (self.action === "jump" || self.action === "jump2") self.action = "idle"; 
-                        
-                        //self.updateBB();
-                        
-                    } else if (self.lastBB.right >= entity.BB.left) { // right collision
-                        console.log("case1")
-                        
-                            //self.action = "grabWall";
-                            // self.velocity.x = 0;
-                            // self.x = entity.BB.left - 60 + self.game.camera.x;
-                  
-                            //self.updateBB();
-                            
-                    } else if (self.lastBB.left >= entity.BB.right) { // left collision
-                        console.log("other case")
-                        // self.action = "grabWall";
-                        self.velocity.x = 0;
-                        // self.x = entity.BB.right + 60;
-                        //self.updateBB();
-                    }
-    
-                }
-                if (self.velocity.y <= 0) {
-                    if (entity instanceof Ghost) {
-                        if (self.BB.collide(entity.BB)) {
-                            console.log("I collided!");
-                            console.log(self.velocity.x);
-                            self.x = entity.BB.left;
-                            self.velocity.x = 0;
-                            self.updateBB();  
-                        } // was below last tick
-                
-                    }
-                }                
-=======
                 //if (self.velocity.y >= 0) { // falling
                       // add more ground stuff here
                 if ((entity instanceof Ground || entity instanceof Platform ) && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
@@ -351,7 +301,6 @@ class MainNinja {
                 }
 
         
->>>>>>> 9e53b4c89316fd00e5d104cb8abc3442607c49e5
             }
 
         });
