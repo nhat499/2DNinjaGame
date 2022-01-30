@@ -5,6 +5,8 @@ class Ghost {
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/ghost1.png");
         this.scale = 1;
 
+        this.hp = 100;
+
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
         this.facing = "left"; // 0 right, 1 = left;
@@ -50,6 +52,10 @@ class Ghost {
 
 
     update() {                  // must have update method
+
+        if (this.hp <= 0) {
+            this.removeFromWorld = true;
+        }
 
         //this.action = "walk";
 
@@ -108,12 +114,12 @@ class Ghost {
 
         this.game.entities.forEach(function (entity) {
 
-            if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack) {
+            if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack && self.hp > 0) {
                 //console.log("i was hurt");
                 self.action = "hurt";
                 //self.x += 100;
 
-                self.angle -= 2;
+                self.angle -= 2; // on-hit knockback functionality for Ghost entitity
 
                 // if (self.facing === "left") {
                 //     self.angle -= 2.5;
@@ -121,9 +127,13 @@ class Ghost {
                 //     //self.angle += 2.5;
                 // }
 
-            
+                self.hp -= 1;
                 
              }
+
+            //  if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
+            //      // add Ghost attack state here
+            //  }
 
         });
         //---------------------------------------
