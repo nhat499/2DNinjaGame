@@ -12,6 +12,12 @@ class Ghost {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
+        // used for interval movement-----------
+        this.angle = 0;
+        this.angleSpeed = Math.random() * 2;
+        this.curve = Math.random() * 200;
+        // -------------------------------------
+
         this.updateBB();
 
         // animation
@@ -71,11 +77,11 @@ class Ghost {
         // update position 
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
-        this.x +=  Math.random() * 3 - 1.5;
-        //this.y +=  Math.random() * 3 - 1.5;
-        //this.x = Math.random() * 3;
-        //this.y = Math.random() * 3;
-        //this.y += this.velocity.y * TICK
+
+        this.x = this.curve * Math.sin(this.angle * Math.PI/180); // increasing the first factor ('this.curve' in this case) resxults in a wider oscillation interval
+        //this.y = this.curve * Math.cos(this.angle * Math.PI/180); // this will add vertical oscillation to the entity
+        this.angle += this.angleSpeed;
+
         this.updateBB(); // updates the entity's bounding box as the entity's place on the canvas changes
 
         // collision handling
