@@ -6,11 +6,11 @@ class SceneManager {
         //this.health = 0;
         // this.lives = 0; 
         this.ninja = new MainNinja(this.game, 0,170);
-        this.ghost1 = new Ghost(this.game, 300, 600);
+        //this.ghost1 = new Ghost(this.game, 300, 170);
         this.loadLevel1();
         this.game.addEntity(this.ninja);
         //this.game.addEntity(this.knight);
-        this.game.addEntity(this.ghost1);
+        //this.game.addEntity(this.ghost1);
         
     }
 
@@ -40,6 +40,8 @@ class SceneManager {
         let slime4 = new Slime(this.game,1600,300)
         let slime5 = new Slime(this.game,1700,300)
         let slime6 = new Slime(this.game,1800,300)
+
+        let ghost1 = new Ghost(this.game, 300, 600);
         //let ground3 = new Ground(this.game, 0, this.game.surfaceHeight - 500, this.game.surfaceWidth- 500, 128);
         // let blueFlame = new BlueFlame(this.game, this.game.surfaceHeight-70, 30);
         // let orangeFlame = new OrangeFlame(this.game, this.game.surfaceHeight -70, 50);
@@ -64,6 +66,8 @@ class SceneManager {
         this.game.addEntity(slime4);
         this.game.addEntity(slime5);
         this.game.addEntity(slime6);
+
+        this.game.addEntity(ghost1);
 
         
     }

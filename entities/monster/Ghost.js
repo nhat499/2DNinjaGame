@@ -71,8 +71,11 @@ class Ghost {
         // update position 
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
-        this.x += this.velocity.x * TICK;
-        this.y += this.velocity.y * TICK;
+        this.x +=  Math.random() * 3 - 1.5;
+        //this.y +=  Math.random() * 3 - 1.5;
+        //this.x = Math.random() * 3;
+        //this.y = Math.random() * 3;
+        //this.y += this.velocity.y * TICK
         this.updateBB(); // updates the entity's bounding box as the entity's place on the canvas changes
 
         // collision handling
