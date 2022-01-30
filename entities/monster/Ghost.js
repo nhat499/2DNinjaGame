@@ -100,7 +100,7 @@ class Ghost {
         }
         // -----------------------------------------------
 
-        // collision logic----------------------
+        // COLLISION LOGIC-----------------------
         this.updateBB();
 
         let self = this;
@@ -109,13 +109,13 @@ class Ghost {
 
         this.game.entities.forEach(function (entity) {
 
-            if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja && entity.game.attack) {
+            if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack) {
                 //console.log("i was hurt");
                 self.action = "hurt";
              }
 
         });
-        //--------------------------------------
+        //---------------------------------------
 
         this.oldX = this.x;
         //this.y = this.curve * Math.cos(this.angle * Math.PI/180); // this will add vertical oscillation to the entity
