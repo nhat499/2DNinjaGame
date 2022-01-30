@@ -299,8 +299,6 @@ class MainNinja {
                     self.action = "dizzy";
                     self.velocity.y = -200;
                 }
-
-        
             }
 
         });

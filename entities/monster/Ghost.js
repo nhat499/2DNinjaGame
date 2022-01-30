@@ -12,14 +12,14 @@ class Ghost {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
-        this.gamePosition = x; // used to keep ghost at the desirec leocation in game (else it'll oscillate around the x = 0 position)
+        this.gamePosition = x; // used to keep ghost at the desired leocation in game (else it'll oscillate around the x = 0 position)
 
         // used for interval movement-----------
         this.angle = 0;
-        this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity to guarantee a faster oscillation speed
-        this.curve = Math.random() + 1 * 200; // inscrese the addition quanity to guarantee a wider oscillation interverval
+        this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity (in this case '1') to guarantee a faster oscillation speed
+        this.curve = Math.random() + 1 * 200; // inscrese the addition quanity (in this case '1') to guarantee a wider oscillation interverval
 
-        this.oldX = this.x;
+        this.oldX = this.x; // used in left/right facing logic to check if ghost's is moving left or right
         // -------------------------------------
 
         this.updateBB();
@@ -32,20 +32,26 @@ class Ghost {
     loadAnimations() {
         this.animations["idle" + "right"] = new Animator(this.spritesheet, 150, 39, 195, 288, 1, 0.5, 0, false, true);
 
+        this.animations["walk" + "left"] = new Animator(this.spritesheet, 695, 39, 195, 288, 1, 0.5, 0, false, true);
+
         this.animations["walk" + "right"] = new Animator(this.spritesheet, 1192, 39, 195, 288, 1, 0.5, 0, false, true);
 
-        this.animations["walk" + "left"] = new Animator(this.spritesheet, 695, 39, 195, 288, 1, 0.5, 0, false, true);
+        this.animations["hurt" + "left"] = new Animator(this.spritesheet, 14215, 39, 250, 350, 12, .08, 268, false, true);
+
+        this.animations["hurt" + "right"] = new Animator(this.spritesheet, 21475, 39, 250, 350, 12, .08, 268, false, true);
 
         this.animations["die" + "right"] = new Animator(this.spritesheet, 7950, 39, 311, 288, 12, 0.25, 0, false, true);
     };
 
-    updateBB() {
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
-    }
+    // updateBB() {
+    //     this.lastBB = this.BB;
+    //     this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
+    // }
 
 
     update() {                  // must have update method
+
+        //this.action = "walk";
 
         const TICK = this.game.clockTick;
 
@@ -84,18 +90,32 @@ class Ghost {
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
 
-        this.x = this.curve * Math.sin(this.angle * Math.PI/180) + this.gamePosition; // increasing the first factor ('this.curve' in this case) resxults in a wider horizontal oscillation interval
+        this.x = this.curve * Math.sin(this.angle * Math.PI/180) + this.gamePosition; // increasing the first factor ('this.curve' in this case) results in a wider horizontal oscillation interval
 
         // sprite left & right facing logic -------------
-        console.log(this.velocity);
         if (this.x < this.oldX) {
             this.facing = "left";
-            //console.log("facing right");
         } else {
             this.facing = "right";
-            //console.log("LEFT");
         }
         // -----------------------------------------------
+
+        // collision logic----------------------
+        this.updateBB();
+
+        let self = this;
+
+        self.action = "walk";
+
+        this.game.entities.forEach(function (entity) {
+
+            if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja && entity.game.attack) {
+                //console.log("i was hurt");
+                self.action = "hurt";
+             }
+
+        });
+        //--------------------------------------
 
         this.oldX = this.x;
         //this.y = this.curve * Math.cos(this.angle * Math.PI/180); // this will add vertical oscillation to the entity
@@ -103,65 +123,12 @@ class Ghost {
 
         this.updateBB(); // updates the entity's bounding box as the entity's place on the canvas changes
 
-        // collision handling
-        let self = this;
-        // this.game.entities.forEach(function (entity) {
-        //     if (entity.BB && self.BB.collide(entity.BB)) {
-        //         //if (self.velocity.y >= 0) { // falling
-        //               // add more ground stuff here
-        //         if ((entity instanceof Ground || entity instanceof Platform ) && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
-        //             self.doubleJump = true;
-        //             self.velocity.y = 0;
-        //             self.y = entity.BB.top - 130;
-        //             if (self.action === "jumpAttack") {
-        //                 self.hitBox = undefined
-        //                 self.game.attack = false;
-        //             }  
-        //             self.updateBB();     
-        //         } 
-
-        //         if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
-        //             if (self.lastBB.left >= entity.BB.right) { // left collision
-        //                 //console.log(" case")
-        //                 self.action = "grabWall";
-        //                 self.game.attack = false;
-        //                 self.hitBox = undefined
-        //                 self.doubleJump = true;
-        //                 self.velocity.x = 0;
-        //                 self.x = entity.BB.right;
-        //                 self.velocity.y = 0;
-        //                 self.y = self.y;
-        //             } else  if (self.lastBB.right <= entity.BB.left) { // right collision
-        //                 //console.log("case 2")
-        //                     self.action = "grabWall";
-        //                     self.game.attack = false;
-        //                     self.hitBox = undefined
-        //                     self.doubleJump = true;
-        //                     self.velocity.x = 0;
-        //                     self.x = entity.BB.left - 60;
-        //                     self.velocity.y = 0;
-        //                     self.y = self.y;
-        //             }
-        //             self.updateBB();
-        //         }
-
-        //         if(entity instanceof Slime) {
-        //             if (self.facing === "left") {
-        //                 self.velocity.x = 300;
-        //             } else {
-        //                 self.velocity.x = -300;
-        //             }
-        //             self.action = "dizzy";
-        //             self.velocity.y = -200;
-        //         }
-
-        
-        //     }
-
-        // });
-
-
     };
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
+    }
 
     draw(ctx) {  // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);

@@ -96,9 +96,10 @@ class Slime {
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
-
-
+        
+        
         let self = this;
+
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {

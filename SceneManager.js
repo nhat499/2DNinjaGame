@@ -6,11 +6,10 @@ class SceneManager {
         //this.health = 0;
         // this.lives = 0; 
         this.ninja = new MainNinja(this.game, 0,170);
-        //this.ghost1 = new Ghost(this.game, 300, 170);
+        
         this.loadLevel1();
         this.game.addEntity(this.ninja);
         //this.game.addEntity(this.knight);
-        //this.game.addEntity(this.ghost1);
         
     }
 
