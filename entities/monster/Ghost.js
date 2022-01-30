@@ -12,6 +12,8 @@ class Ghost {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
+        this.gamePosition = x; // used to keep ghost at the desirec leocation in game (else it'll oscillate around the x = 0 position)
+
         // used for interval movement-----------
         this.angle = 0;
         this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity to guarantee a faster oscillation speed
@@ -82,8 +84,9 @@ class Ghost {
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
 
-        this.x = this.curve * Math.sin(this.angle * Math.PI/180); // increasing the first factor ('this.curve' in this case) resxults in a wider horizontal oscillation interval
-        //console.log(this.x);
+        this.x = this.curve * Math.sin(this.angle * Math.PI/180) + this.gamePosition; // increasing the first factor ('this.curve' in this case) resxults in a wider horizontal oscillation interval
+
+        // sprite left & right facing logic -------------
         console.log(this.velocity);
         if (this.x < this.oldX) {
             this.facing = "left";
@@ -92,6 +95,8 @@ class Ghost {
             this.facing = "right";
             //console.log("LEFT");
         }
+        // -----------------------------------------------
+
         this.oldX = this.x;
         //this.y = this.curve * Math.cos(this.angle * Math.PI/180); // this will add vertical oscillation to the entity
         this.angle += this.angleSpeed;

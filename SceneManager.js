@@ -42,6 +42,7 @@ class SceneManager {
         let slime6 = new Slime(this.game,1800,300)
 
         let ghost1 = new Ghost(this.game, 300, 600);
+        let ghost2 = new Ghost(this.game, 730, 300);
         //let ground3 = new Ground(this.game, 0, this.game.surfaceHeight - 500, this.game.surfaceWidth- 500, 128);
         // let blueFlame = new BlueFlame(this.game, this.game.surfaceHeight-70, 30);
         // let orangeFlame = new OrangeFlame(this.game, this.game.surfaceHeight -70, 50);
@@ -68,6 +69,7 @@ class SceneManager {
         this.game.addEntity(slime6);
 
         this.game.addEntity(ghost1);
+        this.game.addEntity(ghost2);
 
         
     }
