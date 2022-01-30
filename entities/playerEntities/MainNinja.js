@@ -21,7 +21,7 @@ class MainNinja {
 
         // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
         // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-
+        
     };
 
 
@@ -69,6 +69,8 @@ class MainNinja {
         this.animations["throw" + "right"] =  new Animator(this.spritesheet, 3800 +8, 4200, 208, 300, 3, 0.2, 16, false, true);
         this.animations["throw" + "left"] =  new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.2, 16, true, true);
     };
+
+
 
     //update() {}
 
@@ -228,7 +230,7 @@ class MainNinja {
         }
 
 
-        this.velocity.y += this.fallAcc * TICK;
+        //this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
         if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
@@ -288,7 +290,7 @@ class MainNinja {
                     self.updateBB();
                 }
 
-                if(entity instanceof Slime) {
+                if(entity instanceof Slime || entity instanceof Ghost) {
                     if (self.facing === "left") {
                         self.velocity.x = 300;
                     } else {
