@@ -230,7 +230,7 @@ class MainNinja {
         }
 
 
-        //this.velocity.y += this.fallAcc * TICK;
+        this.velocity.y += this.fallAcc * TICK;
 
         // max speed calculation
         if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
