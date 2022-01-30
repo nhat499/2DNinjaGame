@@ -4,7 +4,7 @@ let gameEngine = new GameEngine();
 
 // queue download of all images
 ASSET_MANAGER.queueDownLoad("sprites/slime.png");
-ASSET_MANAGER.queueDownLoad("sprites/ghost.png");
+ASSET_MANAGER.queueDownLoad("sprites/ghost1.png");
 ASSET_MANAGER.queueDownLoad("sprites/knight5.png");
 ASSET_MANAGER.queueDownLoad("sprites/theSlashSheet.png");
 ASSET_MANAGER.queueDownLoad("sprites/ninja.png");

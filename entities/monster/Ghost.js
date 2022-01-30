@@ -2,20 +2,22 @@ class Ghost {
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
-        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ghost.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ghost1.png");
         this.scale = 1;
 
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
-        this.facing = "right"; // 0 right, 1 = left;
+        this.facing = "left"; // 0 right, 1 = left;
 
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
         // used for interval movement-----------
         this.angle = 0;
-        this.angleSpeed = Math.random() * 2;
-        this.curve = Math.random() * 200;
+        this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity to guarantee a faster oscillation speed
+        this.curve = Math.random() + 1 * 200; // inscrese the addition quanity to guarantee a wider oscillation interverval
+
+        this.oldX = this.x;
         // -------------------------------------
 
         this.updateBB();
@@ -28,7 +30,9 @@ class Ghost {
     loadAnimations() {
         this.animations["idle" + "right"] = new Animator(this.spritesheet, 150, 39, 195, 288, 1, 0.5, 0, false, true);
 
-        this.animations["walk" + "right"] = new Animator(this.spritesheet, 675, 39, 195, 288, 1, 0.5, 0, false, true);
+        this.animations["walk" + "right"] = new Animator(this.spritesheet, 1192, 39, 195, 288, 1, 0.5, 0, false, true);
+
+        this.animations["walk" + "left"] = new Animator(this.spritesheet, 695, 39, 195, 288, 1, 0.5, 0, false, true);
 
         this.animations["die" + "right"] = new Animator(this.spritesheet, 7950, 39, 311, 288, 12, 0.25, 0, false, true);
     };
@@ -78,7 +82,17 @@ class Ghost {
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
 
-        this.x = this.curve * Math.sin(this.angle * Math.PI/180); // increasing the first factor ('this.curve' in this case) resxults in a wider oscillation interval
+        this.x = this.curve * Math.sin(this.angle * Math.PI/180); // increasing the first factor ('this.curve' in this case) resxults in a wider horizontal oscillation interval
+        //console.log(this.x);
+        console.log(this.velocity);
+        if (this.x < this.oldX) {
+            this.facing = "left";
+            //console.log("facing right");
+        } else {
+            this.facing = "right";
+            //console.log("LEFT");
+        }
+        this.oldX = this.x;
         //this.y = this.curve * Math.cos(this.angle * Math.PI/180); // this will add vertical oscillation to the entity
         this.angle += this.angleSpeed;
 
@@ -144,8 +158,13 @@ class Ghost {
 
     };
 
-    draw(ctx) {                 // must have draw method
+    draw(ctx) {  // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
+        // if (this.facing != "left") {
+        //     this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
+        // } else {
+        //     this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx.scale(), this.x - this.game.camera.x, this.y, .25);
+        // }
 
         this.game.ctx.strokeStyle = "Red"; // the outline of shape
         this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
