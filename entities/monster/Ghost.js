@@ -86,13 +86,12 @@ class Ghost {
         // if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
         // if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
 
-        // update position 
+        // UPDATE POSITION 
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
-
         this.x = this.curve * Math.sin(this.angle * Math.PI/180) + this.gamePosition; // increasing the first factor ('this.curve' in this case) results in a wider horizontal oscillation interval
 
-        // sprite left & right facing logic -------------
+        // SPRITE LEFT & RIGHT FACING LOGIC -------------
         if (this.x < this.oldX) {
             this.facing = "left";
         } else {
@@ -112,6 +111,18 @@ class Ghost {
             if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack) {
                 //console.log("i was hurt");
                 self.action = "hurt";
+                //self.x += 100;
+
+                self.angle -= 2;
+
+                // if (self.facing === "left") {
+                //     self.angle -= 2.5;
+                // } else {
+                //     //self.angle += 2.5;
+                // }
+
+            
+                
              }
 
         });
