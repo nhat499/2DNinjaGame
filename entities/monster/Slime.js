@@ -31,7 +31,7 @@ class Slime {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
-        this.actionDecider = [250, -250, 0];
+        this.actionDecider = [250, -250];
     };
 
     move(speed) {
@@ -40,9 +40,10 @@ class Slime {
             this.facing = "left"
         } else if (speed > 0) {
             this.facing = "right"
-        } else {
-            this.action = "idle";
-        }
+        } 
+        // else {
+        //     this.action = "idle";
+        // }
         this.velocity.x = speed;
     }
 
@@ -75,7 +76,7 @@ class Slime {
         // idle 
         if (this.action === "idle") {
             if (this.animations["idle" + this.facing].animationFinish) {
-                let i = Math.floor(Math.random() * 3) // pick number 0-2
+                let i = Math.floor(Math.random() * 2) // pick number 0-2
                 this.move(this.actionDecider[i]);
             }
         }
