@@ -252,7 +252,8 @@ class MainNinja {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 //if (self.velocity.y >= 0) { // falling
                       // add more ground stuff here
-                if ((entity instanceof Ground || entity instanceof Platform ) && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+                if ((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall) 
+                && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
                     self.doubleJump = true;
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 130;
@@ -260,7 +261,7 @@ class MainNinja {
                         self.hitBox = undefined
                         self.game.attack = false;
                     }  
-                    self.updateBB();     
+                    //self.updateBB();     
                 } 
 
                 if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
@@ -285,7 +286,7 @@ class MainNinja {
                             self.velocity.y = 0;
                             self.y = self.y;
                     }
-                    self.updateBB();
+                    //self.updateBB();
                 }
 
                 if(entity instanceof Slime) {
@@ -302,6 +303,7 @@ class MainNinja {
             }
 
         });
+        self.updateBB();
     };
 
     idle() {
