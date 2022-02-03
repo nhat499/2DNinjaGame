@@ -47,9 +47,6 @@ class Slime {
         this.velocity.x = speed;
     }
 
-    // update() {
-    //     this.updateBB();
-    // }
 
     update() {                  // must have update method
         // logic to update it's state, background have no state, just have x,y
@@ -64,25 +61,16 @@ class Slime {
             if (this.hp <= 0) {
                 this.action = "dying";
             }
-        }
-
-        // dying animation timer
-        if (this.action === "dying") {
+        } else if (this.action === "dying") { // dying animation timer
             if (this.animations["dying"+this.facing].animationFinish) {
                 this.removeFromWorld = true;
             }
-        }
-
-        // idle 
-        if (this.action === "idle") {
+        } else if (this.action === "idle") { // idle 
             if (this.animations["idle" + this.facing].animationFinish) {
                 let i = Math.floor(Math.random() * 2) // pick number 0-2
                 this.move(this.actionDecider[i]);
             }
-        }
-
-        // moving
-        if (this.action === "walk") {
+        } else if (this.action === "walk") { // moving
             if (this.animations["walk" + this.facing].animationFinish) {
                 this.action = "idle";
                 this.velocity.x = 0;
@@ -117,7 +105,6 @@ class Slime {
                     self.velocity.x = 100;
                 }
                 self.hp -= 0.5;
-                
                 self.action = "dmg";
             }
         });
