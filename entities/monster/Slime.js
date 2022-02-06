@@ -40,12 +40,6 @@ class Slime {
             this.facing = "left"
         } else if (speed > 0) {
             this.facing = "right"
-<<<<<<< HEAD
-        } 
-        // else {
-        //     this.action = "idle";
-        // }
-=======
         } else {
             if (this.facing == "left") {
                 this.facing == "right";
@@ -54,7 +48,6 @@ class Slime {
             }
             this.action = "idle";
         }
->>>>>>> testBranch
         this.velocity.x = speed;
     }
 
@@ -79,11 +72,7 @@ class Slime {
         } else if (this.action === "idle") { // idle 
             
             if (this.animations["idle" + this.facing].animationFinish) {
-<<<<<<< HEAD
-                let i = Math.floor(Math.random() * 2) // pick number 0-2
-=======
                 let i = Math.floor(Math.random() * 3) // pick number 0-3
->>>>>>> testBranch
                 this.move(this.actionDecider[i]);
             }
         } else if (this.action === "walk") { // moving
