@@ -4,11 +4,12 @@ class Knight {
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/knight5.png");
         this.slashSheet = ASSET_MANAGER.getAssset("sprites/theSlashSheet.png");
         this.scale = 1;
+        this.hp = 100;
         this.velocity = {x:0, y:0};
-        this.fallAcc = 562;
+        this.fallAcc = 562 * 3;
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
-        this.action = "attack"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
 
         // animation
         this.animations = []; // list of animations
@@ -16,7 +17,7 @@ class Knight {
 
         // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
         // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-
+        this.actionDecider = [250, -250, 0];
     };
 
     loadAnimations() {
@@ -31,192 +32,110 @@ class Knight {
 
         this.animations["die" + "right"] =  new Animator(this.spritesheet, 5120, 1024, 512, 512, 10, 0.1, 0, false, true);
         this.animations["die" + "left"] =  new Animator(this.spritesheet, 0, 1024, 512, 512, 10, 0.1, 0, true, true);
-        this.animations["run" + "right"] =  new Animator(this.spritesheet, 5120, 1536, 512, 512, 10, 0.05, 0, false, true);
-        this.animations["run" + "left"] =  new Animator(this.spritesheet, 0, 1536, 512, 512, 10, 0.05, 0, true, true);
+        this.animations["walk" + "right"] =  new Animator(this.spritesheet, 5120, 1536, 512, 512, 10, 0.05, 0, false, true);
+        this.animations["walk" + "left"] =  new Animator(this.spritesheet, 0, 1536, 512, 512, 10, 0.05, 0, true, true);
         this.animations["jump" + "right"] = new Animator(this.spritesheet, 5120, 2048, 512, 512, 10, 0.05, 0, false, true);
         this.animations["jump" + "left"] =  new Animator(this.spritesheet, 0, 2048, 512, 512, 10, 0.05, 0, true, true);
     };
 
+    move(speed) {
+        this.action = "walk";
+        if (speed < 0) {
+            this.facing = "left"
+        } else if (speed > 0) {
+            this.facing = "right"
+        } else {
+            if (this.facing == "left") {
+                this.facing == "right";
+            } else {
+                this.facing = "left";
+            }
+            this.action = "idle";
+        }
+        this.velocity.x = speed;
+    }
 
     update() {                  // must have update method
         // logic to update it's state, background have no state, just have x,y
         const TICK = this.game.clockTick;
 
-        const MIN_WALK = 4.453125 * 3;
-        const MAX_WALK = 93.75 * 3;
-        const MAX_RUN = 153.75 * 3;
-        const ACC_WALK = 133.59375 * 3;
-        const ACC_RUN = 200.390625 * 3;
-        const DEC_REL = 182.8125 * 3;
-        const DEC_SKID = 365.625 * 3;
-        const MIN_SKID = 33.75;
-
-        const STOP_FALL = 1575;
-        const WALK_FALL = 1800;
-        const RUN_FALL = 2025 * 3;
-        const STOP_FALL_A = 450;
-        const WALK_FALL_A = 421.875;
-        const RUN_FALL_A = 562.5;
-
-        const MAX_FALL = 270 * 3;
-      
-        // gravity ------------------------
-        
-        // update verlocity
-        if (this.action != "jump") { // not jumping
-            // ground physics
-            if (Math.abs(this.velocity.x) < MIN_WALK) {
-                this.velocity.x = 0;
+        if (this.action === "idle") { // idle 
+            if (this.animations["idle" + this.facing].animationFinish) {
+                let i = Math.floor(Math.random() * 3) // pick number 0-3
+                this.move(this.actionDecider[i]);
+            }
+        } else if (this.action === "walk") { // moving
+            if (this.animations["walk" + this.facing].animationFinish) {
                 this.action = "idle";
-                if (this.game.left) {
-                    this.facing = "left";
-                    this.action = "run";
-                    this.velocity.x -= MIN_WALK;
-                }
-                if (this.game.right) {
-                    this.facing = "right";
-                    this.action = "run";
-                    this.velocity.x += MIN_WALK;
-                }
-            } else if (Math.abs(this.velocity.x) >= MIN_WALK) {
-                if (this.facing === "right") {
-                    if (this.game.right && !this.game.left) {
-                        this.velocity.x += ACC_RUN * TICK;
-                    } else if (this.game.left && !this.game.right) {
-                        this.velocity.x -= DEC_SKID * TICK;
-                        // this.state = slowing down state add walk animation later;
-                    } else {
-                        this.velocity.x -= DEC_REL * TICK;
-                    }
-                }
-                if (this.facing === "left") {
-                    if (this.game.left && !this.game.right) {
-                        this.velocity.x -= ACC_RUN * TICK;
-                    } else if (this.game.right && !this.game.left) {
-                        this.velocity.x += DEC_SKID * TICK;
-                    } else {
-                        this.velocity.x += DEC_REL * TICK;
-                    }
-                }
-            }
-            this.velocity.y += this.fallAcc * TICK;
-            if (this.game.jump) { // jump key press
-                this.velocity.y = -900;
-                this.fallAcc = RUN_FALL;
-                this.action = "jump";
-            }
-        } else {
-            // knight is in the air
-            this.velocity.y += this.fallAcc * TICK;
-
-            //horizontal physics 
-            if (this.game.right && !this.game.left) {
-                this.facing = "right";
-                this.action = "run";
-                if (Math.abs(this.velocity.x) > MAX_WALK) {
-                    this.velocity.x += ACC_RUN * TICK;
-                } else this.velocity.x += ACC_WALK * TICK;
-            } else if (this.game.left && !this.game.right) {
-                this.facing = "left";
-                this.action = "run";
-                if (Math.abs(this.velocity.x) > MAX_WALK) {
-                    this.velocity.x -= ACC_RUN* TICK;
-                } else this.velocity.x -= ACC_WALK * TICK;
-            } else {
-                // do nothing
+                this.velocity.x = 0;
             }
         }
 
-        // max speed calculation
-        if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-        if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
+        this.velocity.y += this.fallAcc * TICK // apply gravity
 
-        if (this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN;
-        if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN;
-
-        // if (this.y >= this.game.surfaceHeight - 312) this.y = this.game.surfaceHeight - 312;
-
-        // MAX SPEED WALK? DO I NEED THAT?
-
-        // update position
+        // update location
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
 
-        // fall off map death animation;
- // gravity
+        let self = this;
+        // collision
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && self.BB.collide(entity.BB)) {
+                if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {
+                    self.velocity.y = 0;
+                    self.y = entity.BB.top - 115 - 50;
+                }
+                if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                    if (self.lastBB.left >= entity.BB.right) { // left collision
+                        self.velocity.x = 0;
+                        self.x = entity.BB.right - 60;
+                    } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+                        // need to add right collision here
+                    }
+                }
+            }
+                        //doesnt have dmg animation yet
+            if (entity.hitBox && self.BB.collide(entity.hitBox)) { //&&  self.hp > 0 
+                if (entity.facing === "left") {
+                    self.facing = "right";
+                    self.velocity.x = -100;
+                } else {
+                    self.facing = "left";
+                    self.velocity.x = 100;
+                }
+                self.hp -= 0.5;
+                //self.action = "dmg";
+            }
 
-        if (this.game.attack === true) {
-            this.action = "attack";
-        }
+
+
+
+        });
+        this.updateBB();
     };
+
 
     updateBB() {
         this.lastBB = this.BB;
-        //this.BB = new BoundingBox(this.x, this.y, 384, 384);
-        
+        this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);    
     }
 
     draw(ctx) {                 // must have draw method
-        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, 0.75);
+        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
+            this.x - this.game.camera.x, 
+            this.y - this.game.camera.y, 0.4);
         if (this.action === "attack") {
             let buffer = 0;
             if (this.facing == "left") buffer = -128;
             this.animations["slash" + this.facing].drawFrame(this.game.clockTick, ctx, this.x + buffer, this.y - 64, 0.5);
         }
-
-        // left debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.left ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(10, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("L", 20, this.game.surfaceHeight - 20);
-
-        // down debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.down ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(50, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("d", 60, this.game.surfaceHeight - 20);
-
-        // up debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.up ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(50, this.game.surfaceHeight -80, 30, 30);
-        ctx.fillText("u", 60, this.game.surfaceHeight - 60);
-
-        // right debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.right ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(90, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("r", 100, this.game.surfaceHeight - 20);
-
-        // jump debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.jump ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(130, this.game.surfaceHeight -40, 50, 30);
-        ctx.fillText("space", 140, this.game.surfaceHeight - 20);
-
-        // attack debug
-        ctx.strokeStlye = "black";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = this.game.attack ? "White" : "Grey";
-        ctx.fillStyle = ctx.strokeStlye;
-        ctx.strokeRect(190, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("a", 200, this.game.surfaceHeight - 20);
-
-
-        // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
-        // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
-
+        this.debug(ctx);
     };
+
+    debug(ctx) {
+        this.game.ctx.strokeStyle = "red"; // the outline of shape
+        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+    }
 
 }

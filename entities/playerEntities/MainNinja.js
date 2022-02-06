@@ -184,7 +184,17 @@ class MainNinja {
         // throw mechanic
         if (this.game.throw) {
             this.action = "throw"
+            // if (this.animations["throw" + this.facing].currentFrame() === 1) { // need help (multiple times)
+            //     let kunai = new Kunai(this.game, this.x, this.y);
+            //     this.game.addEntity(kunai); // need to remove kunai when animation finishes
+            // }
             if (this.animations["throw" + this.facing].animationFinish) {
+                let kunaiVerlocity = 1000;
+                if (this.facing === "left") {
+                    kunaiVerlocity = -1000;
+                }
+                let kunai = new Kunai(this.game, this.x, this.y, kunaiVerlocity);
+                this.game.addEntity(kunai);
                 this.game.throw = false;
             }
         }
@@ -343,7 +353,6 @@ class MainNinja {
             if (this.facing === "left") attackx = -100;
             if (this.facing === "right") attackx = -30;
             attacky = 7
-
         }
 
         // attack 2 ajustment
@@ -356,26 +365,25 @@ class MainNinja {
         // jump attack ajustment
         if (this.action === "jumpAttack") {
             attackx = -60;
-        
             attacky = 30;
         }
 
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
             this.x + attackx + slidex - this.game.camera.x + throwx,
-            this.y - jumpBuffer - attacky + slidey, 
+            this.y - jumpBuffer - attacky + slidey - this.game.camera.y, 
             .5);
-
         this.debug(ctx);
     };
 
     debug(ctx) {
          // left debug
+        ctx.font = "10px serif"
         ctx.strokeStyle = "black";
         ctx.lineWidth = 2;
         ctx.strokeStyle = this.game.left ? "White" : "Grey";
         ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(10, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("L", 20, this.game.surfaceHeight - 20);
+        ctx.fillText("<", 20, this.game.surfaceHeight - 20);
 
         // down debug
         ctx.strokeStyle = "black";
@@ -383,7 +391,7 @@ class MainNinja {
         ctx.strokeStyle = this.game.down ? "White" : "Grey";
         ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(50, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("d", 60, this.game.surfaceHeight - 20);
+        ctx.fillText(">", 60, this.game.surfaceHeight - 20);
 
         // up debug
         ctx.strokeStyle = "black";
@@ -391,7 +399,7 @@ class MainNinja {
         ctx.strokeStyle = this.game.up ? "White" : "Grey";
         ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(50, this.game.surfaceHeight -80, 30, 30);
-        ctx.fillText("u", 60, this.game.surfaceHeight - 60);
+        ctx.fillText("^", 60, this.game.surfaceHeight - 60);
 
         // right debug
         ctx.strokeStyle = "black";
@@ -399,7 +407,7 @@ class MainNinja {
         ctx.strokeStyle = this.game.right ? "White" : "Grey";
         ctx.fillStyle = ctx.strokeStyle;
         ctx.strokeRect(90, this.game.surfaceHeight -40, 30, 30);
-        ctx.fillText("r", 100, this.game.surfaceHeight - 20);
+        ctx.fillText("v", 100, this.game.surfaceHeight - 20);
 
         // jump debug
         ctx.strokeStyle = "black";
@@ -432,15 +440,19 @@ class MainNinja {
         ctx.strokeRect(270, this.game.surfaceHeight -40, 30, 30);
         ctx.fillText("d", 280, this.game.surfaceHeight - 20); 
 
+        ctx.strokeStyle = "black";
+        ctx.fillText(this.x, 10, 10);
+
         // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
         // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
 
         this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
         if(this.hitBox) {
             this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, this.hitBox.y, this.hitBox.width, this.hitBox.height);
+        this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, 
+            this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
         }
     }
 
