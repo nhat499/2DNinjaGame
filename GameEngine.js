@@ -93,6 +93,30 @@ class GameEngine {
                     self.slide = false;
             }
         }, false);
+
+        let getXandY = function (e) {
+            let x = e.clientX - self.ctx.canvas.getBoundingClientRect().left;
+            let y = e.clientY - self.ctx.canvas.getBoundingClientRect().top;
+            return { x: x, y: y, radius: 0 };
+        }
+
+        this.ctx.canvas.addEventListener("mousemove", function (e) {
+            self.mouse = getXandY(e);
+        }, false);
+
+        this.ctx.canvas.addEventListener("mousemove", function (e) {
+            self.mouse = getXandY(e);
+        }, false);
+
+        this.ctx.canvas.addEventListener("click", function (e) {
+            self.click = getXandY(e);
+        }, false);
+
+        this.ctx.canvas.addEventListener("wheel", function (e) {
+            e.preventDefault(); // Prevent Scrolling
+            self.wheel = e.deltaY;
+        }, false);       
+
     };
 
     addEntity(entity) {
@@ -106,6 +130,7 @@ class GameEngine {
         for (let i = 0; i < this.entities.length; i++) {
             this.entities[i].draw(this.ctx);                  // thing that are draw last are on top
         }
+        this.camera.draw(this.ctx);
     }
 
     update() {

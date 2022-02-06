@@ -40,10 +40,21 @@ class Slime {
             this.facing = "left"
         } else if (speed > 0) {
             this.facing = "right"
+<<<<<<< HEAD
         } 
         // else {
         //     this.action = "idle";
         // }
+=======
+        } else {
+            if (this.facing == "left") {
+                this.facing == "right";
+            } else {
+                this.facing = "left";
+            }
+            this.action = "idle";
+        }
+>>>>>>> testBranch
         this.velocity.x = speed;
     }
 
@@ -52,7 +63,7 @@ class Slime {
         // logic to update it's state, background have no state, just have x,y
         const TICK = this.game.clockTick;
 
-
+        
         // dmg timer
         if (this.action === "dmg") {
             if (this.animations["dmg" + this.facing].animationFinish) { // being hit animation
@@ -66,8 +77,13 @@ class Slime {
                 this.removeFromWorld = true;
             }
         } else if (this.action === "idle") { // idle 
+            
             if (this.animations["idle" + this.facing].animationFinish) {
+<<<<<<< HEAD
                 let i = Math.floor(Math.random() * 2) // pick number 0-2
+=======
+                let i = Math.floor(Math.random() * 3) // pick number 0-3
+>>>>>>> testBranch
                 this.move(this.actionDecider[i]);
             }
         } else if (this.action === "walk") { // moving
@@ -93,9 +109,17 @@ class Slime {
                 if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 65;
-                    self.updateBB();
                 }
             }
+
+            if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                if (self.lastBB.left >= entity.BB.right) { // left collision
+                
+                } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+
+                }
+            }
+
             if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
                 if (entity.facing === "left") {
                     self.facing = "right";
@@ -108,11 +132,12 @@ class Slime {
                 self.action = "dmg";
             }
         });
+        this.updateBB();
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = this.BB = new BoundingBox(this.x, this.y, 70, 65);
+        this.BB = new BoundingBox(this.x, this.y, 70, 65);
     }
 
     draw(ctx) {                 // must have draw method
@@ -130,9 +155,9 @@ class Slime {
         if (this.action === "idle" && this.facing === "right") offsetX = -45;
 
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
-            this.x +offsetX - this.game.camera.x,this.y + offsetY, this.scale);
+            this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y, this.scale);
 
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };
 }

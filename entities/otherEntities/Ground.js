@@ -23,7 +23,7 @@ class Ground {
            // ctx.drawImage(this.spritesheet,0,0, 128,128, this.x + i - this.game.camera.x, this.y, 128, 128);
            ctx.drawImage(this.spritesheet,128, 0, 128,128, 
             this.x + (i * 128) - this.game.camera.x, 
-            this.y, 
+            this.y - this.game.camera.y, 
             128, 128);
             //ctx.drawImage(this.spritesheet, 0,0,16,16, this.x + i * PARAMS.BLOCKWIDTH - this.game.camera.x, this.y + PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
         //}
@@ -32,7 +32,7 @@ class Ground {
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };;
 };
 
@@ -61,7 +61,7 @@ class Wall {
            // ctx.drawImage(this.spritesheet,0,0, 128,128, this.x + i - this.game.camera.x, this.y, 128, 128);
            ctx.drawImage(this.spritesheet,0, 128, 128,128, 
             this.x - this.game.camera.x, 
-            this.y + (i * 128), 
+            this.y + (i * 128) - this.game.camera.y, 
             128, 128);
             //ctx.drawImage(this.spritesheet, 0,0,16,16, this.x + i * PARAMS.BLOCKWIDTH - this.game.camera.x, this.y + PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
         //}
@@ -70,7 +70,7 @@ class Wall {
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, 128, this.BB.height);
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, 128, this.BB.height);
     };;
 };
 
@@ -97,23 +97,23 @@ class Platform {
         let blockCount = this.w / 128;
         ctx.drawImage(this.spritesheet,256, 256, 128,128, 
             this.x - this.game.camera.x - 128, 
-            this.y, 
+            this.y - this.game.camera.y, 
             128, 128);
         let i = 0;
         for (; i < blockCount; i++) {
            // ctx.drawImage(this.spritesheet,0,0, 128,128, this.x + i - this.game.camera.x, this.y, 128, 128);
            ctx.drawImage(this.spritesheet,384, 256, 128,128, 
             this.x + (i * 128) - this.game.camera.x, 
-            this.y, 
+            this.y - this.game.camera.y, 
             128, 128);
         }
 
         ctx.drawImage(this.spritesheet,512, 256, 128,128, 
             this.x +(i * 128) - this.game.camera.x, 
-            this.y, 
+            this.y - this.game.camera.y, 
             128, 128);
 
         ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };;
 };
