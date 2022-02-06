@@ -276,7 +276,6 @@ class MainNinja {
 
                 if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                     if (self.lastBB.left >= entity.BB.right) { // left collision
-                        console.log(" case")
                         self.action = "grabWall";
                         self.game.attack = false;
                         self.hitBox = undefined
@@ -286,7 +285,6 @@ class MainNinja {
                         self.velocity.y = 0;
                         self.y = self.y;
                     } else  if (self.lastBB.right <= entity.BB.left) { // right collision
-                        console.log("case 2")
                             self.action = "grabWall";
                             self.game.attack = false;
                             self.hitBox = undefined
