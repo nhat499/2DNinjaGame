@@ -74,13 +74,11 @@ class SceneManager {
 
         for (let i = 0; i < level.slimes.length; i++) {
             let slime = level.slimes[i];
-            console.log(slime)
             this.game.addEntity(new Slime(this.game, slime.x, slime.y));
         }
 
         for (let i = 0; i < level.knight.length; i++) {
             let knight = level.knight[i];
-            //console.log(knight)
             this.game.addEntity(new Knight(this.game, knight.x, knight.y))
         }
 

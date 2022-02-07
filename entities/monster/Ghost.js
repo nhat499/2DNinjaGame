@@ -118,8 +118,7 @@ class Ghost {
         //     }
         // });
 
-        console.log(this.game.ctx.canvas.width);
-        console.log(this.x);
+
          
         //this.x -= this.speed;
 
