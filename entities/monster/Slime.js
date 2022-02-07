@@ -103,7 +103,8 @@ class Slime {
 
             if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                 if (self.lastBB.left >= entity.BB.right) { // left collision
-                
+                    self.velocity.x = 0;
+                    self.x = entity.BB.right;
                 } else  if (self.lastBB.right <= entity.BB.left) { // right collision
 
                 }

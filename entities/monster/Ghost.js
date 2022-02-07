@@ -179,7 +179,8 @@ class Ghost {
     }
 
     draw(ctx) {  // must have draw method
-        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
+        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, 
+            this.y - this.game.camera.y, .25);
         // if (this.facing != "left") {
         //     this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, .25);
         // } else {
@@ -187,6 +188,6 @@ class Ghost {
         // }
 
         this.game.ctx.strokeStyle = "Red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };
 }

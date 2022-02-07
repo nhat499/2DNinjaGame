@@ -18,6 +18,7 @@ let level1 = {
 
     ninjas: [{x: 1100, y: 0}],
 
+    //ghosts: []
     ghosts: [{x: ghostLead, y: ghostHeight}, {x: ghostLead + 50, y: ghostHeight}, 
         {x: ghostLead + 100, y: ghostHeight}, {x: ghostLead + 150, y: ghostHeight}, 
         {x: ghostLead + 200, y: ghostHeight}, {x: ghostLead + 250, y: ghostHeight}, 
