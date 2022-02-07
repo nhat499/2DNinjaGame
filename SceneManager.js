@@ -90,7 +90,7 @@ class SceneManager {
 
         for (let i = 0; i < level.ghosts.length; i++) {
           let ghost = level.ghosts[i];
-          this.game.addEntity(new Ghost(this.game, ghost.x + 3000, ghost.y))
+          this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y))
         }
         this.ninja = new MainNinja(this.game, 0,170);
         this.game.addEntity(this.ninja);

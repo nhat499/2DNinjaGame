@@ -23,9 +23,9 @@ class Ghost {
         // used for interval movement-----------
         this.angle = 0;
         //this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity (in this case '1') to guarantee a faster oscillation speed
-        this.angleSpeed = Math.random() * .2;
+        this.angleSpeed = .2 * .2;
         //this.curve = Math.random() + 1 * 200; // inscrese the addition quanity (in this case '1') to guarantee a wider oscillation interverval
-        this.curve = Math.random() * 7;
+        this.curve = Math.random() * 10;
 
         this.oldX = this.x; // used in left/right facing logic to check if ghost's is moving left or right
         // -------------------------------------
@@ -122,7 +122,8 @@ class Ghost {
          
         //this.x -= this.speed;
 
-        if (this.x + 500 < 0) this.x = 900; // the '+ 500' makes sure the ghosts reach the edge of the screen before dissapearing. Replace '900' with right side x position of screen
+        if (this.x + 500 < 0) this.x = this.game.camera.x + 1000; // the '+ 500' makes sure the ghosts reach the edge of the screen before dissapearing. Replace '900' with right side x position of screen
+        //console.log(this.game.camera.x);
 
         // SPRITE LEFT & RIGHT FACING LOGIC -------------
         if (this.x < this.oldX) {
