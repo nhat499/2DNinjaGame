@@ -1,4 +1,4 @@
-let ghostLead = 800;
+let ghostLead = 1500;
 let ghostHeight = 500;
 
 let level1 = {
@@ -16,5 +16,5 @@ let level1 = {
 
     knight: [{x: 600, y: -100}], //{x: 840, y: 0}, {x: 900, y: 0}, {x: 940, y: 0}, {x: 1000, y: 0}
 
-    ghosts: [{x: 800, y: ghostHeight}, {x: ghostLead + 50, y: ghostHeight}, {x: ghostLead + 100, y: ghostHeight}, {x: ghostLead + 150, y: ghostHeight}, {x: ghostLead + 200, y: ghostHeight}, {x: ghostLead + 250, y: ghostHeight}, {x: ghostLead + 300, y: ghostHeight}, {x: ghostLead + 350, y: ghostHeight}, {x: ghostLead + 400, y: ghostHeight}, {x: ghostLead + 450, y: ghostHeight}, {x: ghostLead + 500, y: ghostHeight}]
+    ghosts: [{x: ghostLead, y: ghostHeight}, {x: ghostLead + 50, y: ghostHeight}, {x: ghostLead + 100, y: ghostHeight}, {x: ghostLead + 150, y: ghostHeight}, {x: ghostLead + 200, y: ghostHeight}, {x: ghostLead + 250, y: ghostHeight}, {x: ghostLead + 300, y: ghostHeight}, {x: ghostLead + 350, y: ghostHeight}, {x: ghostLead + 400, y: ghostHeight}, {x: ghostLead + 450, y: ghostHeight}, {x: ghostLead + 500, y: ghostHeight}]
 };
