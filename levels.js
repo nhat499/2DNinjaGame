@@ -1,5 +1,5 @@
 let ghostLead = 5500;
-let ghostHeight = 500;
+let ghostHeight = 400;
 
 let level1 = {
     // ground locations

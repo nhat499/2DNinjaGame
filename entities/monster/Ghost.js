@@ -23,9 +23,9 @@ class Ghost {
         // used for interval movement-----------
         this.angle = 0;
         //this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity (in this case '1') to guarantee a faster oscillation speed
-        this.angleSpeed = Math.random() * .2;
+        this.angleSpeed = .2 * .2;
         //this.curve = Math.random() + 1 * 200; // inscrese the addition quanity (in this case '1') to guarantee a wider oscillation interverval
-        this.curve = Math.random() * 7;
+        this.curve = Math.random() * 10;
 
         this.oldX = this.x; // used in left/right facing logic to check if ghost's is moving left or right
         // -------------------------------------
