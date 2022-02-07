@@ -5,7 +5,7 @@ class Ghost {
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/ghost1.png");
         this.scale = 1;
 
-        this.hp = 100;
+        this.hp = 1;
 
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
@@ -16,10 +16,16 @@ class Ghost {
 
         this.gamePosition = x; // used to keep ghost at the desired leocation in game (else it'll oscillate around the x = 0 position)
 
+        this.speed = Math.random() * 4 + 1;
+
+        this.airPattern = true;
+
         // used for interval movement-----------
         this.angle = 0;
-        this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity (in this case '1') to guarantee a faster oscillation speed
-        this.curve = Math.random() + 1 * 200; // inscrese the addition quanity (in this case '1') to guarantee a wider oscillation interverval
+        //this.angleSpeed = Math.random() * 2 + 1; // increase the addition quanity (in this case '1') to guarantee a faster oscillation speed
+        this.angleSpeed = Math.random() * .2;
+        //this.curve = Math.random() + 1 * 200; // inscrese the addition quanity (in this case '1') to guarantee a wider oscillation interverval
+        this.curve = Math.random() * 7;
 
         this.oldX = this.x; // used in left/right facing logic to check if ghost's is moving left or right
         // -------------------------------------
@@ -95,7 +101,29 @@ class Ghost {
         // UPDATE POSITION 
         //*(if this is not included then the entity's velocity will not be reflected on the canvas)
         // "velocity" of an object definition - the rate of change of its position with respect to a frame of referene, and is a funciton of time.
-        this.x = this.curve * Math.sin(this.angle * Math.PI/180) + this.gamePosition; // increasing the first factor ('this.curve' in this case) results in a wider horizontal oscillation interval
+        this.x -= this.speed; // increasing the first factor ('this.curve' in this case) results in a wider horizontal oscillation interval
+        this.y += this.curve * Math.sin(this.angle);
+        // if (this.airPattern == true) {
+        //     this.x = this.game.ctx.canvas.width/2 * Math.cos(this.angle * Math.PI/180) + (this.game.ctx.canvas.width/2 - 200);
+        //     this.y = this.game.ctx.canvas.height/3 * Math.sin(this.angle * Math.PI/180) + (this.game.ctx.canvas.height/3);
+        //     //console.log("Width: " + this.surfaceWidth + " Height: " + this.surfaceHeight);
+        //     this.angle += this.angleSpeed;
+        // }
+
+
+
+        // this.game.entities.forEach(function (entity) {
+        //     if (entity instanceof MainNinja) {
+
+        //     }
+        // });
+
+        console.log(this.game.ctx.canvas.width);
+        console.log(this.x);
+         
+        //this.x -= this.speed;
+
+        if (this.x + 500 < 0) this.x = 900; // the '+ 500' makes sure the ghosts reach the edge of the screen before dissapearing. Replace '900' with right side x position of screen
 
         // SPRITE LEFT & RIGHT FACING LOGIC -------------
         if (this.x < this.oldX) {

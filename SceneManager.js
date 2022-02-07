@@ -83,6 +83,11 @@ class SceneManager {
             //console.log(knight)
             this.game.addEntity(new Knight(this.game, knight.x, knight.y))
         }
+
+        for (let i = 0; i < level.ghosts.length; i++) {
+            let ghost = level.ghosts[i];
+            this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y))
+        }
     }
 
     clearEntities() {
