@@ -2,7 +2,7 @@ class Slime {
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
         //this.BB = new BoundingBox(this.x + 30, this.y + 55, 65, 65);
-
+        this.BB = new BoundingBox(this.x, this.y, 70, 65);
         this.hp = 100;
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/slime.png");
@@ -61,7 +61,6 @@ class Slime {
         if (this.action === "dmg") {
             if (this.animations["dmg" + this.facing].animationFinish) { // being hit animation
                 this.action = "idle";
-                console.log(this.hp);
             }
             if (this.hp <= 0) {
                 this.action = "dying";

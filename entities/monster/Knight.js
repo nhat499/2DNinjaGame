@@ -3,6 +3,7 @@ class Knight {
         Object.assign(this, {game, x, y});
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/knight5.png");
         this.slashSheet = ASSET_MANAGER.getAssset("sprites/theSlashSheet.png");
+        this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);  
         this.scale = 1;
         this.hp = 100;
         this.velocity = {x:0, y:0};
@@ -32,6 +33,11 @@ class Knight {
 
         this.animations["die" + "right"] =  new Animator(this.spritesheet, 5120, 1024, 512, 512, 10, 0.1, 0, false, true);
         this.animations["die" + "left"] =  new Animator(this.spritesheet, 0, 1024, 512, 512, 10, 0.1, 0, true, true);
+
+        this.animations["dmg" + "right"] =  new Animator(this.spritesheet, 5120, 1024, 512, 512, 2, 0.1, 0, false, true);
+        this.animations["dmg" + "left"] =  new Animator(this.spritesheet, 4096, 1024, 512, 512, 2, 0.1, 0, true, true);
+
+
         this.animations["walk" + "right"] =  new Animator(this.spritesheet, 5120, 1536, 512, 512, 10, 0.05, 0, false, true);
         this.animations["walk" + "left"] =  new Animator(this.spritesheet, 0, 1536, 512, 512, 10, 0.05, 0, true, true);
         this.animations["jump" + "right"] = new Animator(this.spritesheet, 5120, 2048, 512, 512, 10, 0.05, 0, false, true);
@@ -59,9 +65,21 @@ class Knight {
         // logic to update it's state, background have no state, just have x,y
         const TICK = this.game.clockTick;
 
-        if (this.action === "idle") { // idle 
+        if (this.action === "dmg") {
+            if (this.animations["dmg" + this.facing].animationFinish) { // being hit animation
+                this.action = "idle";
+            }
+            if (this.hp <= 0) {
+                this.action = "die";
+            }
+        } else if (this.action === "die") { // dying animation timer
+            if (this.animations["die"+this.facing].animationFinish) {
+                this.removeFromWorld = true;
+            }
+        } else if (this.action === "idle") { // idle 
             if (this.animations["idle" + this.facing].animationFinish) {
                 let i = Math.floor(Math.random() * 3) // pick number 0-3
+                //this.move(this.actionDecider[2]);
                 this.move(this.actionDecider[i]);
             }
         } else if (this.action === "walk") { // moving
@@ -105,7 +123,7 @@ class Knight {
                     self.velocity.x = 100;
                 }
                 self.hp -= 0.5;
-                //self.action = "dmg";
+                self.action = "dmg";
             }
 
 
