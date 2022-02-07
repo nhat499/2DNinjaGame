@@ -195,7 +195,7 @@ class MainNinja {
                 if (this.facing === "left") {
                     kunaiVerlocity = -1000;
                 }
-                let kunai = new Kunai(this.game, this.x, this.y, kunaiVerlocity);
+                let kunai = new Shuriken(this.game, this.x, this.y + 50, kunaiVerlocity);
                 this.game.addEntity(kunai);
                 this.game.throw = false;
             }
@@ -278,7 +278,9 @@ class MainNinja {
 
                 if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                     if (self.lastBB.left >= entity.BB.right) { // left collision
-                        self.action = "grabWall";
+                        if (self.velocity.y !== 0) {
+                            self.action = "grabWall";
+                        }
                         self.game.attack = false;
                         self.hitBox = undefined
                         self.doubleJump = true;
@@ -286,15 +288,18 @@ class MainNinja {
                         self.x = entity.BB.right;
                         self.velocity.y = 0;
                         self.y = self.y;
-                    } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+                    } else if (self.lastBB.right <= entity.BB.left) { // right collision
+                        if (self.velocity.y !== 0) {
                             self.action = "grabWall";
-                            self.game.attack = false;
-                            self.hitBox = undefined
-                            self.doubleJump = true;
-                            self.velocity.x = 0;
-                            self.x = entity.BB.left - 60;
-                            self.velocity.y = 0;
-                            self.y = self.y;
+                        }
+                        
+                        self.game.attack = false;
+                        self.hitBox = undefined
+                        self.doubleJump = true;
+                        self.velocity.x = 0;
+                        self.x = entity.BB.left - 60;
+                        self.velocity.y = 0;
+                        self.y = self.y;
                     }
                     //self.updateBB();
                 }
