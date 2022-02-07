@@ -125,14 +125,9 @@ class Knight {
                 self.hp -= 0.5;
                 self.action = "dmg";
             }
-
-
-
-
         });
         this.updateBB();
     };
-
 
     updateBB() {
         this.lastBB = this.BB;
