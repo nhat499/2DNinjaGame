@@ -122,7 +122,8 @@ class Ghost {
          
         //this.x -= this.speed;
 
-        if (this.x + 500 < 0) this.x = 900; // the '+ 500' makes sure the ghosts reach the edge of the screen before dissapearing. Replace '900' with right side x position of screen
+        if (this.x + 500 < 0) this.x = this.game.camera.x + 1000; // the '+ 500' makes sure the ghosts reach the edge of the screen before dissapearing. Replace '900' with right side x position of screen
+        console.log(this.game.camera.x);
 
         // SPRITE LEFT & RIGHT FACING LOGIC -------------
         if (this.x < this.oldX) {
