@@ -35,8 +35,6 @@ class GameEngine {
         })();
     };
 
-
-
     startInput() {
     // teacher will go over this later
         let self = this;
