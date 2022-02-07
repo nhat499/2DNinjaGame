@@ -1,15 +1,15 @@
-let ghostLead = 1500;
+let ghostLead = 5500;
 let ghostHeight = 500;
 
 let level1 = {
     // ground locations
-    grounds: [{x: -256, y: 700, width: 2560}, {x: 2400, y:700, with: 1280}],
+    grounds: [{x: 0, y: 700, width: 2560 + 2560}],
 
     // platform location
-    platforms:[{x: 700, y: 400, width: 128}],
+    platforms:[{x: 700, y: 400, width: 128}, {x: 1300, y:550, width: 128}],
    
     // walls
-    walls: [{x: 100, y: 0, height: 512}, {x: 400, y: 100, height: 512}],
+    walls: [{x: 100, y: 0, height: 512}, {x: 400, y: 228, height: 384}],
 
     // monster
     slimes: [{x: 800, y: 0}], // {x: 640, y: 0}, {x: 680, y: 0}, {x: 720, y: 0}, {x: 760, y: 0}]
