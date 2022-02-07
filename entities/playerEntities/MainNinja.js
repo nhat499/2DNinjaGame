@@ -364,7 +364,6 @@ class MainNinja {
             if (this.facing === "right") attackx = -30;
             attacky = 40;
         }
-
         // jump attack ajustment
         if (this.action === "jumpAttack") {
             attackx = -60;
