@@ -31,7 +31,7 @@ class Slime {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
-        this.actionDecider = [250, -250];
+        this.actionDecider = [250, -250, 0];
     };
 
     move(speed) {
@@ -89,10 +89,9 @@ class Slime {
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
-        
-        
-        let self = this;
 
+
+        let self = this;
         this.game.entities.forEach(function (entity) {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {
@@ -103,8 +102,7 @@ class Slime {
 
             if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                 if (self.lastBB.left >= entity.BB.right) { // left collision
-                    self.velocity.x = 0;
-                    self.x = entity.BB.right;
+                
                 } else  if (self.lastBB.right <= entity.BB.left) { // right collision
 
                 }
