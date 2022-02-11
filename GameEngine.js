@@ -84,9 +84,9 @@ class GameEngine {
                 case "Space":
                     self.jump = false;
                     break;
-                // case "KeyA":
-                //     self.attack = false;
-                //     break;
+                case "KeyA":
+                    self.attack = false;
+                    break;
                 case "KeyS":
                     self.slide = false;
             }

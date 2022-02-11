@@ -116,6 +116,9 @@ class Slime {
                     self.facing = "left";
                     self.velocity.x = 100;
                 }
+                if (entity.action === "attack2") {
+                    self.velocity.y = -300;
+                }
                 self.hp -= 0.5;
                 self.action = "dmg";
             }

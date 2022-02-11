@@ -140,6 +140,9 @@ class Ninja {
                     self.action = "die";
                 }
                 self.action = "dmg";
+                if (entity.action === "attack2") {
+                    self.velocity.y = -300;
+                }
             }
         });
         this.updateBB();

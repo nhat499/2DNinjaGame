@@ -36,7 +36,7 @@ class SceneManager {
         }
         
         // update verticle camera
-        let upperPoint = this.game.surfaceHeight / 3;
+        let upperPoint = this.game.surfaceHeight / 2.5;
         let lowerPoint = this.game.surfaceHeight - upperPoint;
         if (this.y > this.ninja.y - upperPoint) {
             this.y = this.ninja.y - upperPoint;
