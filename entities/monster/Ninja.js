@@ -1,7 +1,7 @@
 class Ninja {                      
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ninja.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/entities/ninja.png");
         this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
         this.scale = 1;
         this.velocity = {x:0, y:0};
@@ -9,9 +9,10 @@ class Ninja {
         this.hp = 100;
         // state variable
         this.facing = "right"; // 0 right, 1 = left;
-        this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.action = "attack"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
         this.doubleJump = true;
         this.updateBB();
+        this.updateAttackRange();
         // animation
         this.animations = []; // list of animations
         this.loadAnimations();
@@ -146,6 +147,7 @@ class Ninja {
             }
         });
         this.updateBB();
+        this.updateAttackRange();
     };
 
     updateBB() {
@@ -154,6 +156,14 @@ class Ninja {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y + slideBuffer, 55, 110 - slideBuffer);
     }
+
+    updateAttackRange() {
+        this.lastAttackRange = this.attackRange;
+        let bufferx = 0
+        if (this.facing === "right") bufferx = 50;
+        this.attackRange = new BoundingBox(this.x + bufferx,this.y, 100,100);
+    }
+
 
     draw(ctx) {                 // must have draw method
         let slideBuffer = 0
@@ -169,13 +179,17 @@ class Ninja {
         if (this.action === "attack") {
             let buffer = 0;
             if (this.facing == "left") buffer = -20;
+            if (this.facing === "right") buffer = 70;
             this.animations["slash" + this.facing].drawFrame(this.game.clockTick, 
-                ctx, this.x + buffer - 120, this.y - 100, 0.20);
+                ctx, this.x + buffer - 120 - this.game.camera.x, this.y - 75 - this.game.camera.y, 0.20);
         }
 
         this.game.ctx.strokeStyle = "red"; // the outline of shape
         this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
+        this.game.ctx.strokeStyle = "red"; // the outline of shape
+        this.game.ctx.strokeRect(this.attackRange.x - this.game.camera.x, this.attackRange.y - this.game.camera.y, 
+            this.attackRange.width, this.attackRange.height);
     };
 
 }

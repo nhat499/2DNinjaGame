@@ -119,7 +119,7 @@ class Slime {
                 if (entity.action === "attack2") {
                     self.velocity.y = -300;
                 }
-                self.hp -= 0.5;
+                self.hp -= entity.attackDmg;
                 self.action = "dmg";
             }
         });

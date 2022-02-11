@@ -1,7 +1,8 @@
 class MainNinja {                      
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAssset("sprites/ninjaMainSheet.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/entities/ninjaMainSheet.png");
+        this.miscellaneous = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
         //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
         this.scale = 1;
         this.velocity = {x:0, y:0};
@@ -12,9 +13,12 @@ class MainNinja {
         this.attack = 2; // there 3 attack
         //this.attacking = false;
         // this.attackEnd = 7 * this.game.clockTick;
+        this.invicible = false;
         this.doubleJump = true;
         this.updateBB();
 
+        //
+        this.attackDmg = 0.5;
         // animation
         this.animations = []; // list of animations
         this.loadAnimations();
@@ -26,12 +30,13 @@ class MainNinja {
 
 
     loadAnimations() {
+        this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80,3,0.2,0,false,true);
+
         this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 +30, 0, 154.5, 300, 3, 0.3, 0, false, true);
         this.animations["couch" + "left"] = new Animator(this.spritesheet, 3306.5, 0, 154.5, 300, 3, 0.3, 0, true, true);
 
         this.animations["dizzy" + "right"] = new Animator(this.spritesheet, 3800 +45, 300, 146, 300, 3, 0.3, 25, false, true);
         this.animations["dizzy" + "left"] = new Animator(this.spritesheet, 3242 + 20, 300, 146, 300, 3, 0.3, 25, true, true);
-
 
         this.animations["die" + "right"] =  new Animator(this.spritesheet, 3800 +45, 600, 220, 300, 5, 1, 0, false, true);
         this.animations["die" + "left"] =  new Animator(this.spritesheet, 2655, 600, 220, 300, 5, 1, 0, true, true);
@@ -66,8 +71,8 @@ class MainNinja {
         this.animations["slide" + "right"] =  new Animator(this.spritesheet, 3800 +15, 3900, 224, 300, 3, 0.5, 48, false, true);
         this.animations["slide" + "left"] =  new Animator(this.spritesheet, 3017, 3900, 224, 300, 2, 0.5, 48, true, true);
 
-        this.animations["throw" + "right"] =  new Animator(this.spritesheet, 3800 +8, 4200, 208, 300, 3, 0.2, 16, false, true);
-        this.animations["throw" + "left"] =  new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.2, 16, true, true);
+        this.animations["throw" + "right"] =  new Animator(this.spritesheet, 3800 +8, 4200, 208, 300, 3, 0.1, 16, false, true);
+        this.animations["throw" + "left"] =  new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.1, 16, true, true);
     };
 
 
@@ -99,6 +104,7 @@ class MainNinja {
         const MAX_FALL = 270 * 3;
       
      
+
         //this.velocity.y += this.fallAcc * TICK;
         // update verlocity
         // if (this.action === "slide") {
@@ -107,6 +113,7 @@ class MainNinja {
         //         this.action = "idle";
         //     }
         // }
+
         if (this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
             //&& this.action != "attack0"
             ) {
@@ -125,7 +132,7 @@ class MainNinja {
                     this.action = "run"; // make character run 
                     this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
                 }
-            } //else 
+            } 
             
             if ( this.game.slide) { // else if slide key is down then...
                 if (this.facing === "right" && this.velocity.x > 0) { // if chacter is moving right then...
@@ -145,7 +152,7 @@ class MainNinja {
                 }
             }
             
-            if (this.game.jump && this.velocity.y === 0 && !this.game.attack) { // jump key press
+            if (this.game.jump && this.velocity.y === 0 && this.action.substring(0,6) != "attack") { // jump key press
                 this.velocity.y -= 3000;  // 1st jump
                 ///this.fallAcc = STOP_FALL;
                 this.action = "jump";
@@ -186,6 +193,8 @@ class MainNinja {
             }
         }
 
+    
+
         // throw mechanic
         if (this.game.throw) {
             this.action = "throw"
@@ -193,14 +202,18 @@ class MainNinja {
             //     let kunai = new Kunai(this.game, this.x, this.y);
             //     this.game.addEntity(kunai); // need to remove kunai when animation finishes
             // }
-            if (this.animations["throw" + this.facing].animationFinish) {
+            if (this.animations["throw" + this.facing].animationStart) {
+                this.animations["throw" + this.facing].animationStart = false;
                 let kunaiVerlocity = 1000;
                 if (this.facing === "left") {
                     kunaiVerlocity = -1000;
                 }
-                let kunai = new Shuriken(this.game, this.x, this.y + 50, kunaiVerlocity);
-                this.game.addEntity(kunai);
+                let shuriken = new Shuriken(this.game, this.x, this.y + 50, kunaiVerlocity);
+                this.game.addEntity(shuriken);
+            }
+            if (this.animations["throw" + this.facing].animationFinish) {
                 this.game.throw = false;
+                this.animations["throw" + this.facing].animationStart = true;
             }
         }
 
@@ -222,29 +235,44 @@ class MainNinja {
 
 
 
-        // attack mechanic 3 // also works but attack changes mid attack base on input
+        // attack mechanic 3 //
         if (this.game.attack || this.action.substring(0,6) === "attack") {
-            if (this.game.up || this.action === "attack2") { // up attack
+            if ( this.action.substring(0,6) != "attack") {
+                if (this.game.up) {
                     this.action = "attack2";
-            } else if (this.game.left || this.game.right || this.action === "attack1") { // left or right attack
+                } else if (this.game.left || this.game.right) {
                     this.action = "attack1";
-            } else if (this.velocity.y != 0) { // air attack
-                    this.action = "attack3";
-            }else { // neutral attack
+                } else {
                     this.action = "attack0";
-            }
-            // update hitBox()
-            this.updateHB(this.action, this.facing);
-            if (this.animations[this.action + this.facing].animationFinish) {
-                this.animations[this.action + this.facing].animationFinish = false;
-                if (this.action != "attack3") {
-                    this.hitBox = undefined;
-                    this.action = "idle";
                 }
-
+            } else { 
+                if (( this.action === "attack2")) { // up attack
+                    this.action = "attack2";
+                } else if ((this.action === "attack1")) { // left or right attack
+                    this.action = "attack1";
+                } else if (this.velocity.y != 0) { // air attack
+                    this.action = "attack3";
+                } else { // neutral attack
+                    this.action = "attack0";
+                }
+                this.updateHB(this.action, this.facing);
+                if (this.animations[this.action + this.facing].animationFinish) {
+                    this.animations[this.action + this.facing].animationFinish = false;
+                    this.hitBox = undefined;
+                    if (this.action === "attack3") {
+                        this.action = "jump2";
+                    } else {
+                        this.action = "idle";
+                    }
+                }
             }
         }
 
+        if (this.invicible) {
+            if (this.animations["invicible"].animationFinish) {
+                this.invicible = false;
+            }
+        }
 
         // attack mechanic
         // if (this.game.attack) {
@@ -260,7 +288,7 @@ class MainNinja {
         //     }
 
         //     if (this.velocity.y != 0) {
-        //         this.action = "jumpAttack";
+        //         this.action = "attack3";
         //         this.hitBox = new BoundingBox(
         //             this.x - 70, this.y - 20,
         //             200, 200)
@@ -326,8 +354,9 @@ class MainNinja {
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 130;
                     if (self.action === "attack3") {
+                        //self.velocity.x = 0;
                         self.hitBox = undefined
-                        self.game.attack = false;
+                        //self.game.attack = false;
                     }  
                     //self.updateBB();     
                 } 
@@ -359,16 +388,20 @@ class MainNinja {
                     }
                     //self.updateBB();
                 }
-
-                if(entity instanceof Slime || entity instanceof Ghost) {
-                    if (self.facing === "left") {
-                        self.velocity.x = 300;
-                    } else {
-                        self.velocity.x = -300;
+                if (!self.invicible) {
+                    if(entity instanceof Slime || entity instanceof Ghost) {
+                        if (self.facing === "left") {
+                                self.velocity.x = 300;
+                        } else {
+                            self.velocity.x = -300;
+                        }
+                        self.invicible = true;
+                        self.action = "dizzy";
+                        self.hitBox = undefined;
+                        self.velocity.y = -200;
                     }
-                    self.action = "dizzy";
-                    self.velocity.y = -200;
                 }
+
             }
 
         });
@@ -403,7 +436,6 @@ class MainNinja {
     }
 
     draw(ctx) {                 // must have draw method
-
         let jumpBuffer = 0, attacky = 0, slidey = 0;
         let attackx = 0,slidex = 0, throwx = 0;
 
@@ -445,6 +477,11 @@ class MainNinja {
             this.y - jumpBuffer - attacky + slidey - this.game.camera.y, 
             .5);
         this.debug(ctx);
+
+        if (this.invicible) {
+            this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y,.5);
+        }
+        
     };
 
     debug(ctx) {

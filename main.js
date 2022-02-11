@@ -6,15 +6,15 @@ let gameEngine = new GameEngine();
 ASSET_MANAGER.queueDownLoad("sprites/BG.png");
 ASSET_MANAGER.queueDownLoad("sprites/slime.png");
 ASSET_MANAGER.queueDownLoad("sprites/ghost1.png");
-ASSET_MANAGER.queueDownLoad("sprites/knight5.png");
+ASSET_MANAGER.queueDownLoad("sprites/entities/knight5.png");
 ASSET_MANAGER.queueDownLoad("sprites/theSlashSheet.png");
-ASSET_MANAGER.queueDownLoad("sprites/ninja.png");
+ASSET_MANAGER.queueDownLoad("sprites/entities/ninja.png");
 ASSET_MANAGER.queueDownLoad("sprites/slashBlue.png");
 ASSET_MANAGER.queueDownLoad("./sprites/floorTileSet.png");
 ASSET_MANAGER.queueDownLoad("sprites/blueFlameRow.png");
 ASSET_MANAGER.queueDownLoad("sprites/orangeFireRow.png");
 ASSET_MANAGER.queueDownLoad("sprites/Miscellaneous.png");
-ASSET_MANAGER.queueDownLoad("sprites/ninjaMainSheet.png");
+ASSET_MANAGER.queueDownLoad("sprites/entities/ninjaMainSheet.png");
 // ASSET_MANAGER.queueDownLoad();
 // ASSET_MANAGER.queueDownLoad();
 

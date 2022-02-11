@@ -7,6 +7,7 @@ class Animator {
             reverse, loop});
         
         this.animationFinish = false;
+        this.animationStart = true;
         this.elapsedTime = 0;
         this.totalTime = this.frameCount * this.frameDuration;  
     }

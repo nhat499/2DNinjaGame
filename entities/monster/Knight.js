@@ -1,7 +1,7 @@
 class Knight {                      
     constructor(game, x,y) {    // all entites should have construture
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAssset("sprites/knight5.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/entities/knight5.png");
         this.slashSheet = ASSET_MANAGER.getAssset("sprites/theSlashSheet.png");
         this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);  
         this.scale = 1;
