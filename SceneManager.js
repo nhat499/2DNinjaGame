@@ -78,25 +78,25 @@ class SceneManager {
             this.game.addEntity(new Stump(this.game, stump.x, stump.y))
         }
 
-        // for (let i = 0; i < level.slimes.length; i++) {
-        //     let slime = level.slimes[i];
-        //     this.game.addEntity(new Slime(this.game, slime.x, slime.y));
-        // }
+        for (let i = 0; i < level.slimes.length; i++) {
+            let slime = level.slimes[i];
+            this.game.addEntity(new Slime(this.game, slime.x, slime.y));
+        }
 
         for (let i = 0; i < level.knights.length; i++) {
             let knight = level.knights[i];
             this.game.addEntity(new Knight(this.game, knight.x, knight.y))
         }
 
-        // for (let i = 0; i < level.ninjas.length; i++) {
-        //   let ninja = level.ninjas[i];
-        //   this.game.addEntity(new Ninja(this.game, ninja.x, ninja.y))
-        // }
+        for (let i = 0; i < level.ninjas.length; i++) {
+          let ninja = level.ninjas[i];
+          this.game.addEntity(new Ninja(this.game, ninja.x, ninja.y))
+        }
 
-        // for (let i = 0; i < level.ghosts.length; i++) {
-        //   let ghost = level.ghosts[i];
-        //   this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y))
-        // }
+        for (let i = 0; i < level.ghosts.length; i++) {
+          let ghost = level.ghosts[i];
+          this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y))
+        }
         this.ninja = new MainNinja(this.game, 0,170);
         this.game.addEntity(this.ninja);
     }

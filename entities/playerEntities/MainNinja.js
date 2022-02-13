@@ -264,7 +264,7 @@ class MainNinja {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 //if (self.velocity.y >= 0) { // falling
                       // add more ground stuff here
-                if ((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall) 
+                if ((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall || entity instanceof Stump) 
                 && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
                     self.doubleJump = true;
                     self.velocity.y = 0;
