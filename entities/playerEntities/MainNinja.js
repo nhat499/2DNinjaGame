@@ -304,6 +304,34 @@ class MainNinja {
                     //self.updateBB();
                 }
 
+                if (entity instanceof Stump && self.BB.bottom > entity.BB.top) { 
+                    if (self.lastBB.left >= entity.BB.right) { // left collision
+                        // if (self.velocity.y !== 0) {
+                        //     self.action = "grabWall";
+                        // }
+                        self.game.attack = false;
+                        self.hitBox = undefined
+                        //self.doubleJump = true;
+                        self.velocity.x = 0;
+                        self.x = entity.BB.right;
+                        self.velocity.y = 0;
+                        self.y = self.y;
+                        entity.action = "movingLeft";
+                    } else if (self.lastBB.right <= entity.BB.left) { // right collision
+                        // if (self.velocity.y !== 0) {
+                        //     self.action = "grabWall";
+                        // }
+                        self.game.attack = false;
+                        self.hitBox = undefined
+                        //self.doubleJump = true;
+                        self.velocity.x = 0;
+                        self.x = entity.BB.left - 60;
+                        self.velocity.y = 0;
+                        self.y = self.y;
+                        entity.action = "movingRight";
+                    }
+                }
+
                 if(entity instanceof Slime || entity instanceof Ghost) {
                     if (self.facing === "left") {
                         self.velocity.x = 300;

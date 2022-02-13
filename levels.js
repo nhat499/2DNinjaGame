@@ -12,7 +12,7 @@ let level1 = {
     walls: [{x: 100, y: 0, height: 512}, {x: 400, y: 228, height: 384}],
 
     //tree stump locations
-    stumps: [{x: 1000, y: 400}],
+    stumps: [{x: 200, y: 600}],
 
     // monster
     slimes: [{x: 800, y: 0}], // {x: 640, y: 0}, {x: 680, y: 0}, {x: 720, y: 0}, {x: 760, y: 0}]
