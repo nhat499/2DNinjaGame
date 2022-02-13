@@ -109,7 +109,7 @@ class Platform {
         }
 
         ctx.drawImage(this.spritesheet,512, 256, 128,128, 
-            this.x +(i * 128) - this.game.camera.x, 
+            this.x + (i * 128) - this.game.camera.x, 
             this.y - this.game.camera.y, 
             128, 128);
 

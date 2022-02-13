@@ -73,6 +73,11 @@ class SceneManager {
             this.game.addEntity(new Wall(this.game, wall.x, wall.y, wall.height))
         }
 
+        for (let i = 0; i < level.stumps.length; i++) {
+            let stump = level.stumps[i];
+            this.game.addEntity(new Stump(this.game, stump.x, stump.y))
+        }
+
         for (let i = 0; i < level.slimes.length; i++) {
             let slime = level.slimes[i];
             this.game.addEntity(new Slime(this.game, slime.x, slime.y));
