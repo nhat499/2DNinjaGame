@@ -16,7 +16,7 @@ class Ghost {
 
         this.gamePosition = x; // used to keep ghost at the desired leocation in game (else it'll oscillate around the x = 0 position)
 
-        this.speed = Math.random() * 4 + 1;
+        this.speed = Math.random() * 4 + 1;  
 
         this.airPattern = true;
 
@@ -43,6 +43,8 @@ class Ghost {
         this.animations["walk" + "left"] = new Animator(this.spritesheet, 695, 39, 195, 288, 1, 0.5, 0, false, true);
 
         this.animations["walk" + "right"] = new Animator(this.spritesheet, 1192, 39, 195, 288, 1, 0.5, 0, false, true);
+
+        this.animations["attack" + "left"] = new Animator(this.spritesheet, 1735, 39, 200, 288, 12, 1, 200, false, true);
 
         this.animations["hurt" + "left"] = new Animator(this.spritesheet, 14215, 39, 250, 350, 12, .08, 268, false, true);
 
@@ -158,6 +160,10 @@ class Ghost {
                 self.hp -= 1;
                 
              }
+             
+            if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
+                self.action = "attack";  
+            }
 
             //  if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
             //      // add Ghost attack state here
