@@ -7,6 +7,9 @@ class Ghost {
 
         this.hp = 1;
 
+        this.sound = new Audio();
+        this.sound.src = "./sound_effects/sword-1b.wav";
+
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
         this.facing = "left"; // 0 right, 1 = left;
@@ -146,6 +149,7 @@ class Ghost {
 
             if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack && self.hp > 0) {
                 //console.log("i was hurt");
+                self.sound.play();
                 self.action = "hurt";
                 //self.x += 100;
 
