@@ -44,7 +44,7 @@ class Ghost {
 
         this.animations["walk" + "right"] = new Animator(this.spritesheet, 1192, 39, 195, 288, 1, 0.5, 0, false, true);
 
-        this.animations["attack" + "left"] = new Animator(this.spritesheet, 1735, 39, 200, 288, 12, 1, 200, false, true);
+        this.animations["attack" + "left"] = new Animator(this.spritesheet, 1735, 39, 200, 288, 12, 1, 268, false, true);
 
         this.animations["hurt" + "left"] = new Animator(this.spritesheet, 14215, 39, 250, 350, 12, .08, 268, false, true);
 
