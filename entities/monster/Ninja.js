@@ -9,10 +9,10 @@ class Ninja {
         this.hp = 100;
         // state variable
         this.facing = "right"; // 0 right, 1 = left;
-        this.action = "attack"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
         this.doubleJump = true;
         this.updateBB();
-        this.updateAttackRange();
+        //this.updateAttackRange();
         // animation
         this.animations = []; // list of animations
         this.loadAnimations();
@@ -147,7 +147,7 @@ class Ninja {
             }
         });
         this.updateBB();
-        this.updateAttackRange();
+        //this.updateAttackRange();
     };
 
     updateBB() {
@@ -187,9 +187,11 @@ class Ninja {
         this.game.ctx.strokeStyle = "red"; // the outline of shape
         this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
+        if (this.attackRange) {
         this.game.ctx.strokeStyle = "red"; // the outline of shape
         this.game.ctx.strokeRect(this.attackRange.x - this.game.camera.x, this.attackRange.y - this.game.camera.y, 
             this.attackRange.width, this.attackRange.height);
+        }
     };
 
 }

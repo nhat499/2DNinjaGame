@@ -208,7 +208,7 @@ class MainNinja {
                 if (this.facing === "left") {
                     kunaiVerlocity = -1000;
                 }
-                let shuriken = new Shuriken(this.game, this.x, this.y + 50, kunaiVerlocity);
+                let shuriken = new Kunai(this.game, this.x, this.y + 50, kunaiVerlocity);
                 this.game.addEntity(shuriken);
             }
             if (this.animations["throw" + this.facing].animationFinish) {

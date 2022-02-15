@@ -4,7 +4,7 @@ class Kunai {
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
         this.scale = 1;
-        this.attackDmg = 10;
+        this.attackDmg = 1;
         // state variable
         this.state = "throw";
         this.facing = "left";
