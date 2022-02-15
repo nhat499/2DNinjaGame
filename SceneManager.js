@@ -10,6 +10,9 @@ class SceneManager {
         this.title = true;
         this.level = level1;
 
+        this.sound = new Audio();
+        this.sound.src = "./music/edson1.wav";
+
         //this.loadLevel1();
         //console.log(level1);
         //this.loadLevel(this.level);
@@ -23,9 +26,15 @@ class SceneManager {
         //this.game.addEntity(this.ghost);
         this.ninja = new MainNinja(this.game, 0,170);
         this.game.addEntity(this.ninja);
+
     }
 
     update() {
+
+        if (this.title) {
+            this.sound.play();
+        }
+
         // update horizontal camera
         let leftPoint = this.game.surfaceWidth / 3;
         let rightPoint = this.game.surfaceWidth - leftPoint;
