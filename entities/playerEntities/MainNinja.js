@@ -238,9 +238,12 @@ class MainNinja {
         // attack mechanic 3 //
         if (this.game.attack || this.action.substring(0,6) === "attack") {
             if ( this.action.substring(0,6) != "attack") {
+                if (this.velocity.y === 0) {
+                    this.velocity.x = 0;
+                }
                 if (this.game.up) {
                     this.action = "attack2";
-                } else if (this.game.left || this.game.right) {
+                } else if ((this.game.left || this.game.right) && this.velocity.y === 0) {
                     this.action = "attack1";
                 } else {
                     this.action = "attack0";
@@ -259,9 +262,7 @@ class MainNinja {
                 if (this.animations[this.action + this.facing].animationFinish) {
                     this.animations[this.action + this.facing].animationFinish = false;
                     this.hitBox = undefined;
-                    if (this.action === "attack3") {
-                        this.action = "jump2";
-                    } else {
+                    if (this.action != "attack3") {
                         this.action = "idle";
                     }
                 }
@@ -354,14 +355,15 @@ class MainNinja {
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 130;
                     if (self.action === "attack3") {
-                        //self.velocity.x = 0;
+                        self.velocity.x = 0;
                         self.hitBox = undefined
+                        self.action = "idle";
                         //self.game.attack = false;
                     }  
                     //self.updateBB();     
                 } 
 
-                if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                if ((entity instanceof Wall || entity instanceof Ground) && self.BB.bottom > entity.BB.top) { 
                     if (self.lastBB.left >= entity.BB.right) { // left collision
                         if (self.velocity.y !== 0) {
                             self.action = "grabWall";
@@ -438,43 +440,47 @@ class MainNinja {
     draw(ctx) {                 // must have draw method
         let jumpBuffer = 0, attacky = 0, slidey = 0;
         let attackx = 0,slidex = 0, throwx = 0;
+        let offsetX = 0;
+        let offsetY = 0;
 
     // drawing a adjust
-        if (this.action === "jump") jumpBuffer = 60;
+        if (this.action === "jump") {
+        offsetY = 30;
+        }
         if (this.action === "slide") { 
-            if (this.facing === "right") slidex = -40; else if (this.facing === "left") slidex = -15;
-            slidey = 15
+            if (this.facing === "right") offsetX = -40; else if (this.facing === "left") offsetX = -15;
+            offsetY = -15;
         };
 
         // attack0 adjustment
         if (this.action === "attack0") {
-            if (this.facing === "right") attackx = -30; 
-            if (this.facing === "left") attackx = 80;
-            attacky = 13;
+            if (this.facing === "right") offsetX = -30; 
+            if (this.facing === "left") offsetX = 80;
+            offsetY = 13;
         }
 
         // attack 1 adjustment
         if(this.action === "attack1") {
-            if (this.facing === "left") attackx = -100;
-            if (this.facing === "right") attackx = -30;
-            attacky = 7
+            if (this.facing === "left") offsetX = -100;
+            if (this.facing === "right") offsetX = -30;
+            offsetY = 7;
         }
 
         // attack 2 ajustment
         if (this.action === "attack2") {
-            if (this.facing === "left") attackx = -100;
-            if (this.facing === "right") attackx = -30;
-            attacky = 40;
+            if (this.facing === "left") offsetX = -100;
+            if (this.facing === "right") offsetX = -30;
+            offsetY = 40;
         }
         // jump attack ajustment
         if (this.action === "attack3") {
-            attackx = -60;
-            attacky = 30;
+            offsetX = -60;
+            offsetY = 30;
         }
 
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
-            this.x + attackx + slidex - this.game.camera.x + throwx,
-            this.y - jumpBuffer - attacky + slidey - this.game.camera.y, 
+            this.x + offsetX - this.game.camera.x,
+            this.y - offsetY + slidey - this.game.camera.y, 
             .5);
         this.debug(ctx);
 
@@ -550,7 +556,9 @@ class MainNinja {
         ctx.fillText("d", 280, this.game.surfaceHeight - 20); 
 
         ctx.strokeStyle = "black";
-        ctx.fillText(this.x, 10, 10);
+        ctx.fillText("Xloc: " + this.x, 10, 10);
+        ctx.strokeStyle = "black";
+        ctx.fillText("Yloc: " + this.y, 10, 30);
 
         // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
         // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);

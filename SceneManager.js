@@ -57,12 +57,6 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
 
-        for (let i = 0; i < level.grounds.length; i++) {
-            let ground = level.grounds[i];
-            console.log(ground);
-            this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width))
-        }
-
         for (let i = 0; i < level.platforms.length; i++) {
             let platform = level.platforms[i];
             this.game.addEntity(new Platform(this.game, platform.x, platform.y, platform.width))
@@ -73,9 +67,15 @@ class SceneManager {
             this.game.addEntity(new Wall(this.game, wall.x, wall.y, wall.height))
         }
 
+        for (let i = 0; i < level.grounds.length; i++) {
+            let ground = level.grounds[i];
+            console.log(ground);
+            this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width))
+        }
+
         for (let i = 0; i < level.slimes.length; i++) {
             let slime = level.slimes[i];
-            this.game.addEntity(new Slime(this.game, slime.x, slime.y));
+            this.game.addEntity(new Slime(this.game, slime.x, slime.y, slime.boss));
         }
 
         for (let i = 0; i < level.knights.length; i++) {

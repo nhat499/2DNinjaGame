@@ -1,12 +1,16 @@
 class Slime {                      
-    constructor(game, x,y) {    // all entites should have construture
-        Object.assign(this, {game, x, y});
+    constructor(game, x,y, boss) {    // all entites should have construture
+        Object.assign(this, {game, x, y, boss});
         //this.BB = new BoundingBox(this.x + 30, this.y + 55, 65, 65);
         this.BB = new BoundingBox(this.x, this.y, 70, 65);
         this.hp = 100;
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/slime.png");
         this.scale = 0.5;
+        if (this.boss) {
+            this.scale = 2;
+            this.hp = 1000;
+        }
 
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
@@ -96,17 +100,21 @@ class Slime {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {
                     self.velocity.y = 0;
-                    self.y = entity.BB.top - 65;
+                    self.y = entity.BB.top - (130 * self.scale);
+                }
+
+                if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                    if (self.lastBB.left >= entity.BB.right) { // left collision
+                        self.velocity.x = 0;
+                        self.x = entity.BB.right;
+                    } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+                        self.velocity.x = 0;
+                        self.x = entity.BB.left - (140 * self.scale);
+                    }
                 }
             }
 
-            if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
-                if (self.lastBB.left >= entity.BB.right) { // left collision
-                
-                } else  if (self.lastBB.right <= entity.BB.left) { // right collision
 
-                }
-            }
 
             if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
                 if (entity.facing === "left") {
@@ -127,23 +135,25 @@ class Slime {
     };
 
     updateBB() {
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 70, 65);
+       // if (!this.boss) {
+            this.lastBB = this.BB;
+            this.BB = new BoundingBox(this.x, this.y, 140 * this.scale, 130 * this.scale);
+       // }  
     }
 
     draw(ctx) {                 // must have draw method
         let offsetX = 0
-        let offsetY = -55;
+        let offsetY = -110 * this.scale;
 
-        if (this.action === "idle" && this.facing === "left") offsetX = -13;
-        if (this.action === "walk" && this.facing === "left") offsetX = -13;
-        if (this.action === "dying" && this.facing === "left") offsetX = -30;
-        if (this.action === "dmg" && this.facing === "left") offsetX = -30;
+        if (this.action === "idle" && this.facing === "left") offsetX = -26 * this.scale;
+        if (this.action === "walk" && this.facing === "left") offsetX = -26 * this.scale;
+        if (this.action === "dying" && this.facing === "left") offsetX = -60 * this.scale;
+        if (this.action === "dmg" && this.facing === "left") offsetX = -60 * this.scale;
 
-        if (this.action === "dmg" && this.facing === "right") offsetX = -25;
-        if (this.action === "dying" && this.facing === "right") offsetX = -25;
-        if (this.action === "walk" && this.facing === "right") offsetX = -35;
-        if (this.action === "idle" && this.facing === "right") offsetX = -45;
+        if (this.action === "dmg" && this.facing === "right") offsetX = -50 * this.scale;
+        if (this.action === "dying" && this.facing === "right") offsetX = -50 * this.scale;
+        if (this.action === "walk" && this.facing === "right") offsetX = -70 * this.scale;
+        if (this.action === "idle" && this.facing === "right") offsetX = -90 * this.scale;
 
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
             this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y, this.scale);
