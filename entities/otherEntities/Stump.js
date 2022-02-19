@@ -1,7 +1,7 @@
 class Stump {
     constructor(game, x, y) {
         Object.assign(this, {game, x, y});
-        this.spritesheet = ASSET_MANAGER.getAssset("./sprites/Miscellaneous.png");
+        this.spritesheet = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
         //this.scale = 1;
 
         this.BB = new BoundingBox(this.x, this.y, 96, 92);

@@ -147,12 +147,12 @@ class Ghost {
 
         this.game.entities.forEach(function (entity) {
 
-            if (entity.hitBox && self.BB.collide(entity.hitBox) && entity instanceof MainNinja && entity.game.attack && self.hp > 0) {
+            if (entity.hitBox && self.BB.collide(entity.hitBox)  && self.hp > 0) {
                 //console.log("i was hurt");
                 self.sound.play();
                 self.action = "hurt";
                 //self.x += 100;
-
+                
                 self.angle -= 2; // on-hit knockback functionality for Ghost entitity
 
                 // if (self.facing === "left") {

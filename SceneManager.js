@@ -13,6 +13,7 @@ class SceneManager {
         this.sound = new Audio();
         this.sound.src = "./music/edson1.wav";
 
+
         //this.loadLevel1();
         //console.log(level1);
         //this.loadLevel(this.level);
@@ -45,7 +46,7 @@ class SceneManager {
         }
         
         // update verticle camera
-        let upperPoint = this.game.surfaceHeight / 3;
+        let upperPoint = this.game.surfaceHeight / 2.5;
         let lowerPoint = this.game.surfaceHeight - upperPoint;
         if (this.y > this.ninja.y - upperPoint) {
             this.y = this.ninja.y - upperPoint;
@@ -66,12 +67,6 @@ class SceneManager {
         this.x = 0;
         this.y = 0;
 
-        for (let i = 0; i < level.grounds.length; i++) {
-            let ground = level.grounds[i];
-            console.log(ground);
-            this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width))
-        }
-
         for (let i = 0; i < level.platforms.length; i++) {
             let platform = level.platforms[i];
             this.game.addEntity(new Platform(this.game, platform.x, platform.y, platform.width))
@@ -87,9 +82,15 @@ class SceneManager {
             this.game.addEntity(new Stump(this.game, stump.x, stump.y))
         }
 
+        for (let i = 0; i < level.grounds.length; i++) {
+            let ground = level.grounds[i];
+            console.log(ground);
+            this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width))
+        }
+
         for (let i = 0; i < level.slimes.length; i++) {
             let slime = level.slimes[i];
-            this.game.addEntity(new Slime(this.game, slime.x, slime.y));
+            this.game.addEntity(new Slime(this.game, slime.x, slime.y, slime.boss));
         }
 
         for (let i = 0; i < level.knights.length; i++) {

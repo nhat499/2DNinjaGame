@@ -1,16 +1,21 @@
 class Slime {                      
-    constructor(game, x,y) {    // all entites should have construture
-        Object.assign(this, {game, x, y});
+    constructor(game, x,y, boss) {    // all entites should have construture
+        Object.assign(this, {game, x, y, boss});
         //this.BB = new BoundingBox(this.x + 30, this.y + 55, 65, 65);
         this.BB = new BoundingBox(this.x, this.y, 70, 65);
         this.hp = 100;
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/slime.png");
         this.scale = 0.5;
+        if (this.boss) {
+            this.scale = 2;
+            this.hp = 1000;
+            this.monsterHB = undefined;
+        }
 
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
-        this.action = "dmg"; // 0 idle, 1 = moving, 2 = taking dmg, 3 = dying;
+        this.action = "idle"; // 0 idle, 1 = moving, 2 = taking dmg, 3 = dying;
 
         // animation
         this.animations = []; // list of animations
@@ -27,26 +32,37 @@ class Slime {
         this.animations["dmgleft"] = new Animator(this.spritesheet, 3159, 484, 249, 246, 1, 0.5, 0, false, true);
         this.animations["dmgright"] = new Animator(this.spritesheet, 2910, 484, 249, 246, 1, 0.5, 0, true, true);
 
+        //this.animations["attackleft"] = new Animator(this.spritesheet, 3159, 860, 219, 100, 7, 0.25, 30, true, true);
+          this.animations["attack"] = new Animator(this.spritesheet, -30, 860, 219, 100, 13, 1.75/13, 30, false, true);
+
         // phyiscs variable
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
 
-        this.actionDecider = [250, -250, 0];
+        this.actionDecider = ["moveleft", "moveright", "stay", "attack"];
+
     };
 
-    move(speed) {
-        this.action = "walk";
-        if (speed < 0) {
+    move(action) {
+        //this.action = "walk";
+        let speed = 0;
+        if (action ===  "moveleft") {
             this.facing = "left"
-        } else if (speed > 0) {
-            this.facing = "right"
-        } else {
+            this.action = "walk";
+            speed = -250;
+        } else if (action ===  "moveright") {
+            this.facing = "right";
+            this.action = "walk";
+            speed = 250;
+        } else if (action === "stay") {
             if (this.facing == "left") {
                 this.facing == "right";
             } else {
                 this.facing = "left";
             }
             this.action = "idle";
+        } else if (action === "attack") {
+            this.action = "attack";
         }
         this.velocity.x = speed;
     }
@@ -69,14 +85,22 @@ class Slime {
             if (this.animations["dying"+this.facing].animationFinish) {
                 this.removeFromWorld = true;
             }
-        } else if (this.action === "idle") { // idle 
-            
+        } else if (this.action === "idle") { // idle
+                this.monsterHB = undefined;
             if (this.animations["idle" + this.facing].animationFinish) {
-                let i = Math.floor(Math.random() * 3) // pick number 0-3
+                let x = 3; // // pick number 0-3
+                if (this.boss) x = 4; // pick number 0-4
+                let i = Math.floor(Math.random() * x);
                 this.move(this.actionDecider[i]);
             }
         } else if (this.action === "walk") { // moving
             if (this.animations["walk" + this.facing].animationFinish) {
+                this.action = "idle";
+                this.velocity.x = 0;
+            }
+        } else if (this.action === "attack") {
+            if (this.animations["attack"].animationFinish) {
+                this.updateSlimeHB();
                 this.action = "idle";
                 this.velocity.x = 0;
             }
@@ -96,56 +120,93 @@ class Slime {
             if (entity.BB && self.BB.collide(entity.BB)) {
                 if ((entity instanceof Ground || entity instanceof Platform) && self.lastBB.bottom <= entity.BB.top) {
                     self.velocity.y = 0;
-                    self.y = entity.BB.top - 65;
+                    self.y = entity.BB.top - (130 * self.scale);
+                }
+
+                if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
+                    if (self.lastBB.left >= entity.BB.right) { // left collision
+                        self.velocity.x = 0;
+                        self.x = entity.BB.right;
+                    } else  if (self.lastBB.right <= entity.BB.left) { // right collision
+                        self.velocity.x = 0;
+                        self.x = entity.BB.left - (140 * self.scale);
+                    }
                 }
             }
 
-            if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
-                if (self.lastBB.left >= entity.BB.right) { // left collision
-                
-                } else  if (self.lastBB.right <= entity.BB.left) { // right collision
 
-                }
-            }
 
             if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
                 if (entity.facing === "left") {
-                    self.facing = "right";
-                    self.velocity.x = -100;
+                    if (!self.boss) {
+                        self.facing = "right";
+                        self.velocity.x = -100;
+                    }
                 } else {
-                    self.facing = "left";
-                    self.velocity.x = 100;
+                    if (!self.boss) {
+                        self.facing = "left";
+                        self.velocity.x = 100;
+                    }
                 }
-                self.hp -= 0.5;
-                self.action = "dmg";
+                if (entity.action === "attack2") {
+                    if (!self.boss) {
+                        self.velocity.y = -300;
+                    }
+                }
+                self.hp -= entity.attackDmg;
+                if (!self.boss) {
+                    self.action = "dmg";
+                }
+                
             }
         });
         this.updateBB();
     };
 
     updateBB() {
-        this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, 70, 65);
+       // if (!this.boss) {
+            this.lastBB = this.BB;
+            this.BB = new BoundingBox(this.x, this.y, 140 * this.scale, 130 * this.scale);
+       // }  
+    }
+
+    updateSlimeHB() {
+        this.monsterHB = new BoundingBox(this.x - 300, this.y + 125 * this.scale, 140*this.scale + 600, 3);
     }
 
     draw(ctx) {                 // must have draw method
         let offsetX = 0
-        let offsetY = -55;
+        let offsetY = -110 * this.scale;
 
-        if (this.action === "idle" && this.facing === "left") offsetX = -13;
-        if (this.action === "walk" && this.facing === "left") offsetX = -13;
-        if (this.action === "dying" && this.facing === "left") offsetX = -30;
-        if (this.action === "dmg" && this.facing === "left") offsetX = -30;
+        if (this.action === "idle" && this.facing === "left") offsetX = -26 * this.scale;
+        if ((this.action === "walk" || this.action === "attack") && this.facing === "left") offsetX = -26 * this.scale;
+        if (this.action === "dying" && this.facing === "left") offsetX = -60 * this.scale;
+        if (this.action === "dmg" && this.facing === "left") offsetX = -60 * this.scale;
 
-        if (this.action === "dmg" && this.facing === "right") offsetX = -25;
-        if (this.action === "dying" && this.facing === "right") offsetX = -25;
-        if (this.action === "walk" && this.facing === "right") offsetX = -35;
-        if (this.action === "idle" && this.facing === "right") offsetX = -45;
+        if (this.action === "dmg" && this.facing === "right") offsetX = -50 * this.scale;
+        if ((this.action === "walk" || this.action === "attack") && this.facing === "right") offsetX = -50 * this.scale;
+        if (this.action === "walk" && this.facing === "right") offsetX = -70 * this.scale;
+        if (this.action === "idle" && this.facing === "right") offsetX = -90 * this.scale;
 
-        this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
-            this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y, this.scale);
+        if(this.action != "attack") {
+            this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
+                this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y, this.scale);
+        } else {
+            this.animations["walk" + this.facing].drawFrame(this.game.clockTick, ctx, 
+                this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y, this.scale);
+                // attack effects
+            this.animations["attack"].drawFrame(this.game.clockTick, ctx, 
+                this.x +offsetX - this.game.camera.x,this.y + offsetY - this.game.camera.y + 140 * this.scale, this.scale);
+        }
+
 
         ctx.strokeStyle = "Red";
         ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+
+        if(this.monsterHB) {
+            ctx.strokeStyle = "Red";
+            ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, this.monsterHB.width, this.monsterHB.height);
+        }
+
     };
 }
