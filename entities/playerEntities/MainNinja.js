@@ -391,7 +391,7 @@ class MainNinja {
                     //self.updateBB();
                 }
                 if (!self.invicible) {
-                    if(entity instanceof Slime || entity instanceof Ghost) {
+                    if(entity instanceof Slime || entity instanceof Ghost) { // touch dmg
                         if (self.facing === "left") {
                                 self.velocity.x = 300;
                         } else {
@@ -404,6 +404,21 @@ class MainNinja {
                     }
                 }
 
+            }
+            if (!self.invicible) {
+                if (entity.monsterHB && self.BB.collide(entity.monsterHB))  {  // got hit
+                    if (entity instanceof Slime) { // bounce attack
+                        self.action = "dizzy";
+                        self.invicible = true;
+                        self.hitBox = undefined;
+                        self.velocity.y = -6000;
+                        if (entity.BB.left <= self.BB.left) {
+                            self.velocity.x = 100;
+                        } else {
+                            self.velocity.x = -100;
+                        }
+                    }
+                }
             }
 
         });
@@ -438,8 +453,7 @@ class MainNinja {
     }
 
     draw(ctx) {                 // must have draw method
-        let jumpBuffer = 0, attacky = 0, slidey = 0;
-        let attackx = 0,slidex = 0, throwx = 0;
+        let slidey = 0;
         let offsetX = 0;
         let offsetY = 0;
 
