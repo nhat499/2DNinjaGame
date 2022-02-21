@@ -33,6 +33,8 @@ class MainNinja {
 
     this.healthBar = new HealthBar(this, 0, 40);
 
+    this.coins = parseInt(localStorage.getItem('coins') ?? 0, 10);
+
     // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
     // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
   }
@@ -402,6 +404,15 @@ class MainNinja {
     );
   }
 
+  collectCoins(qty) {
+    this.coins += qty;
+    localStorage.setItem('coins', this.coins);
+  }
+
+  spendCoins(qty) {
+    this.coins -= qty;
+    localStorage.setItem('coins', this.coins);
+  }
   //update() {}
 
   update() {
