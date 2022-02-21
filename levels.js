@@ -38,3 +38,20 @@ let level1 = {
     //     {x: ghostLead + 400, y: ghostHeight}, {x: ghostLead + 450, y: ghostHeight}, 
     //     {x: ghostLead + 500, y: ghostHeight}]
 };
+
+let testingLevel = {
+    // ground locations
+    grounds: [{x: -328, y: 700, width: 4224}],
+
+    // platform location
+    platforms:[],
+   
+    // walls
+    walls: [{x: -328, y: -708, height: 1536}, {x: 800, y: -708, height: 1536}],
+
+    stumps: [],
+    slimes:[],
+    knights: [],
+    ninjas: [{x: 600, y: 0}],
+    ghosts: []
+};

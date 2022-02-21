@@ -421,7 +421,7 @@ class MainNinja {
 
 
                 if (!self.invicible) {
-                    if(entity instanceof Slime || entity instanceof Ghost) { // touch dmg
+                    if(entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
                         if (self.facing === "left") {
                                 self.velocity.x = 300;
                         } else {
@@ -437,17 +437,21 @@ class MainNinja {
             }
             if (!self.invicible) {
                 if (entity.monsterHB && self.BB.collide(entity.monsterHB))  {  // got hit
+                    self.action = "dizzy";
+                    self.invicible = true;
+                    self.velocity.y = -200;
+                    self.hitBox = undefined;
                     if (entity instanceof Slime) { // bounce attack
-                        self.action = "dizzy";
                         self.invicible = true;
                         self.hitBox = undefined;
                         self.velocity.y = -6000;
-                        if (entity.BB.left <= self.BB.left) {
-                            self.velocity.x = 100;
-                        } else {
-                            self.velocity.x = -100;
-                        }
                     }
+                    if (entity.BB.left <= self.BB.left) {
+                        self.velocity.x = 100;
+                    } else {
+                        self.velocity.x = -100;
+                    }
+
                 }
             }
 
