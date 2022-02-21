@@ -4,15 +4,19 @@ class Slime {
     Object.assign(this, { game, x, y, boss });
     //this.BB = new BoundingBox(this.x + 30, this.y + 55, 65, 65);
     this.BB = new BoundingBox(this.x, this.y, 70, 65);
-    this.hp = 100;
+
     //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3};
     this.spritesheet = ASSET_MANAGER.getAssset('sprites/slime.png');
     this.scale = 0.5;
     if (this.boss) {
       this.scale = 2;
-      this.hp = 1000;
       this.monsterHB = undefined;
     }
+
+    this.maxHP = this.boss ? 1000 : 100;
+    this.hp = this.maxHP;
+    this.baseDmg = this.boss ? 15 : 5;
+    this.dmg = this.baseDmg;
 
     // state variable
     this.facing = 'left'; // 0 right, 1 = left;
