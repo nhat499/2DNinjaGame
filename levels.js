@@ -51,7 +51,7 @@ let testingLevel = {
 
     stumps: [],
     slimes:[],
-    knights: [],
-    ninjas: [{x: 600, y: 0}],
+    knights: [{x: 600, y: 0}],
+    ninjas: [],
     ghosts: []
 };

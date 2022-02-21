@@ -81,7 +81,6 @@ class Knight {
             }
         } else if (this.action === "die") { // dying animation timer
             if (this.animations["die" + this.facing].animationFinish) {
-                console.log("die");
                 this.removeFromWorld = true;
             }
         } else if (this.action === "idle") { // idle 
@@ -179,12 +178,10 @@ class Knight {
                 self.facing = "left";
                 self.action = "walk";
                 self.velocity.x = -250;
-                console.log("left");
 
             } else if (self.BB.right + 100 <= entity.BB.right) { // right collision
                 self.facing = "right";
                 self.action = "walk";
-                console.log("right");
                 self.velocity.x = 250;
             } else if (self.canAttack) {
                 if (self.BB.left >= entity.BB.left) { 
