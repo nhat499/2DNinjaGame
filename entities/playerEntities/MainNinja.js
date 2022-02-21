@@ -5,6 +5,7 @@ class MainNinja {
     this.spritesheet = ASSET_MANAGER.getAssset(
       'sprites/entities/ninjaMainSheet.png'
     );
+
     this.miscellaneous = ASSET_MANAGER.getAssset('sprites/Miscellaneous.png');
     //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
     this.scale = 1;
