@@ -190,6 +190,7 @@ class Slime {
       // dying animation timer
       if (this.animations['dying' + this.facing].animationFinish) {
         this.removeFromWorld = true;
+        this.dropLoot();
       }
     } else if (this.action === 'idle') {
       // idle
@@ -290,6 +291,11 @@ class Slime {
       140 * this.scale + 600,
       3
     );
+  }
+
+  dropLoot() {
+    const coin = new Coin(this.game, this.x, this.y, false);
+    this.game.addEntity(coin);
   }
 
   draw(ctx) {

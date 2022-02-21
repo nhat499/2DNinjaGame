@@ -10,9 +10,6 @@ class SceneManager {
     this.title = true;
     this.level = level1;
 
-    this.sound = new Audio();
-    this.sound.src = './music/edson1.wav';
-
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
@@ -26,13 +23,24 @@ class SceneManager {
     //this.game.addEntity(this.ghost);
     this.ninja = new MainNinja(this.game, 0, 170);
     this.game.addEntity(this.ninja);
+
+    this.coinAnimation = new Coin(this.game, 820, 6, true);
+
+    document
+      .getElementById('buy-health-potion')
+      .addEventListener('click', () => {
+        if (this.ninja.coins >= 25) {
+          this.ninja.spendCoins(25);
+          this.ninja.hp = this.ninja.maxHP;
+        }
+      });
+
+    document.getElementById('closeShop').addEventListener('click', () => {
+      document.getElementById('shop').style.display = 'none';
+    });
   }
 
   update() {
-    if (this.title) {
-      this.sound.play();
-    }
-
     // update horizontal camera
     let leftPoint = this.game.surfaceWidth / 3;
     let rightPoint = this.game.surfaceWidth - leftPoint;
@@ -140,6 +148,14 @@ class SceneManager {
       ctx.fillStyle = 'red';
       ctx.font = '50px serif';
       ctx.fillText('GAME OVER', 385, 450);
+    }
+
+    if (!this.title) {
+      ctx.font = '40px serif';
+      ctx.fillStyle = 'black';
+      ctx.fillText(this.ninja.coins ?? 0, 870, 40);
+
+      this.coinAnimation.draw(ctx);
     }
   }
 }

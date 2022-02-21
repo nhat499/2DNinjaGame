@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+
     <title>testassetManager</title>
     <script src="AssetManager.js" defer></script>
     <script src="timer.js" defer></script>
+    <script src="entities/powerups/Coin.js" defer></script>
     <script src="entities/ui/HealthBar.js" defer></script>
     <script src="entities/monster/Slime.js" defer></script>
     <script src="entities/monster/Ghost.js" defer></script>
@@ -21,16 +29,152 @@
     <script src="SceneManager.js" defer></script>
     <script src="main.js" defer></script>
   </head>
+
+  <style>
+    #main {
+      position: relative;
+      width: 1000px;
+    }
+
+    #open-shop {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      font-family: 'Press Start 2P', cursive;
+      color: white;
+      background: grey;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    #shop {
+      position: absolute;
+      width: 500px;
+      height: 300px;
+      background: grey;
+      border-radius: 4px;
+      border: 2px solid black;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-family: 'Press Start 2P', cursive;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0px;
+      display: none;
+    }
+
+    .shop-item {
+      background: hsl(0, 0%, 40%);
+      border-radius: 4px;
+      padding: 10px;
+      color: white;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      grid-gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .shop-item-img-wrapper {
+      border-radius: 4px;
+      background: darkgrey;
+      width: 35px;
+      display: flex;
+    }
+
+    .shop-item-img-wrapper img {
+      height: 35px;
+      width: 35px;
+    }
+
+    .shop-item-title {
+      font-size: 14px;
+      margin-bottom: 8px;
+      margin-top: 2px;
+    }
+
+    .shop-item-description {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .item-btn {
+      padding: 8px;
+      color: white;
+      border: 2px solid black;
+      border-radius: 4px;
+      background: #28c14f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      justify-self: flex-end;
+
+      transition: all 0.1s ease-out;
+    }
+
+    .item-btn:hover {
+      cursor: pointer;
+      filter: brightness(110%);
+    }
+
+    .shop-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .coin {
+      background: url('sprites/assets/coin.png');
+      background-size: cover;
+      height: 16px;
+      width: 16px;
+    }
+  </style>
   <body>
     <h1>hello world</h1>
     <box></box>
-    <canvas
-      id="gameWorld"
-      width="1000"
-      height="750"
-      style="background: lightblue"
-      tabindex="0"
-      autofocus
-    ></canvas>
+
+    <div id="main">
+      <canvas
+        id="gameWorld"
+        width="1000"
+        height="750"
+        style="background: lightblue"
+        tabindex="0"
+        autofocus
+      ></canvas>
+      <div id="open-shop">Shop</div>
+      <div id="shop">
+        <div class="shop-header">
+          <div>Item Shop</div>
+          <div id="closeShop">X</div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-img-wrapper">
+            <img
+              src="https://static.wikia.nocookie.net/shop-titans/images/4/47/Healing_Potion.png"
+            />
+          </div>
+          <div class="shop-item-content">
+            <div class="shop-item-title">Health Potion</div>
+            <div class="shop-item-description">Fully heals player HP</div>
+          </div>
+          <div class="item-btn" id="buy-health-potion">
+            Buy (25
+            <div class="coin"></div>
+            )
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
+  <script>
+    document.getElementById('open-shop').addEventListener('click', () => {
+      document.getElementById('shop').style.display = 'block';
+    });
+  </script>
 </html>
