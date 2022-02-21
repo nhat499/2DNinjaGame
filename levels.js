@@ -15,7 +15,7 @@ let level1 = {
         {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
 
     //tree stump locations
-    stumps: [{x: 200, y: 610}],
+    stumps: [],
 
     // monster
     //slimes: [{x: 50, y: 350, boss: true}],

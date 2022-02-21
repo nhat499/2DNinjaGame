@@ -13,6 +13,9 @@ class Slime {
       this.monsterHB = undefined;
     }
 
+    this.sound = new Audio();
+    this.sound.src = "./sound_effects/sword-1b.wav";
+
     this.maxHP = this.boss ? 1000 : 100;
     this.hp = this.maxHP;
     this.baseDmg = this.boss ? 15 : 5;
@@ -247,6 +250,7 @@ class Slime {
       }
 
       if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
+        self.sound.play();
         if (entity.facing === 'left') {
           if (!self.boss) {
             self.facing = 'right';

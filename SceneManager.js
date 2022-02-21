@@ -10,6 +10,9 @@ class SceneManager {
     this.title = true;
     this.level = level1;
 
+    this.sound = new Audio();
+    this.sound.src = 'music/edson1.wav';
+    this.sound.volume = 0.25;
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
@@ -41,6 +44,11 @@ class SceneManager {
   }
 
   update() {
+    // if (this.title) {
+    //     this.
+    //   //this.sound.play();
+    // }
+
     // update horizontal camera
     let leftPoint = this.game.surfaceWidth / 3;
     let rightPoint = this.game.surfaceWidth - leftPoint;
@@ -63,6 +71,7 @@ class SceneManager {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
         // click start game
         this.title = false;
+        this.sound.play();
         this.loadLevel(this.level);
       }
     }
