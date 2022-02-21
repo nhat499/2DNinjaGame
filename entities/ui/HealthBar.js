@@ -23,7 +23,7 @@ class HealthBar {
     ctx.closePath();
 
     ctx.beginPath();
-    var width = (this.entity.BB.width * this.entity.hp) / 100;
+    var width = (this.entity.BB.width * this.entity.hp) / this.entity.maxHP;
     ctx.rect(
       this.entity.x - this.entity.game.camera.x + this.offsetX,
       this.entity.y - this.entity.game.camera.y - 50 + this.offsetY,
