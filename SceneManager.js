@@ -12,6 +12,7 @@ class SceneManager {
 
         this.sound = new Audio();
         this.sound.src = "./music/edson1.wav";
+        this.sound.volume = 0.2;
 
 
         //this.loadLevel1();
