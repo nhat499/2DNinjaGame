@@ -6,6 +6,7 @@ class Knight {
         this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);  
         this.scale = 1;
         this.hp = 100;
+        this.dmg = 5;
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
         this.spriteOffsetX = 60;

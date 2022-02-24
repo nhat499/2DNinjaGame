@@ -26,6 +26,14 @@ class MainNinja {
 
       //
       this.attackDmg = 0.5;
+
+
+      // hp
+      this.maxHP = 150;
+      this.hp = this.maxHP;
+      this.healthBar = new HealthBar(this, 0, 40);
+      this.coins = parseInt(localStorage.getItem('coins') ?? 0, 10);
+      
       // animation
       this.animations = []; // list of animations
       this.loadAnimations();
@@ -85,6 +93,15 @@ class MainNinja {
 
 
   //update() {}
+  collectCoins(qty) {
+    this.coins += qty;
+    localStorage.setItem('coins', this.coins);
+  }
+
+  spendCoins(qty) {
+    this.coins -= qty;
+    localStorage.setItem('coins', this.coins);
+  }
 
   update() {
 
@@ -109,17 +126,6 @@ class MainNinja {
       const RUN_FALL_A = 562.5;
 
       const MAX_FALL = 270 * 3;
-
-
-
-      //this.velocity.y += this.fallAcc * TICK;
-      // update verlocity
-      // if (this.action === "slide") {
-      //     this.velocity.x -= 500 * TICK;
-      //     if (Math.abs(this.velocity.x) <= MAX_RUN/2) {
-      //         this.action = "idle";
-      //     }
-      // }
 
       if(this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
           //&& this.action != "attack0"
@@ -282,56 +288,6 @@ class MainNinja {
           }
       }
 
-      // attack mechanic
-      // if (this.game.attack) {
-      //     if(this.game.attack && !this.game.right && !this.game.left) {
-      //         this.attack = 1;
-      //     }
-      //     if(this.game.attack && this.game.right) {
-      //         this.attack = 0;
-      //     }
-
-      //     if(this.game.attack && this.game.up) {
-      //         this.attack = 2;
-      //     }
-
-      //     if (this.velocity.y != 0) {
-      //         this.action = "attack3";
-      //         this.hitBox = new BoundingBox(
-      //             this.x - 70, this.y - 20,
-      //             200, 200)
-      //     } else {
-      //         this.action = "attack" + this.attack;
-      //         if (this.facing === "right") {
-      //             this.hitBox = new BoundingBox(
-      //                 this.x + 60
-      //                 , this.y + 20,
-      //                 130,100);
-      //         } else {
-      //             this.hitBox = new BoundingBox(
-      //                 this.x - 130
-      //                 , this.y + 20,
-      //                 130,100);
-      //         }
-      //         if (this.animations[this.action + this.facing].animationFinish) {
-      //             this.game.attack = false;
-      //             //this.attack = (this.attack + 1) % 3
-      //             this.hitBox=undefined
-      //         // } else if (this.animations["attack1" + this.facing].animationFinish) {
-      //         //     this.game.attack = false;
-      //         //     //this.attack = (this.attack + 1) % 3
-      //         //     this.hitBox=undefined
-      //         // } else if (this.animations["attack2" + this.facing].animationFinish) {
-      //         //     this.game.attack = false;
-      //         //     //this.attack = (this.attack + 1) % 3
-      //         //     this.hitBox=undefined
-      //         }
-
-
-      //     }
-      // }
-
-
       this.velocity.y += this.fallAcc * TICK;
 
       // max speed calculation
@@ -347,8 +303,6 @@ class MainNinja {
       this.x += this.velocity.x * TICK;
       this.y += this.velocity.y * TICK;
       this.updateBB(); //bounding box;
-
-
 
       // collision handling
       let self = this;
@@ -404,7 +358,7 @@ class MainNinja {
                       //     self.action = "grabWall";
                       // }
                       self.game.attack = false;
-                      self.hitBox = undefined
+                      self.hitBox = undefined;
                       //self.doubleJump = true;
                       self.velocity.x = 0;
                       self.x = entity.BB.right;
@@ -416,7 +370,7 @@ class MainNinja {
                       //     self.action = "grabWall";
                       // }
                       self.game.attack = false;
-                      self.hitBox = undefined
+                      self.hitBox = undefined;
                       //self.doubleJump = true;
                       self.velocity.x = 0;
                       self.x = entity.BB.left - 60;
@@ -426,10 +380,10 @@ class MainNinja {
                   }
               }
 
-
               if(!self.invicible) {
                   if(entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
-                      if(self.facing === "left") {
+                    self.takeDamage(entity);
+                    if(self.facing === "left") {
                           self.velocity.x = 300;
                       } else {
                           self.velocity.x = -300;
@@ -493,6 +447,16 @@ class MainNinja {
       }
   }
 
+  takeDamage(entity) {
+    if(entity.dmg && this.hp > 0) {
+        this.hp -= entity.dmg;
+        if(this.hp <= 0) {
+            this.hp = 0;
+            this.action = "die";
+        }
+    }
+  }
+
   draw(ctx) { // must have draw method
       let slidey = 0;
       let offsetX = 0;
@@ -543,6 +507,7 @@ class MainNinja {
       if(this.invicible) {
           this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y, .5);
       }
+      this.healthBar.draw(ctx);
 
   };
 

@@ -7,6 +7,7 @@ class Ninja {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
         this.hp = 100;
+        this.dmg = 5;
         // state variable
         this.facing = "right"; // 0 right, 1 = left;
         this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
