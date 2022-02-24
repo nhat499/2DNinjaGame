@@ -269,7 +269,6 @@ class Slime {
           }
         }
         self.hp -= entity.attackDmg;
-        console.log(self.hp);
         if (!self.boss) {
           self.action = 'dmg';
         }
