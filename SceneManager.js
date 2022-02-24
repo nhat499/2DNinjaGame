@@ -9,6 +9,7 @@ class SceneManager {
     this.gameOver = false;
     this.title = true;
     this.level = level1;
+    //this.level = testingLevel;
 
     this.sound = new Audio();
     this.sound.src = 'music/edson1.wav';

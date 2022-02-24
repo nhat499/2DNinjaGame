@@ -31,8 +31,11 @@ class Ground {
         //     ctx.strokeStyle = 'Red';
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
-        ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        let debug = false;
+        if (debug) {
+            ctx.strokeStyle = "Red";
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
     };;
 };
 
@@ -60,22 +63,29 @@ class Wall {
         let blockCount = this.h / this.blockSize;
         for (let i = 0; i < blockCount; i++) {
            // ctx.drawImage(this.spritesheet,0,0, 128,128, this.x + i - this.game.camera.x, this.y, 128, 128);
+           let yOffset = i * this.blockSize;
+           
+           ctx.drawImage(this.spritesheet,0, 128, this.blockSize, this.blockSize - 0.5, 
+            this.x - this.game.camera.x + 128, 
+            this.y + yOffset - this.game.camera.y, 
+            this.blockSize, this.blockSize - - 0.5);
+           
            ctx.drawImage(this.spritesheet,384, 0, this.blockSize, this.blockSize, 
             this.x - this.game.camera.x, 
-            this.y + (i * this.blockSize) - this.game.camera.y, 
+            this.y + yOffset - this.game.camera.y, 
             this.blockSize, this.blockSize);
-            ctx.drawImage(this.spritesheet,0, 128, this.blockSize, this.blockSize, 
-                this.x - this.game.camera.x + 128, 
-                this.y + (i * this.blockSize) - this.game.camera.y, 
-                this.blockSize, this.blockSize);
             //ctx.drawImage(this.spritesheet, 0,0,16,16, this.x + i * PARAMS.BLOCKWIDTH - this.game.camera.x, this.y + PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
         //}
         // if (PARAMS.DEBUG) {
         //     ctx.strokeStyle = 'Red';
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
-        ctx.strokeStyle = "Red";
-        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+
+        let debug = false;
+        if (debug) {
+            ctx.strokeStyle = "Red";
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        }
     };;
 };
 
@@ -100,7 +110,7 @@ class Platform {
 
     draw(ctx) {
         let blockCount = this.w / 128;
-        ctx.drawImage(this.spritesheet,256, 256, 128,128, 
+        ctx.drawImage(this.spritesheet,257, 256, 128,127, 
             this.x - this.game.camera.x - 128, 
             this.y - this.game.camera.y, 
             128, 128);
@@ -117,8 +127,15 @@ class Platform {
             this.x + (i * 128) - this.game.camera.x, 
             this.y - this.game.camera.y, 
             128, 128);
-
+        
+        let debug = false;
+        if (debug) {
+            this.debug(ctx);
+        }
+        
+    };
+    debug(ctx) {
         ctx.strokeStyle = "Red";
         ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-    };;
+    }
 };

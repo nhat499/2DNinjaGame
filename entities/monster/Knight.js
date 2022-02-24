@@ -6,11 +6,16 @@ class Knight {
         this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);  
         this.scale = 1;
         this.hp = 100;
+        this.dmg = 5;
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
+        this.spriteOffsetX = 60;
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
         this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+        this.canAttack = true;
+        this.updateAlertBB();
+        //this.updateMonsterHB();
 
         // animation
         this.animations = []; // list of animations
@@ -18,7 +23,7 @@ class Knight {
 
         // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
         // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-        this.actionDecider = [250, -250, 0];
+        this.actionDecider = ["moveleft", "moveright", "stay", "attack"];
     };
 
     loadAnimations() {
@@ -44,19 +49,20 @@ class Knight {
         this.animations["jump" + "left"] =  new Animator(this.spritesheet, 0, 2048, 512, 512, 10, 0.05, 0, true, true);
     };
 
-    move(speed) {
-        this.action = "walk";
-        if (speed < 0) {
+    move(action) {
+        let speed = 0;
+        if (action ===  "moveleft") {
             this.facing = "left"
-        } else if (speed > 0) {
-            this.facing = "right"
-        } else {
-            if (this.facing == "left") {
-                this.facing == "right";
-            } else {
-                this.facing = "left";
-            }
+            this.action = "walk";
+            speed = -250;
+        } else if (action ===  "moveright") {
+            this.facing = "right";
+            this.action = "walk";
+            speed = 250;
+        } else if (action === "stay") {
             this.action = "idle";
+        } else if (action === "attack") {
+            this.action = "attack";
         }
         this.velocity.x = speed;
     }
@@ -66,24 +72,34 @@ class Knight {
         const TICK = this.game.clockTick;
 
         if (this.action === "dmg") {
+            this.monsterHB = undefined;
             if (this.animations["dmg" + this.facing].animationFinish) { // being hit animation
                 this.action = "idle";
+                this.canAttack = true;
             }
             if (this.hp <= 0) {
                 this.action = "die";
             }
         } else if (this.action === "die") { // dying animation timer
-            if (this.animations["die"+this.facing].animationFinish) {
+            if (this.animations["die" + this.facing].animationFinish) {
                 this.removeFromWorld = true;
             }
         } else if (this.action === "idle") { // idle 
+            this.monsterHB = undefined;
             if (this.animations["idle" + this.facing].animationFinish) {
-                let i = Math.floor(Math.random() * 3) // pick number 0-3
-                //this.move(this.actionDecider[2]);
+                this.canAttack = true;
+                let i = Math.floor(Math.random() * 3); 
                 this.move(this.actionDecider[i]);
             }
         } else if (this.action === "walk") { // moving
+            this.monsterHB = undefined;
             if (this.animations["walk" + this.facing].animationFinish) {
+                this.action = "idle";
+                this.velocity.x = 0;
+            }
+        } else if (this.action === "attack") {
+            if (this.animations["attack" + this.facing].animationFinish) {
+                this.updateMonsterHB();
                 this.action = "idle";
                 this.velocity.x = 0;
             }
@@ -95,6 +111,8 @@ class Knight {
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
+        this.updateAlertBB();
+
 
         let self = this;
         // collision
@@ -110,10 +128,12 @@ class Knight {
                         self.x = entity.BB.right - 60;
                     } else  if (self.lastBB.right <= entity.BB.left) { // right collision
                         // need to add right collision here
+                        self.velocity.x = 0;
+                        self.x = entity.BB.left - 80 - 60;
                     }
                 }
             }
-                        //doesnt have dmg animation yet
+            self.handleAlert(self, entity);
             if (entity.hitBox && self.BB.collide(entity.hitBox)) { //&&  self.hp > 0 
                 if (entity.facing === "left") {
                     self.facing = "right";
@@ -130,6 +150,7 @@ class Knight {
             }
         });
         this.updateBB();
+        this.updateAlertBB();
     };
 
     updateBB() {
@@ -137,21 +158,74 @@ class Knight {
         this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);    
     }
 
+    updateAlertBB() {
+        this.lastAlertBB = this.alertBB;
+        this.alertBB = new BoundingBox(this.x-200 + 60, this.y + 50, 480, 115)
+    }
+
+    updateMonsterHB() {
+        let bufferx = 0;
+        let buffery = 50;
+        if (this.facing === "right") bufferx = 70;
+        if (this.facing === "left") bufferx = 0;
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y + buffery, 120,100);
+    }
+
+
+    handleAlert(self, entity) {
+        if (entity instanceof MainNinja && self.alertBB.collide(entity.BB)
+            && self.action != "die" && self.action != "attack") {
+            if (self.BB.left - 100 >= entity.BB.left) { // left collision
+                self.facing = "left";
+                self.action = "walk";
+                self.velocity.x = -250;
+
+            } else if (self.BB.right + 100 <= entity.BB.right) { // right collision
+                self.facing = "right";
+                self.action = "walk";
+                self.velocity.x = 250;
+            } else if (self.canAttack) {
+                if (self.BB.left >= entity.BB.left) { 
+                    self.facing = "left";
+                } else {
+                    self.facing = "right";
+                }
+                self.velocity.x = 0;
+                self.action = "attack";
+                self.canAttack = false;
+            }
+        }
+
+    }
+
     draw(ctx) {                 // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
             this.x - this.game.camera.x, 
             this.y - this.game.camera.y, 0.4);
-        if (this.action === "attack") {
-            let buffer = 0;
-            if (this.facing == "left") buffer = -128;
-            this.animations["slash" + this.facing].drawFrame(this.game.clockTick, ctx, this.x + buffer, this.y - 64, 0.5);
-        }
+    
+
+    let debug = false;
+    if (debug) {
         this.debug(ctx);
+    }  
+       
     };
 
     debug(ctx) {
         this.game.ctx.strokeStyle = "red"; // the outline of shape
         this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+    
+        this.game.ctx.strokeStyle = "blue"; // alert range
+        this.game.ctx.strokeRect(this.alertBB.x - this.game.camera.x, this.alertBB.y - this.game.camera.y, this.alertBB.width, this.alertBB.height);
+
+        if (this.monsterHB) {
+            this.game.ctx.strokeStyle = "purple"; // attack range
+            this.game.ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, 
+            this.monsterHB.width, this.monsterHB.height);
+        }
+    
     }
+
+    
 
 }

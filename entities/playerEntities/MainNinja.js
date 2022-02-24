@@ -1,409 +1,98 @@
 class MainNinja {
-  constructor(game, x, y) {
-    // all entites should have construture
-    Object.assign(this, { game, x, y });
-    this.spritesheet = ASSET_MANAGER.getAssset(
-      'sprites/entities/ninjaMainSheet.png'
-    );
+  constructor(game, x, y) { // all entites should have construture
+      Object.assign(this, {
+          game,
+          x,
+          y
+      });
+      this.spritesheet = ASSET_MANAGER.getAssset("sprites/entities/ninjaMainSheet.png");
+      this.miscellaneous = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
+      //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
+      this.scale = 1;
+      this.velocity = {
+          x: 0,
+          y: 0
+      };
+      this.fallAcc = 562 * 3;
+      // state variable
+      this.facing = "left"; // 0 right, 1 = left;
+      this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
+      this.attack = 2; // there 3 attack
+      //this.attacking = false;
+      // this.attackEnd = 7 * this.game.clockTick;
+      this.invicible = false;
+      this.doubleJump = true;
+      this.updateBB();
 
-    this.miscellaneous = ASSET_MANAGER.getAssset('sprites/Miscellaneous.png');
-    //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
-    this.scale = 1;
-    this.velocity = { x: 0, y: 0 };
-    this.fallAcc = 562 * 3;
-    // state variable
-    this.facing = 'left'; // 0 right, 1 = left;
-    this.action = 'idle'; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
-    this.attack = 2; // there 3 attack
-    //this.attacking = false;
-    // this.attackEnd = 7 * this.game.clockTick;
-    this.invicible = false;
-    this.doubleJump = true;
-    this.updateBB();
+      //
+      this.attackDmg = 0.5;
 
-    //
-    this.attackDmg = 0.5;
-    // animation
-    this.animations = []; // list of animations
-    this.loadAnimations();
 
-    // hp
-    this.maxHP = 150;
-    this.hp = this.maxHP;
+      // hp
+      this.maxHP = 150;
+      this.hp = this.maxHP;
+      this.healthBar = new HealthBar(this, 0, 40);
+      this.coins = parseInt(localStorage.getItem('coins') ?? 0, 10);
+      
+      // animation
+      this.animations = []; // list of animations
+      this.loadAnimations();
 
-    this.healthBar = new HealthBar(this, 0, 40);
+      // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
+      // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
 
-    this.coins = parseInt(localStorage.getItem('coins') ?? 0, 10);
+  };
 
-    // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
-    // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-  }
 
   loadAnimations() {
-    this.animations['invicible'] = new Animator(
-      this.miscellaneous,
-      140,
-      0,
-      150,
-      80,
-      3,
-      0.2,
-      0,
-      false,
-      true
-    );
+      this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80, 3, 0.2, 0, false, true);
 
-    this.animations['couch' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 30,
-      0,
-      154.5,
-      300,
-      3,
-      0.3,
-      0,
-      false,
-      true
-    );
-    this.animations['couch' + 'left'] = new Animator(
-      this.spritesheet,
-      3306.5,
-      0,
-      154.5,
-      300,
-      3,
-      0.3,
-      0,
-      true,
-      true
-    );
+      this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 + 30, 0, 154.5, 300, 3, 0.3, 0, false, true);
+      this.animations["couch" + "left"] = new Animator(this.spritesheet, 3306.5, 0, 154.5, 300, 3, 0.3, 0, true, true);
 
-    this.animations['dizzy' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 45,
-      300,
-      146,
-      300,
-      3,
-      0.3,
-      25,
-      false,
-      true
-    );
-    this.animations['dizzy' + 'left'] = new Animator(
-      this.spritesheet,
-      3242 + 20,
-      300,
-      146,
-      300,
-      3,
-      0.3,
-      25,
-      true,
-      true
-    );
+      this.animations["dizzy" + "right"] = new Animator(this.spritesheet, 3800 + 45, 300, 146, 300, 3, 0.3, 25, false, true);
+      this.animations["dizzy" + "left"] = new Animator(this.spritesheet, 3242 + 20, 300, 146, 300, 3, 0.3, 25, true, true);
 
-    this.animations['die' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 45,
-      600,
-      220,
-      300,
-      5,
-      1,
-      0,
-      false,
-      true
-    );
-    this.animations['die' + 'left'] = new Animator(
-      this.spritesheet,
-      2655,
-      600,
-      220,
-      300,
-      5,
-      1,
-      0,
-      true,
-      true
-    );
+      this.animations["die" + "right"] = new Animator(this.spritesheet, 3800 + 45, 600, 220, 300, 5, 1, 0, false, true);
+      this.animations["die" + "left"] = new Animator(this.spritesheet, 2655, 600, 220, 300, 5, 1, 0, true, true);
 
-    this.animations['grabWall' + 'left'] = new Animator(
-      this.spritesheet,
-      3800 + 37,
-      900,
-      130,
-      300,
-      1,
-      1,
-      0,
-      false,
-      true
-    );
-    this.animations['grabWall' + 'right'] = new Animator(
-      this.spritesheet,
-      3633,
-      900,
-      130,
-      300,
-      1,
-      1,
-      0,
-      true,
-      true
-    );
+      this.animations["grabWall" + "left"] = new Animator(this.spritesheet, 3800 + 37, 900, 130, 300, 1, 1, 0, false, true);
+      this.animations["grabWall" + "right"] = new Animator(this.spritesheet, 3633, 900, 130, 300, 1, 1, 0, true, true);
 
-    this.animations['idle' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 30,
-      1500,
-      135,
-      300,
-      4,
-      0.3,
-      10,
-      false,
-      true
-    );
-    this.animations['idle' + 'left'] = new Animator(
-      this.spritesheet,
-      3200,
-      1500,
-      135,
-      300,
-      4,
-      0.3,
-      10,
-      true,
-      true
-    );
+      this.animations["idle" + "right"] = new Animator(this.spritesheet, 3800 + 30, 1500, 135, 300, 4, 0.3, 10, false, true);
+      this.animations["idle" + "left"] = new Animator(this.spritesheet, 3200, 1500, 135, 300, 4, 0.3, 10, true, true);
 
-    this.animations['jump' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 55 + 200,
-      1800,
-      200,
-      400,
-      1,
-      0.5,
-      0,
-      false,
-      true
-    );
-    this.animations['jump' + 'left'] = new Animator(
-      this.spritesheet,
-      1945 + 1400,
-      1800,
-      200,
-      400,
-      1,
-      0.5,
-      0,
-      false,
-      true
-    );
+      this.animations["jump" + "right"] = new Animator(this.spritesheet, 3800 + 55 + 200, 1800, 200, 400, 1, 0.5, 0, false, true);
+      this.animations["jump" + "left"] = new Animator(this.spritesheet, 1945 + 1400, 1800, 200, 400, 1, 0.5, 0, false, true);
 
-    this.animations['jump2' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 55 + 400,
-      1800,
-      200,
-      400,
-      5,
-      0.07,
-      0,
-      false,
-      true
-    );
-    this.animations['jump2' + 'left'] = new Animator(
-      this.spritesheet,
-      1945 + 400,
-      1800,
-      200,
-      400,
-      5,
-      0.07,
-      0,
-      true,
-      true
-    );
+      this.animations["jump2" + "right"] = new Animator(this.spritesheet, 3800 + 55 + 400, 1800, 200, 400, 5, 0.07, 0, false, true);
+      this.animations["jump2" + "left"] = new Animator(this.spritesheet, 1945 + 400, 1800, 200, 400, 5, 0.07, 0, true, true);
 
-    this.animations['run' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 40,
-      2200,
-      200,
-      300,
-      6,
-      0.09,
-      15,
-      false,
-      true
-    );
-    this.animations['run' + 'left'] = new Animator(
-      this.spritesheet,
-      2485,
-      2200,
-      200,
-      300,
-      6,
-      0.09,
-      15,
-      true,
-      true
-    );
+      this.animations["run" + "right"] = new Animator(this.spritesheet, 3800 + 40, 2200, 200, 300, 6, 0.09, 15, false, true);
+      this.animations["run" + "left"] = new Animator(this.spritesheet, 2485, 2200, 200, 300, 6, 0.09, 15, true, true);
 
-    this.animations['attack0' + 'right'] = new Animator(
-      this.spritesheet,
-      3800,
-      2500,
-      400,
-      300,
-      7,
-      0.05,
-      0,
-      false,
-      true
-    );
-    this.animations['attack0' + 'left'] = new Animator(
-      this.spritesheet,
-      3800,
-      2500,
-      -400,
-      300,
-      7,
-      0.05,
-      0,
-      false,
-      true
-    );
+      this.animations["attack0" + "right"] = new Animator(this.spritesheet, 3800, 2500, 400, 300, 7, 0.05, 0, false, true);
+      this.animations["attack0" + "left"] = new Animator(this.spritesheet, 3800, 2500, -400, 300, 7, 0.05, 0, false, true);
 
-    this.animations['attack1' + 'right'] = new Animator(
-      this.spritesheet,
-      3800,
-      2800,
-      425,
-      300,
-      6,
-      0.05,
-      0,
-      false,
-      true
-    );
-    this.animations['attack1' + 'left'] = new Animator(
-      this.spritesheet,
-      1250,
-      2800,
-      425,
-      300,
-      6,
-      0.05,
-      0,
-      true,
-      true
-    );
+      this.animations["attack1" + "right"] = new Animator(this.spritesheet, 3800, 2800, 425, 300, 6, 0.05, 0, false, true);
+      this.animations["attack1" + "left"] = new Animator(this.spritesheet, 1250, 2800, 425, 300, 6, 0.05, 0, true, true);
 
-    this.animations['attack2' + 'right'] = new Animator(
-      this.spritesheet,
-      3800,
-      3100,
-      420,
-      400,
-      8,
-      0.05,
-      0,
-      false,
-      true
-    );
-    this.animations['attack2' + 'left'] = new Animator(
-      this.spritesheet,
-      440,
-      3100,
-      420,
-      400,
-      8,
-      0.05,
-      0,
-      true,
-      true
-    );
+      this.animations["attack2" + "right"] = new Animator(this.spritesheet, 3800, 3100, 420, 400, 8, 0.05, 0, false, true);
+      this.animations["attack2" + "left"] = new Animator(this.spritesheet, 440, 3100, 420, 400, 8, 0.05, 0, true, true);
 
-    this.animations['attack3' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 40,
-      3500,
-      400,
-      400,
-      4,
-      0.05,
-      0,
-      false,
-      true
-    );
-    this.animations['attack3' + 'left'] = new Animator(
-      this.spritesheet,
-      2160 + 40,
-      3500,
-      400,
-      400,
-      4,
-      0.05,
-      0,
-      true,
-      true
-    );
+      this.animations["attack3" + "right"] = new Animator(this.spritesheet, 3800 + 40, 3500, 400, 400, 4, 0.05, 0, false, true);
+      this.animations["attack3" + "left"] = new Animator(this.spritesheet, 2160 + 40, 3500, 400, 400, 4, 0.05, 0, true, true);
 
-    this.animations['slide' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 15,
-      3900,
-      224,
-      300,
-      3,
-      0.5,
-      48,
-      false,
-      true
-    );
-    this.animations['slide' + 'left'] = new Animator(
-      this.spritesheet,
-      3017,
-      3900,
-      224,
-      300,
-      2,
-      0.5,
-      48,
-      true,
-      true
-    );
+      this.animations["slide" + "right"] = new Animator(this.spritesheet, 3800 + 15, 3900, 224, 300, 3, 0.5, 48, false, true);
+      this.animations["slide" + "left"] = new Animator(this.spritesheet, 3017, 3900, 224, 300, 2, 0.5, 48, true, true);
 
-    this.animations['throw' + 'right'] = new Animator(
-      this.spritesheet,
-      3800 + 8,
-      4200,
-      208,
-      300,
-      3,
-      0.1,
-      16,
-      false,
-      true
-    );
-    this.animations['throw' + 'left'] = new Animator(
-      this.spritesheet,
-      3132,
-      4200,
-      208,
-      300,
-      3,
-      0.1,
-      16,
-      true,
-      true
-    );
-  }
+      this.animations["throw" + "right"] = new Animator(this.spritesheet, 3800 + 8, 4200, 208, 300, 3, 0.1, 16, false, true);
+      this.animations["throw" + "left"] = new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.1, 16, true, true);
+  };
 
+
+
+  //update() {}
   collectCoins(qty) {
     this.coins += qty;
     localStorage.setItem('coins', this.coins);
@@ -413,616 +102,502 @@ class MainNinja {
     this.coins -= qty;
     localStorage.setItem('coins', this.coins);
   }
-  //update() {}
 
   update() {
-    // must have update method
-    // logic to update it's state, background have no state, just have x,y
-    const TICK = this.game.clockTick;
 
-    const MIN_WALK = 4.453125 * 3;
-    const MAX_WALK = 93.75 * 3;
-    const MAX_RUN = 153.75 * 3;
-    const ACC_WALK = 133.59375 * 3;
-    const ACC_RUN = 200.390625 * 3;
-    const DEC_REL = 182.8125;
-    const DEC_SLIDE = 300;
-    const MIN_SKID = 33.75;
+      // must have update method
+      // logic to update it's state, background have no state, just have x,y
+      const TICK = this.game.clockTick;
 
-    const STOP_FALL = 1575;
-    const WALK_FALL = 1800;
-    const RUN_FALL = 2025 * 3;
-    const STOP_FALL_A = 450;
-    const WALK_FALL_A = 421.875;
-    const RUN_FALL_A = 562.5;
+      const MIN_WALK = 4.453125 * 3;
+      const MAX_WALK = 93.75 * 3;
+      const MAX_RUN = 153.75 * 3;
+      const ACC_WALK = 133.59375 * 3;
+      const ACC_RUN = 200.390625 * 3;
+      const DEC_REL = 182.8125;
+      const DEC_SLIDE = 300;
+      const MIN_SKID = 33.75;
 
-    const MAX_FALL = 270 * 3;
+      const STOP_FALL = 1575;
+      const WALK_FALL = 1800;
+      const RUN_FALL = 2025 * 3;
+      const STOP_FALL_A = 450;
+      const WALK_FALL_A = 421.875;
+      const RUN_FALL_A = 562.5;
 
-    //this.velocity.y += this.fallAcc * TICK;
-    // update verlocity
-    // if (this.action === "slide") {
-    //     this.velocity.x -= 500 * TICK;
-    //     if (Math.abs(this.velocity.x) <= MAX_RUN/2) {
-    //         this.action = "idle";
-    //     }
-    // }
+      const MAX_FALL = 270 * 3;
 
-    if (
-      this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2"
-      //&& this.action != "attack0"
-    ) {
-      // ground physics (aka: character is not airborne)
-
-      if (this.action.substring(0, 6) != 'attack') {
-        // if slide key is not down (which is always true at the start of the game) then...
-        this.velocity.x = 0; // set horizontal velocity to 0
-        this.action = 'idle'; // be in "idle" state
-        if (this.game.left && !this.game.right && !this.game.attack) {
-          // if only the left-arrow key is down then...
-          this.facing = 'left'; // make character face left
-          this.action = 'run'; // make character run
-          this.velocity.x -= MAX_RUN; // negative horizontal velocity so that character moves towards the left
-        }
-        if (this.game.right && !this.game.left && !this.game.attack) {
-          // if only the right-arrow key is down then...
-          this.facing = 'right'; // make character face left
-          this.action = 'run'; // make character run
-          this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
-        }
-      }
-
-      if (this.game.slide) {
-        // else if slide key is down then...
-        if (this.facing === 'right' && this.velocity.x > 0) {
-          // if chacter is moving right then...
-          this.action = 'slide'; // make character slide
-          this.velocity.x -= DEC_REL * 50 * TICK; // reduce character's positive (moving right) horizontal velocity over time
-        }
-        if (this.facing === 'left' && this.velocity.x < 0) {
-          // if character is moving left then...
-          this.action = 'slide'; // make character slide
-          this.velocity.x += DEC_REL * 50 * TICK; // reduce character's negative (moving left) velocity over time
-        }
-      } else if (Math.abs(this.velocity.x) >= MAX_RUN && !this.game.slide) {
-        // else if character is in a slide && horizontal velocity is greater than running velocity && slide key is NOT down then...
-        if (this.facing === 'right') {
-          // if character is facing right then...
-          this.velocity.x -= DEC_REL * 5 * TICK; // reduce character's negative (moving left) velocity over time
-        }
-        if (this.facing === 'left') {
-          // if character is facing left then...
-          this.velocity.x += DEC_REL * 5 * TICK; // reduce character's positive (moving right) velocity over time
-        }
-      }
-
-      if (
-        this.game.jump &&
-        this.velocity.y === 0 &&
-        this.action.substring(0, 6) != 'attack'
+      if(this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
+          //&& this.action != "attack0"
       ) {
-        // jump key press
-        this.velocity.y -= 3000; // 1st jump
-        ///this.fallAcc = STOP_FALL;
-        this.action = 'jump';
-        this.game.jump = false;
+          // ground physics (aka: character is not airborne)
+
+          if(this.action.substring(0, 6) != "attack") { // if slide key is not down (which is always true at the start of the game) then...
+              this.velocity.x = 0; // set horizontal velocity to 0
+              this.action = "idle"; // be in "idle" state
+              if(this.game.left && !this.game.right && !this.game.attack) { // if only the left-arrow key is down then...
+                  this.facing = "left"; // make character face left
+                  this.action = "run"; // make character run
+                  this.velocity.x -= MAX_RUN; // negative horizontal velocity so that character moves towards the left
+              }
+              if(this.game.right && !this.game.left && !this.game.attack) { // if only the right-arrow key is down then...
+                  this.facing = "right"; // make character face left
+                  this.action = "run"; // make character run 
+                  this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
+              }
+          }
+
+          if(this.game.slide) { // else if slide key is down then...
+              if(this.facing === "right" && this.velocity.x > 0) { // if chacter is moving right then...
+                  this.action = "slide"; // make character slide
+                  this.velocity.x -= DEC_REL * 50 * TICK; // reduce character's positive (moving right) horizontal velocity over time
+              }
+              if(this.facing === "left" && this.velocity.x < 0) { // if character is moving left then...
+                  this.action = "slide"; // make character slide
+                  this.velocity.x += DEC_REL * 50 * TICK; // reduce character's negative (moving left) velocity over time
+              }
+          } else if(Math.abs(this.velocity.x) >= MAX_RUN && !this.game.slide) { // else if character is in a slide && horizontal velocity is greater than running velocity && slide key is NOT down then...
+              if(this.facing === "right") { // if character is facing right then...
+                  this.velocity.x -= DEC_REL * 5 * TICK; // reduce character's negative (moving left) velocity over time
+              }
+              if(this.facing === "left") { // if character is facing left then... 
+                  this.velocity.x += DEC_REL * 5 * TICK; // reduce character's positive (moving right) velocity over time
+              }
+          }
+
+          if(this.game.jump && this.velocity.y === 0 && this.action.substring(0, 6) != "attack") { // jump key press
+              this.velocity.y -= 3000; // 1st jump
+              ///this.fallAcc = STOP_FALL;
+              this.action = "jump";
+              this.game.jump = false;
+          }
+      } else {
+          // character is already in the air
+          // double jump
+
+          this.velocity.y += this.fallAcc * TICK;
+
+          if(this.doubleJump && this.game.jump) {
+              if(this.action === "attack3") this.hitBox = undefined;
+              this.velocity.y = -6000;
+              this.action = "jump2";
+              if(this.facing === "right" && this.velocity.x < 0) this.velocity.x = 400;
+              if(this.facing === "right" && this.velocity.x > 0) this.velocity.x = 400;
+              if(this.facing === "left" && this.velocity.x > 0) this.velocity.x = -400;
+              if(this.facing === "left" && this.velocity.x < 0) this.velocity.x = -400;
+              this.doubleJump = false;
+          }
+
+          //horizontal physics 
+          if(this.game.right && !this.game.left) {
+              this.facing = "right";
+              //this.action = "run";
+              if(Math.abs(this.velocity.x) > MAX_WALK) {
+                  this.velocity.x += MAX_WALK * TICK;
+              } else this.velocity.x += MAX_WALK * TICK;
+          } else if(this.game.left && !this.game.right) {
+              this.facing = "left";
+              //this.action = "run";
+              if(Math.abs(this.velocity.x) > MAX_WALK) {
+                  this.velocity.x -= MAX_WALK * TICK;
+              } else this.velocity.x -= MAX_WALK * TICK;
+          } else {
+              // do nothing
+          }
       }
-    } else {
-      // character is already in the air
-      // double jump
+
+
+
+      // throw mechanic
+      if(this.game.throw) {
+          this.action = "throw"
+          // if (this.animations["throw" + this.facing].currentFrame() === 1) { // need help (multiple times)
+          //     let kunai = new Kunai(this.game, this.x, this.y);
+          //     this.game.addEntity(kunai); // need to remove kunai when animation finishes
+          // }
+          if(this.animations["throw" + this.facing].animationStart) {
+              this.animations["throw" + this.facing].animationStart = false;
+              let kunaiVerlocity = 1000;
+              if(this.facing === "left") {
+                  kunaiVerlocity = -1000;
+              }
+              let shuriken = new Kunai(this.game, this.x, this.y + 50, kunaiVerlocity);
+              this.game.addEntity(shuriken);
+          }
+          if(this.animations["throw" + this.facing].animationFinish) {
+              this.game.throw = false;
+              this.animations["throw" + this.facing].animationStart = true;
+          }
+      }
+
+      // attac mechanic 2 // this work but attack changes mid attack
+      // if (this.game.attack) {
+      //     // attack 0
+      //     if ((this.game.up || this.game.action === "attack2")) {
+      //         this.attack = 2;
+      //     } else if (((this.game.right || this.game.left) || this.game.action === "attack1")) {
+      //             this.attack = 1;
+      //     } else if ((!this.game.right || !this.game.left || this.game.action === "attack0")) {
+      //         this.attack = 0;
+      //     } 
+      //     this.action = "attack" + this.attack;
+      //     if (this.animations[this.action + this.facing].animationFinish) {
+      //         this.game.attack = false;
+      //     }
+      // }
+
+
+
+      // attack mechanic 3 //
+      if(this.game.attack || this.action.substring(0, 6) === "attack") {
+          if(this.action.substring(0, 6) != "attack") {
+              if(this.velocity.y === 0) {
+                  this.velocity.x = 0;
+              }
+              if(this.game.up) {
+                  this.action = "attack2";
+              } else if((this.game.left || this.game.right) && this.velocity.y === 0) {
+                  this.action = "attack1";
+              } else {
+                  this.action = "attack0";
+              }
+          } else {
+              if((this.action === "attack2")) { // up attack
+                  this.action = "attack2";
+              } else if((this.action === "attack1")) { // left or right attack
+                  this.action = "attack1";
+              } else if(this.velocity.y != 0) { // air attack
+                  this.action = "attack3";
+              } else { // neutral attack
+                  this.action = "attack0";
+              }
+              this.updateHB(this.action, this.facing);
+              if(this.animations[this.action + this.facing].animationFinish) {
+                  this.animations[this.action + this.facing].animationFinish = false;
+                  this.hitBox = undefined;
+                  if(this.action != "attack3") {
+                      this.action = "idle";
+                  }
+              }
+          }
+      }
+
+      if(this.invicible) {
+          if(this.animations["invicible"].animationFinish) {
+              this.invicible = false;
+          }
+      }
 
       this.velocity.y += this.fallAcc * TICK;
 
-      if (this.doubleJump && this.game.jump) {
-        if (this.action === 'attack3') this.hitBox = undefined;
-        this.velocity.y = -6000;
-        this.action = 'jump2';
-        if (this.facing === 'right' && this.velocity.x < 0)
-          this.velocity.x = 400;
-        if (this.facing === 'right' && this.velocity.x > 0)
-          this.velocity.x = 400;
-        if (this.facing === 'left' && this.velocity.x > 0)
-          this.velocity.x = -400;
-        if (this.facing === 'left' && this.velocity.x < 0)
-          this.velocity.x = -400;
-        this.doubleJump = false;
-      }
+      // max speed calculation
+      if(this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
+      if(this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
 
-      //horizontal physics
-      if (this.game.right && !this.game.left) {
-        this.facing = 'right';
-        //this.action = "run";
-        if (Math.abs(this.velocity.x) > MAX_WALK) {
-          this.velocity.x += MAX_WALK * TICK;
-        } else this.velocity.x += MAX_WALK * TICK;
-      } else if (this.game.left && !this.game.right) {
-        this.facing = 'left';
-        //this.action = "run";
-        if (Math.abs(this.velocity.x) > MAX_WALK) {
-          this.velocity.x -= MAX_WALK * TICK;
-        } else this.velocity.x -= MAX_WALK * TICK;
-      } else {
-        // do nothing
-      }
-    }
+      let doubleJumpBonus = 0;
+      if(!this.doubleJump) doubleJumpBonus = 50;
+      if(this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN + doubleJumpBonus;
+      if(this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN - doubleJumpBonus;
 
-    // throw mechanic
-    if (this.game.throw) {
-      this.action = 'throw';
-      // if (this.animations["throw" + this.facing].currentFrame() === 1) { // need help (multiple times)
-      //     let kunai = new Kunai(this.game, this.x, this.y);
-      //     this.game.addEntity(kunai); // need to remove kunai when animation finishes
-      // }
-      if (this.animations['throw' + this.facing].animationStart) {
-        this.animations['throw' + this.facing].animationStart = false;
-        let kunaiVerlocity = 1000;
-        if (this.facing === 'left') {
-          kunaiVerlocity = -1000;
-        }
-        let shuriken = new Kunai(
-          this.game,
-          this.x,
-          this.y + 50,
-          kunaiVerlocity
-        );
-        this.game.addEntity(shuriken);
-      }
-      if (this.animations['throw' + this.facing].animationFinish) {
-        this.game.throw = false;
-        this.animations['throw' + this.facing].animationStart = true;
-      }
-    }
+      // update position
+      this.x += this.velocity.x * TICK;
+      this.y += this.velocity.y * TICK;
+      this.updateBB(); //bounding box;
 
-    // attac mechanic 2 // this work but attack changes mid attack
-    // if (this.game.attack) {
-    //     // attack 0
-    //     if ((this.game.up || this.game.action === "attack2")) {
-    //         this.attack = 2;
-    //     } else if (((this.game.right || this.game.left) || this.game.action === "attack1")) {
-    //             this.attack = 1;
-    //     } else if ((!this.game.right || !this.game.left || this.game.action === "attack0")) {
-    //         this.attack = 0;
-    //     }
-    //     this.action = "attack" + this.attack;
-    //     if (this.animations[this.action + this.facing].animationFinish) {
-    //         this.game.attack = false;
-    //     }
-    // }
+      // collision handling
+      let self = this;
+      this.game.entities.forEach(function(entity) {
+          if(entity.BB && self.BB.collide(entity.BB)) {
+              //if (self.velocity.y >= 0) { // falling
+              // add more ground stuff here
+              if((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall || entity instanceof Stump) &&
+                  self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+                  self.doubleJump = true;
+                  self.velocity.y = 0;
+                  self.y = entity.BB.top - 130;
+                  if(self.action === "attack3") {
+                      self.velocity.x = 0;
+                      self.hitBox = undefined
+                      self.action = "idle";
+                      //self.game.attack = false;
+                  }
+                  //self.updateBB();     
+              }
 
-    // attack mechanic 3 //
-    if (this.game.attack || this.action.substring(0, 6) === 'attack') {
-      if (this.action.substring(0, 6) != 'attack') {
-        if (this.velocity.y === 0) {
-          this.velocity.x = 0;
-        }
-        if (this.game.up) {
-          this.action = 'attack2';
-        } else if (
-          (this.game.left || this.game.right) &&
-          this.velocity.y === 0
-        ) {
-          this.action = 'attack1';
-        } else {
-          this.action = 'attack0';
-        }
-      } else {
-        if (this.action === 'attack2') {
-          // up attack
-          this.action = 'attack2';
-        } else if (this.action === 'attack1') {
-          // left or right attack
-          this.action = 'attack1';
-        } else if (this.velocity.y != 0) {
-          // air attack
-          this.action = 'attack3';
-        } else {
-          // neutral attack
-          this.action = 'attack0';
-        }
-        this.updateHB(this.action, this.facing);
-        if (this.animations[this.action + this.facing].animationFinish) {
-          this.animations[this.action + this.facing].animationFinish = false;
-          this.hitBox = undefined;
-          if (this.action != 'attack3') {
-            this.action = 'idle';
+              if((entity instanceof Wall || entity instanceof Ground) && self.BB.bottom > entity.BB.top) {
+                  if(self.lastBB.left >= entity.BB.right) { // left collision
+                      if(self.velocity.y !== 0) {
+                          self.action = "grabWall";
+                      }
+                      self.game.attack = false;
+                      self.hitBox = undefined
+                      self.doubleJump = true;
+                      self.velocity.x = 0;
+                      self.x = entity.BB.right;
+                      self.velocity.y = 0;
+                      self.y = self.y;
+                  } else if(self.lastBB.right <= entity.BB.left) { // right collision
+                      if(self.velocity.y !== 0) {
+                          self.action = "grabWall";
+                      }
+
+                      self.game.attack = false;
+                      self.hitBox = undefined
+                      self.doubleJump = true;
+                      self.velocity.x = 0;
+                      self.x = entity.BB.left - 60;
+                      self.velocity.y = 0;
+                      self.y = self.y;
+                  }
+                  //self.updateBB();
+              }
+
+              if(entity instanceof Stump && self.BB.bottom > entity.BB.top) {
+                  if(self.lastBB.left >= entity.BB.right) { // left collision
+                      // if (self.velocity.y !== 0) {
+                      //     self.action = "grabWall";
+                      // }
+                      self.game.attack = false;
+                      self.hitBox = undefined;
+                      //self.doubleJump = true;
+                      self.velocity.x = 0;
+                      self.x = entity.BB.right;
+                      self.velocity.y = 0;
+                      self.y = self.y;
+                      entity.action = "movingLeft";
+                  } else if(self.lastBB.right <= entity.BB.left) { // right collision
+                      // if (self.velocity.y !== 0) {
+                      //     self.action = "grabWall";
+                      // }
+                      self.game.attack = false;
+                      self.hitBox = undefined;
+                      //self.doubleJump = true;
+                      self.velocity.x = 0;
+                      self.x = entity.BB.left - 60;
+                      self.velocity.y = 0;
+                      self.y = self.y;
+                      entity.action = "movingRight";
+                  }
+              }
+
+              if(!self.invicible) {
+                  if(entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
+                    self.takeDamage(entity);
+                    if(self.facing === "left") {
+                          self.velocity.x = 300;
+                      } else {
+                          self.velocity.x = -300;
+                      }
+                      self.invicible = true;
+                      self.action = "dizzy";
+                      self.hitBox = undefined;
+                      self.velocity.y = -200;
+                  }
+              }
+
           }
-        }
-      }
-    }
+          if(!self.invicible) {
+              if(entity.monsterHB && self.BB.collide(entity.monsterHB)) { // got hit
+                  self.takeDamage(entity);
+                  self.action = "dizzy";
+                  self.invicible = true;
+                  self.velocity.y = -200;
+                  self.hitBox = undefined;
+                  if(entity instanceof Slime) { // bounce attack
+                      self.invicible = true;
+                      self.hitBox = undefined;
+                      self.velocity.y = -6000;
+                  }
+                  if(entity.BB.left <= self.BB.left) {
+                      self.velocity.x = 100;
+                  } else {
+                      self.velocity.x = -100;
+                  }
 
-    if (this.invicible) {
-      if (this.animations['invicible'].animationFinish) {
-        this.invicible = false;
-      }
-    }
-
-    // attack mechanic
-    // if (this.game.attack) {
-    //     if(this.game.attack && !this.game.right && !this.game.left) {
-    //         this.attack = 1;
-    //     }
-    //     if(this.game.attack && this.game.right) {
-    //         this.attack = 0;
-    //     }
-
-    //     if(this.game.attack && this.game.up) {
-    //         this.attack = 2;
-    //     }
-
-    //     if (this.velocity.y != 0) {
-    //         this.action = "attack3";
-    //         this.hitBox = new BoundingBox(
-    //             this.x - 70, this.y - 20,
-    //             200, 200)
-    //     } else {
-    //         this.action = "attack" + this.attack;
-    //         if (this.facing === "right") {
-    //             this.hitBox = new BoundingBox(
-    //                 this.x + 60
-    //                 , this.y + 20,
-    //                 130,100);
-    //         } else {
-    //             this.hitBox = new BoundingBox(
-    //                 this.x - 130
-    //                 , this.y + 20,
-    //                 130,100);
-    //         }
-    //         if (this.animations[this.action + this.facing].animationFinish) {
-    //             this.game.attack = false;
-    //             //this.attack = (this.attack + 1) % 3
-    //             this.hitBox=undefined
-    //         // } else if (this.animations["attack1" + this.facing].animationFinish) {
-    //         //     this.game.attack = false;
-    //         //     //this.attack = (this.attack + 1) % 3
-    //         //     this.hitBox=undefined
-    //         // } else if (this.animations["attack2" + this.facing].animationFinish) {
-    //         //     this.game.attack = false;
-    //         //     //this.attack = (this.attack + 1) % 3
-    //         //     this.hitBox=undefined
-    //         }
-
-    //     }
-    // }
-
-    this.velocity.y += this.fallAcc * TICK;
-
-    // max speed calculation
-    if (this.velocity.y >= MAX_FALL) this.velocity.y = MAX_FALL;
-    if (this.velocity.y <= -MAX_FALL) this.velocity.y = -MAX_FALL;
-
-    let doubleJumpBonus = 0;
-    if (!this.doubleJump) doubleJumpBonus = 50;
-    if (this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN + doubleJumpBonus;
-    if (this.velocity.x <= -MAX_RUN)
-      this.velocity.x = -MAX_RUN - doubleJumpBonus;
-
-    // update position
-    this.x += this.velocity.x * TICK;
-    this.y += this.velocity.y * TICK;
-    this.updateBB(); //bounding box;
-
-    // collision handling
-    let self = this;
-    this.game.entities.forEach(function (entity) {
-      if (entity.BB && self.BB.collide(entity.BB)) {
-        //if (self.velocity.y >= 0) { // falling
-        // add more ground stuff here
-        if (
-          (entity instanceof Ground ||
-            entity instanceof Platform ||
-            entity instanceof Wall ||
-            entity instanceof Stump) &&
-          self.lastBB.bottom <= entity.BB.top
-        ) {
-          // landing, top collison
-          self.doubleJump = true;
-          self.velocity.y = 0;
-          self.y = entity.BB.top - 130;
-          if (self.action === 'attack3') {
-            self.velocity.x = 0;
-            self.hitBox = undefined;
-            self.action = 'idle';
-            //self.game.attack = false;
+              }
           }
-          //self.updateBB();
-        }
 
-        if (
-          (entity instanceof Wall || entity instanceof Ground) &&
-          self.BB.bottom > entity.BB.top
-        ) {
-          if (self.lastBB.left >= entity.BB.right) {
-            // left collision
-            if (self.velocity.y !== 0) {
-              self.action = 'grabWall';
-            }
-            self.game.attack = false;
-            self.hitBox = undefined;
-            self.doubleJump = true;
-            self.velocity.x = 0;
-            self.x = entity.BB.right;
-            self.velocity.y = 0;
-            self.y = self.y;
-          } else if (self.lastBB.right <= entity.BB.left) {
-            // right collision
-            if (self.velocity.y !== 0) {
-              self.action = 'grabWall';
-            }
-
-            self.game.attack = false;
-            self.hitBox = undefined;
-            self.doubleJump = true;
-            self.velocity.x = 0;
-            self.x = entity.BB.left - 60;
-            self.velocity.y = 0;
-            self.y = self.y;
-          }
-          //self.updateBB();
-        }
-
-        if (entity instanceof Stump && self.BB.bottom > entity.BB.top) {
-          if (self.lastBB.left >= entity.BB.right) {
-            // left collision
-            // if (self.velocity.y !== 0) {
-            //     self.action = "grabWall";
-            // }
-            self.game.attack = false;
-            self.hitBox = undefined;
-            //self.doubleJump = true;
-            self.velocity.x = 0;
-            self.x = entity.BB.right;
-            self.velocity.y = 0;
-            self.y = self.y;
-            entity.action = 'movingLeft';
-          } else if (self.lastBB.right <= entity.BB.left) {
-            // right collision
-            // if (self.velocity.y !== 0) {
-            //     self.action = "grabWall";
-            // }
-            self.game.attack = false;
-            self.hitBox = undefined;
-            //self.doubleJump = true;
-            self.velocity.x = 0;
-            self.x = entity.BB.left - 60;
-            self.velocity.y = 0;
-            self.y = self.y;
-            entity.action = 'movingRight';
-          }
-        }
-
-        if (!self.invicible) {
-          if (entity instanceof Slime || entity instanceof Ghost) {
-            // touch dmg
-            self.takeDamage(entity);
-            if (self.facing === 'left') {
-              self.velocity.x = 300;
-            } else {
-              self.velocity.x = -300;
-            }
-            self.invicible = true;
-            self.action = 'dizzy';
-            self.hitBox = undefined;
-            self.velocity.y = -200;
-          }
-        }
-      }
-      if (!self.invicible) {
-        if (entity.monsterHB && self.BB.collide(entity.monsterHB)) {
-          // got hit
-          self.takeDamage(entity);
-          if (entity instanceof Slime) {
-            // bounce attack
-            self.action = 'dizzy';
-            self.invicible = true;
-            self.hitBox = undefined;
-            self.velocity.y = -6000;
-            if (entity.BB.left <= self.BB.left) {
-              self.velocity.x = 100;
-            } else {
-              self.velocity.x = -100;
-            }
-          }
-        }
-      }
-    });
-    self.updateBB();
-  }
+      });
+      self.updateBB();
+  };
 
   updateBB() {
-    let slideBuffer = 0;
-    if (this.action === 'slide') slideBuffer = 32;
-    this.lastBB = this.BB;
-    this.BB = new BoundingBox(
-      this.x,
-      this.y + 20 + slideBuffer,
-      60,
-      110 - slideBuffer
-    );
+      let slideBuffer = 0;
+      if(this.action === "slide") slideBuffer = 32;
+      this.lastBB = this.BB;
+      this.BB = new BoundingBox(this.x, this.y + 20 + slideBuffer,
+          60,
+          110 - slideBuffer);
   }
 
   updateHB(attack, facing) {
-    // right facing
-    if (facing === 'right') {
-      this.hitBox = this.hitBox = new BoundingBox(
-        this.x + 60,
-        this.y + 20,
-        130,
-        100
-      );
-    }
-    // left facing
-    if (facing === 'left') {
-      this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130, 100);
-    }
+      // right facing
+      if(facing === "right") {
+          this.hitBox = this.hitBox = new BoundingBox(this.x + 60, this.y + 20, 130, 100);
+      }
 
-    // jump attack bounding box
-    if (attack === 'attack3') {
-      this.hitBox = new BoundingBox(this.x - 70, this.y - 20, 200, 200);
-    }
+      // left facing
+      if(facing === "left") {
+          this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130, 100);
+      }
+
+
+      // jump attack bounding box
+      if(attack === "attack3") {
+          this.hitBox = new BoundingBox(this.x - 70, this.y - 20, 200, 200)
+      }
   }
 
   takeDamage(entity) {
-    if (entity.dmg && this.hp > 0) {
-      this.hp -= entity.dmg;
-      if (this.hp <= 0) {
-        this.hp = 0;
-        this.action = 'die';
+    if(entity.dmg && this.hp > 0) {
+        this.hp -= entity.dmg;
+        if(this.hp <= 0) {
+            this.hp = 0;
+            this.action = "die";
+        }
+    }
+  }
+
+  draw(ctx) { // must have draw method
+      let slidey = 0;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      // drawing a adjust
+      if(this.action === "jump") {
+          offsetY = 30;
       }
-    }
-  }
+      if(this.action === "slide") {
+          if(this.facing === "right") offsetX = -40;
+          else if(this.facing === "left") offsetX = -15;
+          offsetY = -15;
+      };
 
-  draw(ctx) {
-    // must have draw method
-    let slidey = 0;
-    let offsetX = 0;
-    let offsetY = 0;
+      // attack0 adjustment
+      if(this.action === "attack0") {
+          if(this.facing === "right") offsetX = -30;
+          if(this.facing === "left") offsetX = 80;
+          offsetY = 13;
+      }
 
-    // drawing a adjust
-    if (this.action === 'jump') {
-      offsetY = 30;
-    }
-    if (this.action === 'slide') {
-      if (this.facing === 'right') offsetX = -40;
-      else if (this.facing === 'left') offsetX = -15;
-      offsetY = -15;
-    }
+      // attack 1 adjustment
+      if(this.action === "attack1") {
+          if(this.facing === "left") offsetX = -100;
+          if(this.facing === "right") offsetX = -30;
+          offsetY = 7;
+      }
 
-    // attack0 adjustment
-    if (this.action === 'attack0') {
-      if (this.facing === 'right') offsetX = -30;
-      if (this.facing === 'left') offsetX = 80;
-      offsetY = 13;
-    }
+      // attack 2 ajustment
+      if(this.action === "attack2") {
+          if(this.facing === "left") offsetX = -100;
+          if(this.facing === "right") offsetX = -30;
+          offsetY = 40;
+      }
+      // jump attack ajustment
+      if(this.action === "attack3") {
+          offsetX = -60;
+          offsetY = 30;
+      }
 
-    // attack 1 adjustment
-    if (this.action === 'attack1') {
-      if (this.facing === 'left') offsetX = -100;
-      if (this.facing === 'right') offsetX = -30;
-      offsetY = 7;
-    }
+      this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx,
+          this.x + offsetX - this.game.camera.x,
+          this.y - offsetY + slidey - this.game.camera.y,
+          .5);
 
-    // attack 2 ajustment
-    if (this.action === 'attack2') {
-      if (this.facing === 'left') offsetX = -100;
-      if (this.facing === 'right') offsetX = -30;
-      offsetY = 40;
-    }
-    // jump attack ajustment
-    if (this.action === 'attack3') {
-      offsetX = -60;
-      offsetY = 30;
-    }
+      if(this.invicible) {
+          this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y, .5);
+      }
+      this.healthBar.draw(ctx);
 
-    this.animations[this.action + this.facing].drawFrame(
-      this.game.clockTick,
-      ctx,
-      this.x + offsetX - this.game.camera.x,
-      this.y - offsetY + slidey - this.game.camera.y,
-      0.5
-    );
-    this.debug(ctx);
+      let debug = false;
+      if (debug) {
+        this.debug(ctx);
+      }
+      
 
-    if (this.invicible) {
-      this.animations['invicible'].drawFrame(
-        this.game.clockTick,
-        ctx,
-        this.x - this.game.camera.x - 10,
-        this.y - this.game.camera.y,
-        0.5
-      );
-    }
-  }
+  };
 
   debug(ctx) {
-    // left debug
-    ctx.font = '10px serif';
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.left ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(10, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('<', 20, this.game.surfaceHeight - 20);
+      // left debug
+      ctx.font = "10px serif"
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.left ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(10, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("<", 20, this.game.surfaceHeight - 20);
 
-    // down debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.down ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(50, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('>', 60, this.game.surfaceHeight - 20);
+      // down debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.down ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(50, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText(">", 60, this.game.surfaceHeight - 20);
 
-    // up debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.up ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(50, this.game.surfaceHeight - 80, 30, 30);
-    ctx.fillText('^', 60, this.game.surfaceHeight - 60);
+      // up debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.up ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(50, this.game.surfaceHeight - 80, 30, 30);
+      ctx.fillText("^", 60, this.game.surfaceHeight - 60);
 
-    // right debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.right ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(90, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('v', 100, this.game.surfaceHeight - 20);
+      // right debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.right ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(90, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("v", 100, this.game.surfaceHeight - 20);
 
-    // jump debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.jump ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(130, this.game.surfaceHeight - 40, 50, 30);
-    ctx.fillText('space', 140, this.game.surfaceHeight - 20);
+      // jump debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.jump ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(130, this.game.surfaceHeight - 40, 50, 30);
+      ctx.fillText("space", 140, this.game.surfaceHeight - 20);
 
-    // attack debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.attack ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(190, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('a', 200, this.game.surfaceHeight - 20);
+      // attack debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.attack ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(190, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("a", 200, this.game.surfaceHeight - 20);
 
-    // slide debug
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.slide ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStyle;
-    ctx.strokeRect(230, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('s', 240, this.game.surfaceHeight - 20);
+      // slide debug
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.slide ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeRect(230, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("s", 240, this.game.surfaceHeight - 20);
 
-    ctx.strokeStlye = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = this.game.throw ? 'White' : 'Grey';
-    ctx.fillStyle = ctx.strokeStlye;
-    ctx.strokeRect(270, this.game.surfaceHeight - 40, 30, 30);
-    ctx.fillText('d', 280, this.game.surfaceHeight - 20);
+      ctx.strokeStlye = "black";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = this.game.throw ? "White" : "Grey";
+      ctx.fillStyle = ctx.strokeStlye;
+      ctx.strokeRect(270, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("d", 280, this.game.surfaceHeight - 20);
 
-    ctx.strokeStyle = 'black';
-    ctx.fillText('Xloc: ' + this.x, 10, 10);
-    ctx.strokeStyle = 'black';
-    ctx.fillText('Yloc: ' + this.y, 10, 30);
+      ctx.strokeStyle = "black";
+      ctx.fillText("Xloc: " + this.x, 10, 10);
+      ctx.strokeStyle = "black";
+      ctx.fillText("Yloc: " + this.y, 10, 30);
 
-    // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
-    // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
+      // this.walkLeft.drawFrame(this.game.clockTick, ctx, 400,400,.75);
+      // this.walkRight.drawFrame(this.game.clockTick, ctx, 300,400,.75);
 
-    this.game.ctx.strokeStyle = 'red'; // the outline of shape
-    this.game.ctx.strokeRect(
-      this.BB.x - this.game.camera.x,
-      this.BB.y - this.game.camera.y,
-      this.BB.width,
-      this.BB.height
-    );
+      this.game.ctx.strokeStyle = "red"; // the outline of shape
+      this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
-    if (this.hitBox) {
-      this.game.ctx.strokeStyle = 'red'; // the outline of shape
-      this.game.ctx.strokeRect(
-        this.hitBox.x - this.game.camera.x,
-        this.hitBox.y - this.game.camera.y,
-        this.hitBox.width,
-        this.hitBox.height
-      );
-    }
-
-    this.healthBar.draw(ctx);
+      if(this.hitBox) {
+          this.game.ctx.strokeStyle = "red"; // the outline of shape
+          this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x,
+              this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+      }
   }
+
 }
