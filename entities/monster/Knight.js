@@ -202,7 +202,13 @@ class Knight {
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
             this.x - this.game.camera.x, 
             this.y - this.game.camera.y, 0.4);
+    
+
+    let debug = false;
+    if (debug) {
         this.debug(ctx);
+    }  
+       
     };
 
     debug(ctx) {

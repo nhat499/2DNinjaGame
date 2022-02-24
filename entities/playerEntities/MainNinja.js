@@ -398,6 +398,7 @@ class MainNinja {
           }
           if(!self.invicible) {
               if(entity.monsterHB && self.BB.collide(entity.monsterHB)) { // got hit
+                  self.takeDamage(entity);
                   self.action = "dizzy";
                   self.invicible = true;
                   self.velocity.y = -200;
@@ -502,12 +503,17 @@ class MainNinja {
           this.x + offsetX - this.game.camera.x,
           this.y - offsetY + slidey - this.game.camera.y,
           .5);
-      this.debug(ctx);
 
       if(this.invicible) {
           this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y, .5);
       }
       this.healthBar.draw(ctx);
+
+      let debug = false;
+      if (debug) {
+        this.debug(ctx);
+      }
+      
 
   };
 

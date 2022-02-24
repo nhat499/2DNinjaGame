@@ -186,11 +186,12 @@ class Slime {
         // being hit animation
         this.action = 'idle';
       }
-      if (this.hp <= 0) {
-        this.action = 'dying';
-      }
-    } else if (this.action === 'dying') {
+      // if (this.hp <= 0) {
+      //   this.action = 'dying';
+      // }
+    } else if (this.hp <= 0) {//if (this.action === 'dying') {
       // dying animation timer
+      this.action = "dying";
       if (this.animations['dying' + this.facing].animationFinish) {
         this.removeFromWorld = true;
         this.dropLoot();
@@ -268,6 +269,7 @@ class Slime {
           }
         }
         self.hp -= entity.attackDmg;
+        console.log(self.hp);
         if (!self.boss) {
           self.action = 'dmg';
         }
@@ -277,7 +279,6 @@ class Slime {
   }
 
   updateBB() {
-    // if (!this.boss) {
     this.lastBB = this.BB;
     this.BB = new BoundingBox(
       this.x,
@@ -285,7 +286,6 @@ class Slime {
       140 * this.scale,
       130 * this.scale
     );
-    // }
   }
 
   updateSlimeHB() {
@@ -357,24 +357,26 @@ class Slime {
       );
     }
 
-    ctx.strokeStyle = 'Red';
-    ctx.strokeRect(
-      this.BB.x - this.game.camera.x,
-      this.BB.y - this.game.camera.y,
-      this.BB.width,
-      this.BB.height
-    );
-
-    if (this.monsterHB) {
+    this.healthBar.draw(ctx);
+    let debug = false
+    if (debug) {
       ctx.strokeStyle = 'Red';
       ctx.strokeRect(
-        this.monsterHB.x - this.game.camera.x,
-        this.monsterHB.y - this.game.camera.y,
-        this.monsterHB.width,
-        this.monsterHB.height
+        this.BB.x - this.game.camera.x,
+        this.BB.y - this.game.camera.y,
+        this.BB.width,
+        this.BB.height
       );
+  
+      if (this.monsterHB) {
+        ctx.strokeStyle = 'Red';
+        ctx.strokeRect(
+          this.monsterHB.x - this.game.camera.x,
+          this.monsterHB.y - this.game.camera.y,
+          this.monsterHB.width,
+          this.monsterHB.height
+        );
+      }
     }
-
-    this.healthBar.draw(ctx);
   }
 }
