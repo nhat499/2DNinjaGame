@@ -1,11 +1,18 @@
-class MainNinja {                      
-  constructor(game, x,y) {    // all entites should have construture
-      Object.assign(this, {game, x, y});
+class MainNinja {
+  constructor(game, x, y) { // all entites should have construture
+      Object.assign(this, {
+          game,
+          x,
+          y
+      });
       this.spritesheet = ASSET_MANAGER.getAssset("sprites/entities/ninjaMainSheet.png");
       this.miscellaneous = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
       //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
       this.scale = 1;
-      this.velocity = {x:0, y:0};
+      this.velocity = {
+          x: 0,
+          y: 0
+      };
       this.fallAcc = 562 * 3;
       // state variable
       this.facing = "left"; // 0 right, 1 = left;
@@ -25,62 +32,62 @@ class MainNinja {
 
       // this.walkLeft = new Animator(this.spritesheet, 3159, 238, 242, 246, 7, 0.23, 3, false, true);
       // this.walkRight = new Animator(this.spritesheet, 3159, 238, -242, 246, 7, 0.23, -3, false, true);
-      
+
   };
 
 
   loadAnimations() {
-      this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80,3,0.2,0,false,true);
+      this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80, 3, 0.2, 0, false, true);
 
-      this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 +30, 0, 154.5, 300, 3, 0.3, 0, false, true);
+      this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 + 30, 0, 154.5, 300, 3, 0.3, 0, false, true);
       this.animations["couch" + "left"] = new Animator(this.spritesheet, 3306.5, 0, 154.5, 300, 3, 0.3, 0, true, true);
 
-      this.animations["dizzy" + "right"] = new Animator(this.spritesheet, 3800 +45, 300, 146, 300, 3, 0.3, 25, false, true);
+      this.animations["dizzy" + "right"] = new Animator(this.spritesheet, 3800 + 45, 300, 146, 300, 3, 0.3, 25, false, true);
       this.animations["dizzy" + "left"] = new Animator(this.spritesheet, 3242 + 20, 300, 146, 300, 3, 0.3, 25, true, true);
 
-      this.animations["die" + "right"] =  new Animator(this.spritesheet, 3800 +45, 600, 220, 300, 5, 1, 0, false, true);
-      this.animations["die" + "left"] =  new Animator(this.spritesheet, 2655, 600, 220, 300, 5, 1, 0, true, true);
+      this.animations["die" + "right"] = new Animator(this.spritesheet, 3800 + 45, 600, 220, 300, 5, 1, 0, false, true);
+      this.animations["die" + "left"] = new Animator(this.spritesheet, 2655, 600, 220, 300, 5, 1, 0, true, true);
 
-      this.animations["grabWall" + "left"] =  new Animator(this.spritesheet, 3800 +37, 900, 130, 300, 1, 1, 0, false, true);
-      this.animations["grabWall" + "right"] =  new Animator(this.spritesheet, 3633, 900, 130, 300, 1, 1, 0, true, true);
+      this.animations["grabWall" + "left"] = new Animator(this.spritesheet, 3800 + 37, 900, 130, 300, 1, 1, 0, false, true);
+      this.animations["grabWall" + "right"] = new Animator(this.spritesheet, 3633, 900, 130, 300, 1, 1, 0, true, true);
 
-      this.animations["idle" + "right"] =  new Animator(this.spritesheet, 3800 +30, 1500, 135, 300, 4, 0.3, 10, false, true);
-      this.animations["idle" + "left"] =  new Animator(this.spritesheet, 3200, 1500, 135, 300, 4, 0.3, 10, true, true);
+      this.animations["idle" + "right"] = new Animator(this.spritesheet, 3800 + 30, 1500, 135, 300, 4, 0.3, 10, false, true);
+      this.animations["idle" + "left"] = new Animator(this.spritesheet, 3200, 1500, 135, 300, 4, 0.3, 10, true, true);
 
-      this.animations["jump" + "right"] =  new Animator(this.spritesheet, 3800 +55 + 200, 1800, 200, 400, 1, 0.5, 0, false, true);
-      this.animations["jump" + "left"] =  new Animator(this.spritesheet, 1945 + 1400, 1800, 200, 400, 1, 0.5, 0, false, true);
+      this.animations["jump" + "right"] = new Animator(this.spritesheet, 3800 + 55 + 200, 1800, 200, 400, 1, 0.5, 0, false, true);
+      this.animations["jump" + "left"] = new Animator(this.spritesheet, 1945 + 1400, 1800, 200, 400, 1, 0.5, 0, false, true);
 
-      this.animations["jump2" + "right"] =  new Animator(this.spritesheet, 3800 +55 + 400, 1800, 200, 400, 5, 0.07, 0, false, true);
-      this.animations["jump2" + "left"] =  new Animator(this.spritesheet, 1945 + 400, 1800, 200, 400, 5, 0.07, 0, true, true);
+      this.animations["jump2" + "right"] = new Animator(this.spritesheet, 3800 + 55 + 400, 1800, 200, 400, 5, 0.07, 0, false, true);
+      this.animations["jump2" + "left"] = new Animator(this.spritesheet, 1945 + 400, 1800, 200, 400, 5, 0.07, 0, true, true);
 
-      this.animations["run" + "right"] =  new Animator(this.spritesheet, 3800 +40, 2200, 200, 300, 6, 0.09, 15, false, true);
-      this.animations["run" + "left"] =  new Animator(this.spritesheet, 2485, 2200, 200, 300, 6, 0.09, 15, true, true);
-      
-      this.animations["attack0" + "right"] =  new Animator(this.spritesheet, 3800, 2500, 400, 300, 7, 0.05, 0, false, true);
-      this.animations["attack0" + "left"] =  new Animator(this.spritesheet, 3800, 2500, -400, 300, 7, 0.05, 0, false, true);
+      this.animations["run" + "right"] = new Animator(this.spritesheet, 3800 + 40, 2200, 200, 300, 6, 0.09, 15, false, true);
+      this.animations["run" + "left"] = new Animator(this.spritesheet, 2485, 2200, 200, 300, 6, 0.09, 15, true, true);
 
-      this.animations["attack1" + "right"] =  new Animator(this.spritesheet, 3800, 2800, 425, 300, 6, 0.05, 0, false, true);
-      this.animations["attack1" + "left"] =  new Animator(this.spritesheet, 1250, 2800, 425, 300, 6, 0.05, 0, true, true);
+      this.animations["attack0" + "right"] = new Animator(this.spritesheet, 3800, 2500, 400, 300, 7, 0.05, 0, false, true);
+      this.animations["attack0" + "left"] = new Animator(this.spritesheet, 3800, 2500, -400, 300, 7, 0.05, 0, false, true);
 
-      this.animations["attack2" + "right"] =  new Animator(this.spritesheet, 3800, 3100, 420, 400, 8, 0.05, 0, false, true);
-      this.animations["attack2" + "left"] =  new Animator(this.spritesheet, 440, 3100, 420, 400, 8, 0.05, 0, true, true);
+      this.animations["attack1" + "right"] = new Animator(this.spritesheet, 3800, 2800, 425, 300, 6, 0.05, 0, false, true);
+      this.animations["attack1" + "left"] = new Animator(this.spritesheet, 1250, 2800, 425, 300, 6, 0.05, 0, true, true);
 
-      this.animations["attack3" + "right"] =  new Animator(this.spritesheet, 3800 +40, 3500, 400, 400, 4, 0.05, 0, false, true);
-      this.animations["attack3" + "left"] =  new Animator(this.spritesheet, 2160 +40, 3500, 400, 400, 4, 0.05, 0, true, true);
+      this.animations["attack2" + "right"] = new Animator(this.spritesheet, 3800, 3100, 420, 400, 8, 0.05, 0, false, true);
+      this.animations["attack2" + "left"] = new Animator(this.spritesheet, 440, 3100, 420, 400, 8, 0.05, 0, true, true);
 
-      this.animations["slide" + "right"] =  new Animator(this.spritesheet, 3800 +15, 3900, 224, 300, 3, 0.5, 48, false, true);
-      this.animations["slide" + "left"] =  new Animator(this.spritesheet, 3017, 3900, 224, 300, 2, 0.5, 48, true, true);
+      this.animations["attack3" + "right"] = new Animator(this.spritesheet, 3800 + 40, 3500, 400, 400, 4, 0.05, 0, false, true);
+      this.animations["attack3" + "left"] = new Animator(this.spritesheet, 2160 + 40, 3500, 400, 400, 4, 0.05, 0, true, true);
 
-      this.animations["throw" + "right"] =  new Animator(this.spritesheet, 3800 +8, 4200, 208, 300, 3, 0.1, 16, false, true);
-      this.animations["throw" + "left"] =  new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.1, 16, true, true);
+      this.animations["slide" + "right"] = new Animator(this.spritesheet, 3800 + 15, 3900, 224, 300, 3, 0.5, 48, false, true);
+      this.animations["slide" + "left"] = new Animator(this.spritesheet, 3017, 3900, 224, 300, 2, 0.5, 48, true, true);
+
+      this.animations["throw" + "right"] = new Animator(this.spritesheet, 3800 + 8, 4200, 208, 300, 3, 0.1, 16, false, true);
+      this.animations["throw" + "left"] = new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.1, 16, true, true);
   };
 
 
 
   //update() {}
 
-  update() {   
-                   
+  update() {
+
       // must have update method
       // logic to update it's state, background have no state, just have x,y
       const TICK = this.game.clockTick;
@@ -90,7 +97,7 @@ class MainNinja {
       const MAX_RUN = 153.75 * 3;
       const ACC_WALK = 133.59375 * 3;
       const ACC_RUN = 200.390625 * 3;
-      const DEC_REL = 182.8125 ;
+      const DEC_REL = 182.8125;
       const DEC_SLIDE = 300;
       const MIN_SKID = 33.75;
 
@@ -102,8 +109,8 @@ class MainNinja {
       const RUN_FALL_A = 562.5;
 
       const MAX_FALL = 270 * 3;
-    
-   
+
+
 
       //this.velocity.y += this.fallAcc * TICK;
       // update verlocity
@@ -116,29 +123,29 @@ class MainNinja {
 
       if (this.velocity.y === 0 //&& this.action != "jump" && this.action != "jump2" 
           //&& this.action != "attack0"
-          ) {
+      ) {
           // ground physics (aka: character is not airborne)
 
-          if (this.action.substring(0,6) != "attack") { // if slide key is not down (which is always true at the start of the game) then...
+          if (this.action.substring(0, 6) != "attack") { // if slide key is not down (which is always true at the start of the game) then...
               this.velocity.x = 0; // set horizontal velocity to 0
               this.action = "idle"; // be in "idle" state
               if (this.game.left && !this.game.right && !this.game.attack) { // if only the left-arrow key is down then...
                   this.facing = "left"; // make character face left
                   this.action = "run"; // make character run
-                  this.velocity.x -= MAX_RUN;// negative horizontal velocity so that character moves towards the left
+                  this.velocity.x -= MAX_RUN; // negative horizontal velocity so that character moves towards the left
               }
               if (this.game.right && !this.game.left && !this.game.attack) { // if only the right-arrow key is down then...
                   this.facing = "right"; // make character face left
                   this.action = "run"; // make character run 
                   this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
               }
-          } 
-          
-          if ( this.game.slide) { // else if slide key is down then...
+          }
+
+          if (this.game.slide) { // else if slide key is down then...
               if (this.facing === "right" && this.velocity.x > 0) { // if chacter is moving right then...
                   this.action = "slide"; // make character slide
-                  this.velocity.x -= DEC_REL * 50 * TICK;  // reduce character's positive (moving right) horizontal velocity over time
-              } 
+                  this.velocity.x -= DEC_REL * 50 * TICK; // reduce character's positive (moving right) horizontal velocity over time
+              }
               if (this.facing === "left" && this.velocity.x < 0) { // if character is moving left then...
                   this.action = "slide"; // make character slide
                   this.velocity.x += DEC_REL * 50 * TICK; // reduce character's negative (moving left) velocity over time
@@ -146,14 +153,14 @@ class MainNinja {
           } else if (Math.abs(this.velocity.x) >= MAX_RUN && !this.game.slide) { // else if character is in a slide && horizontal velocity is greater than running velocity && slide key is NOT down then...
               if (this.facing === "right") { // if character is facing right then...
                   this.velocity.x -= DEC_REL * 5 * TICK; // reduce character's negative (moving left) velocity over time
-              } 
+              }
               if (this.facing === "left") { // if character is facing left then... 
                   this.velocity.x += DEC_REL * 5 * TICK; // reduce character's positive (moving right) velocity over time
               }
           }
-          
-          if (this.game.jump && this.velocity.y === 0 && this.action.substring(0,6) != "attack") { // jump key press
-              this.velocity.y -= 3000;  // 1st jump
+
+          if (this.game.jump && this.velocity.y === 0 && this.action.substring(0, 6) != "attack") { // jump key press
+              this.velocity.y -= 3000; // 1st jump
               ///this.fallAcc = STOP_FALL;
               this.action = "jump";
               this.game.jump = false;
@@ -186,14 +193,14 @@ class MainNinja {
               this.facing = "left";
               //this.action = "run";
               if (Math.abs(this.velocity.x) > MAX_WALK) {
-                  this.velocity.x -= MAX_WALK* TICK;
+                  this.velocity.x -= MAX_WALK * TICK;
               } else this.velocity.x -= MAX_WALK * TICK;
           } else {
               // do nothing
           }
       }
 
-  
+
 
       // throw mechanic
       if (this.game.throw) {
@@ -236,8 +243,8 @@ class MainNinja {
 
 
       // attack mechanic 3 //
-      if (this.game.attack || this.action.substring(0,6) === "attack") {
-          if ( this.action.substring(0,6) != "attack") {
+      if (this.game.attack || this.action.substring(0, 6) === "attack") {
+          if (this.action.substring(0, 6) != "attack") {
               if (this.velocity.y === 0) {
                   this.velocity.x = 0;
               }
@@ -248,8 +255,8 @@ class MainNinja {
               } else {
                   this.action = "attack0";
               }
-          } else { 
-              if (( this.action === "attack2")) { // up attack
+          } else {
+              if ((this.action === "attack2")) { // up attack
                   this.action = "attack2";
               } else if ((this.action === "attack1")) { // left or right attack
                   this.action = "attack1";
@@ -320,7 +327,7 @@ class MainNinja {
       //         //     this.hitBox=undefined
       //         }
 
-              
+
       //     }
       // }
 
@@ -333,7 +340,7 @@ class MainNinja {
 
       let doubleJumpBonus = 0;
       if (!this.doubleJump) doubleJumpBonus = 50;
-      if (this.velocity.x >= MAX_RUN)  this.velocity.x = MAX_RUN + doubleJumpBonus;
+      if (this.velocity.x >= MAX_RUN) this.velocity.x = MAX_RUN + doubleJumpBonus;
       if (this.velocity.x <= -MAX_RUN) this.velocity.x = -MAX_RUN - doubleJumpBonus;
 
       // update position
@@ -342,15 +349,15 @@ class MainNinja {
       this.updateBB(); //bounding box;
 
 
-      
+
       // collision handling
       let self = this;
-      this.game.entities.forEach(function (entity) {
+      this.game.entities.forEach(function(entity) {
           if (entity.BB && self.BB.collide(entity.BB)) {
               //if (self.velocity.y >= 0) { // falling
-                    // add more ground stuff here
-              if ((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall || entity instanceof Stump) 
-              && self.lastBB.bottom <= entity.BB.top) { // landing, top collison
+              // add more ground stuff here
+              if ((entity instanceof Ground || entity instanceof Platform || entity instanceof Wall || entity instanceof Stump) &&
+                  self.lastBB.bottom <= entity.BB.top) { // landing, top collison
                   self.doubleJump = true;
                   self.velocity.y = 0;
                   self.y = entity.BB.top - 130;
@@ -359,11 +366,11 @@ class MainNinja {
                       self.hitBox = undefined
                       self.action = "idle";
                       //self.game.attack = false;
-                  }  
+                  }
                   //self.updateBB();     
-              } 
+              }
 
-              if ((entity instanceof Wall || entity instanceof Ground) && self.BB.bottom > entity.BB.top) { 
+              if ((entity instanceof Wall || entity instanceof Ground) && self.BB.bottom > entity.BB.top) {
                   if (self.lastBB.left >= entity.BB.right) { // left collision
                       if (self.velocity.y !== 0) {
                           self.action = "grabWall";
@@ -379,7 +386,7 @@ class MainNinja {
                       if (self.velocity.y !== 0) {
                           self.action = "grabWall";
                       }
-                      
+
                       self.game.attack = false;
                       self.hitBox = undefined
                       self.doubleJump = true;
@@ -391,7 +398,7 @@ class MainNinja {
                   //self.updateBB();
               }
 
-              if (entity instanceof Stump && self.BB.bottom > entity.BB.top) { 
+              if (entity instanceof Stump && self.BB.bottom > entity.BB.top) {
                   if (self.lastBB.left >= entity.BB.right) { // left collision
                       // if (self.velocity.y !== 0) {
                       //     self.action = "grabWall";
@@ -421,9 +428,9 @@ class MainNinja {
 
 
               if (!self.invicible) {
-                  if(entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
+                  if (entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
                       if (self.facing === "left") {
-                              self.velocity.x = 300;
+                          self.velocity.x = 300;
                       } else {
                           self.velocity.x = -300;
                       }
@@ -436,7 +443,7 @@ class MainNinja {
 
           }
           if (!self.invicible) {
-              if (entity.monsterHB && self.BB.collide(entity.monsterHB))  {  // got hit
+              if (entity.monsterHB && self.BB.collide(entity.monsterHB)) { // got hit
                   self.action = "dizzy";
                   self.invicible = true;
                   self.velocity.y = -200;
@@ -461,22 +468,22 @@ class MainNinja {
 
   updateBB() {
       let slideBuffer = 0;
-      if(this.action === "slide") slideBuffer = 32;
+      if (this.action === "slide") slideBuffer = 32;
       this.lastBB = this.BB;
-      this.BB = new BoundingBox(this.x, this.y + 20 +slideBuffer,
-          60, 
+      this.BB = new BoundingBox(this.x, this.y + 20 + slideBuffer,
+          60,
           110 - slideBuffer);
   }
 
   updateHB(attack, facing) {
       // right facing
       if (facing === "right") {
-          this.hitBox = this.hitBox = new BoundingBox(this.x + 60, this.y + 20,130,100);            
+          this.hitBox = this.hitBox = new BoundingBox(this.x + 60, this.y + 20, 130, 100);
       }
-  
+
       // left facing
       if (facing === "left") {
-          this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130,100);
+          this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130, 100);
       }
 
 
@@ -486,29 +493,30 @@ class MainNinja {
       }
   }
 
-  draw(ctx) {                 // must have draw method
+  draw(ctx) { // must have draw method
       let slidey = 0;
       let offsetX = 0;
       let offsetY = 0;
 
-  // drawing a adjust
+      // drawing a adjust
       if (this.action === "jump") {
-      offsetY = 30;
+          offsetY = 30;
       }
-      if (this.action === "slide") { 
-          if (this.facing === "right") offsetX = -40; else if (this.facing === "left") offsetX = -15;
+      if (this.action === "slide") {
+          if (this.facing === "right") offsetX = -40;
+          else if (this.facing === "left") offsetX = -15;
           offsetY = -15;
       };
 
       // attack0 adjustment
       if (this.action === "attack0") {
-          if (this.facing === "right") offsetX = -30; 
+          if (this.facing === "right") offsetX = -30;
           if (this.facing === "left") offsetX = 80;
           offsetY = 13;
       }
 
       // attack 1 adjustment
-      if(this.action === "attack1") {
+      if (this.action === "attack1") {
           if (this.facing === "left") offsetX = -100;
           if (this.facing === "right") offsetX = -30;
           offsetY = 7;
@@ -526,26 +534,26 @@ class MainNinja {
           offsetY = 30;
       }
 
-      this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, 
+      this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx,
           this.x + offsetX - this.game.camera.x,
-          this.y - offsetY + slidey - this.game.camera.y, 
+          this.y - offsetY + slidey - this.game.camera.y,
           .5);
       this.debug(ctx);
 
       if (this.invicible) {
-          this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y,.5);
+          this.animations["invicible"].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 10, this.y - this.game.camera.y, .5);
       }
-      
+
   };
 
   debug(ctx) {
-       // left debug
+      // left debug
       ctx.font = "10px serif"
       ctx.strokeStyle = "black";
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.left ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(10, this.game.surfaceHeight -40, 30, 30);
+      ctx.strokeRect(10, this.game.surfaceHeight - 40, 30, 30);
       ctx.fillText("<", 20, this.game.surfaceHeight - 20);
 
       // down debug
@@ -553,7 +561,7 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.down ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(50, this.game.surfaceHeight -40, 30, 30);
+      ctx.strokeRect(50, this.game.surfaceHeight - 40, 30, 30);
       ctx.fillText(">", 60, this.game.surfaceHeight - 20);
 
       // up debug
@@ -561,7 +569,7 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.up ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(50, this.game.surfaceHeight -80, 30, 30);
+      ctx.strokeRect(50, this.game.surfaceHeight - 80, 30, 30);
       ctx.fillText("^", 60, this.game.surfaceHeight - 60);
 
       // right debug
@@ -569,7 +577,7 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.right ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(90, this.game.surfaceHeight -40, 30, 30);
+      ctx.strokeRect(90, this.game.surfaceHeight - 40, 30, 30);
       ctx.fillText("v", 100, this.game.surfaceHeight - 20);
 
       // jump debug
@@ -577,7 +585,7 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.jump ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(130, this.game.surfaceHeight -40, 50, 30);
+      ctx.strokeRect(130, this.game.surfaceHeight - 40, 50, 30);
       ctx.fillText("space", 140, this.game.surfaceHeight - 20);
 
       // attack debug
@@ -585,7 +593,7 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.attack ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(190, this.game.surfaceHeight -40, 30, 30);
+      ctx.strokeRect(190, this.game.surfaceHeight - 40, 30, 30);
       ctx.fillText("a", 200, this.game.surfaceHeight - 20);
 
       // slide debug
@@ -593,15 +601,15 @@ class MainNinja {
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.slide ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStyle;
-      ctx.strokeRect(230, this.game.surfaceHeight -40, 30, 30);
-      ctx.fillText("s", 240, this.game.surfaceHeight - 20);      
-      
+      ctx.strokeRect(230, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("s", 240, this.game.surfaceHeight - 20);
+
       ctx.strokeStlye = "black";
       ctx.lineWidth = 2;
       ctx.strokeStyle = this.game.throw ? "White" : "Grey";
       ctx.fillStyle = ctx.strokeStlye;
-      ctx.strokeRect(270, this.game.surfaceHeight -40, 30, 30);
-      ctx.fillText("d", 280, this.game.surfaceHeight - 20); 
+      ctx.strokeRect(270, this.game.surfaceHeight - 40, 30, 30);
+      ctx.fillText("d", 280, this.game.surfaceHeight - 20);
 
       ctx.strokeStyle = "black";
       ctx.fillText("Xloc: " + this.x, 10, 10);
@@ -614,10 +622,10 @@ class MainNinja {
       this.game.ctx.strokeStyle = "red"; // the outline of shape
       this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
 
-      if(this.hitBox) {
+      if (this.hitBox) {
           this.game.ctx.strokeStyle = "red"; // the outline of shape
-      this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, 
-          this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+          this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x,
+              this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
       }
   }
 
