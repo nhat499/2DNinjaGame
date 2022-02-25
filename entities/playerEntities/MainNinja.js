@@ -182,7 +182,7 @@ class MainNinja {
                 }
             }
 
-            if (this.game.jump && this.velocity.y === 0 && this.action.substring(0, 6) != "attack") { // jump key press
+            if (this.game.jump && this.action.substring(0, 6) != "attack") { // jump key press
                 this.velocity.y -= 3000; // 1st jump
                 ///this.fallAcc = STOP_FALL;
                 this.jumpSound.play();
