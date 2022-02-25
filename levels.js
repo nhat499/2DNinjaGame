@@ -3,7 +3,7 @@ let ghostHeight = 400;
 
 let level1 = {
     // ground locations
-    grounds: [{x: -328, y: 700, width: 4224}, {x: 300, y: 0, width: 1920}, {x: 56, y: -500, width: 2304}],
+    grounds: [{x: -456, y: 700, width: 4352}, {x: 272, y: 0, width: 1920}, {x: 56, y: -500, width: 2304}],
 
     // platform location
     platforms:[{x: 1180, y: 550, width: 128}, {x: 1564, y:400, width: 128}, {x: 200, y:-190, width: 128}, 
@@ -11,7 +11,7 @@ let level1 = {
         {x: 1824, y:-1250, width: 128}, {x: 2208, y:-1401, width: 0}],
    
     // walls
-    walls: [{x: -328, y: -708, height: 1536},{x: 1964, y: 1, height: 512}, 
+    walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
         {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
 
     //tree stump locations
