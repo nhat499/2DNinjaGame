@@ -12,8 +12,9 @@ class SceneManager {
     //this.level = testingLevel;
 
     this.sound = new Audio();
-    this.sound.src = 'music/edson1.wav';
-    this.sound.volume = 0.25;
+    this.sound.loop = true;
+    this.sound.src = 'music/bgm1.mp3';
+    this.sound.volume = 0.05;
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);

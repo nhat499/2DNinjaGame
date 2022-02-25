@@ -4,7 +4,9 @@ class Coin {
 
     this.spritesheet = ASSET_MANAGER.getAssset('sprites/Miscellaneous.png');
     this.scale = 0.5;
-
+    // Sound from Zapsplat.com
+    this.coinCollectedSound = new Audio();
+    this.coinCollectedSound.src = "sound_effects/moneySound.mp3"
     this.animations = [];
 
     this.BB = animationOnly
@@ -38,6 +40,7 @@ class Coin {
       this.game.entities.forEach((e) => {
         if (e.BB && self.BB.collide(e.BB) && e instanceof MainNinja) {
           self.removeFromWorld = true;
+          self.coinCollectedSound.play();
           e.collectCoins(1);
         }
       });
