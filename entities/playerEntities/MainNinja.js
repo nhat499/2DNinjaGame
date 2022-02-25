@@ -22,10 +22,11 @@ class MainNinja {
         this.footStep = new Audio();
         this.footStep.src = "sound_effects/footStep.mp3";
         this.footStep.playbackRate = 1.5;
-        this.footStep.volume = 0.3;
+        this.footStep.volume = 0.1;
         this.jumpSound = new Audio();
         this.jumpSound.src = "sound_effects/jumpSound.mp3";
         this.jumpSound.playbackRate = 8;
+        this.jumpSound.volume = 0.1;
 
         this.fallAcc = 562 * 3;
         // state variable

@@ -14,7 +14,7 @@ class SceneManager {
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
-    this.sound.volume = 0.05;
+    this.sound.volume = 0.3;
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
