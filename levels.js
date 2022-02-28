@@ -14,7 +14,7 @@ let level = {
         walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
             {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
     
-        portals: [{x: 0, y: 572, nextLevel:"testingLevel"}],//[{x: 3512, y: 572, nextLevel:"testingLevel"}],
+        portals: [{x: 3512, y: 572, nextLevel:"testingLevel"}],
     
         //tree stump locations
         stumps: [],
@@ -42,14 +42,14 @@ let level = {
         platforms:[],
    
     // walls
-        walls: [{x: -328, y: -708, height: 1536}, {x: 800, y: -708, height: 1536}],
+        walls: [{x: -328, y: -708, height: 1536}],
 
         portals: [{x: 0, y: 572, nextLevel: "level1"}],
     
         stumps: [],
         slimes:[],
-        knights: [{x: 600, y: 0}],
-        ninjas: [],
+        knights: [{x: 600, y: 0}, {x: 900, y: 0} ,{x: 1000, y: 0}, {x: 1200, y: 0}],
+        ninjas: [{x: 1500, y: 0},  {x: 1700, y: 0}, {x: 1900, y: 0}, {x: 2100, y: 0}],
         ghosts: []
     }
 }   
