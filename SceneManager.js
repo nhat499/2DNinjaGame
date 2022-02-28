@@ -17,8 +17,6 @@ class SceneManager {
     //this.sound.volume = 0.3;
 
     this.volumeNum = document.getElementById('volumeTracker');
-    console.log(this.volumeNum.value);
-    this.sound.volume = (this.volumeNum.value / 100);
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
@@ -56,10 +54,6 @@ class SceneManager {
     // }
 
     // update horizontal camera
-    //console.log("hi");
-    // this.slider.onclick = function() {
-    //   console.log("hi");
-    // }
 
     this.sound.volume = (this.volumeNum.value / 100);
 
