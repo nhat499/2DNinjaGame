@@ -346,6 +346,11 @@ class MainNinja {
                     //self.updateBB();     
                 }
 
+                if (entity instanceof Portal && self.game.up) {
+                    //console.log(self.game.camera.level[entity.level])
+                    self.game.camera.loadLevel(level[entity.level]);
+                }
+
                 if ((entity instanceof Wall || entity instanceof Ground) && self.BB.bottom > entity.BB.top) {
                     if (self.lastBB.left >= entity.BB.right) { // left collision
                         if (self.velocity.y !== 0) {

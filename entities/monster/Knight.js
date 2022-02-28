@@ -134,7 +134,7 @@ class Knight {
                 }
             }
             self.handleAlert(self, entity);
-            if (entity.hitBox && self.BB.collide(entity.hitBox)) { //&&  self.hp > 0 
+            if (entity.hitBox && self.BB.collide(entity.hitBox) &&  self.hp > 0 ) { 
                 if (entity.facing === "left") {
                     self.facing = "right";
                     self.velocity.x = -100;

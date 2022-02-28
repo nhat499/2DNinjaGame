@@ -152,8 +152,10 @@ class GameEngine {
     }
 
     loop() {
-        this.clockTick = this.timer.tick();
-        this.update();
-        this.draw();
+        if (!this.pause) {
+            this.clockTick = this.timer.tick();
+            this.update();
+            this.draw();
+        }
     }
 }
