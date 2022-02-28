@@ -8,8 +8,8 @@ class SceneManager {
     // this.lives = 0;
     this.gameOver = false;
     this.title = true;
-    this.level = level1;
-    //this.level = testingLevel;
+    this.level = level;
+
 
     this.sound = new Audio();
     this.sound.loop = true;
@@ -74,7 +74,7 @@ class SceneManager {
         // click start game
         this.title = false;
         this.sound.play();
-        this.loadLevel(this.level);
+        this.loadLevel(this.level.level1);
       }
     }
 
@@ -107,10 +107,13 @@ class SceneManager {
 
     for (let i = 0; i < level.grounds.length; i++) {
       let ground = level.grounds[i];
-      console.log(ground);
-      this.game.addEntity(
-        new Ground(this.game, ground.x, ground.y, ground.width)
-      );
+      this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width));
+    }
+
+    for (let i = 0; i < level.portals.length; i++) {
+      let portal = level.portals[i];
+      let thePort = new Portal(this.game, portal.x, portal.y, portal.nextLevel)
+      this.game.addEntity(thePort);
     }
 
     for (let i = 0; i < level.slimes.length; i++) {
@@ -155,10 +158,11 @@ class SceneManager {
     }
 
     if (this.gameOver) {
-      ctx.filter = 'grayscale(1)';
+      // ctx.filter = 'grayscale(1)';
       ctx.fillStyle = 'red';
       ctx.font = '50px serif';
       ctx.fillText('GAME OVER', 385, 450);
+      this.game.pause = true;
     }
 
     if (!this.title) {
