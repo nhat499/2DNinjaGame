@@ -14,7 +14,11 @@ class SceneManager {
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
-    this.sound.volume = 0.3;
+    //this.sound.volume = 0.3;
+
+    this.volumeNum = document.getElementById('volumeTracker');
+    console.log(this.volumeNum.value);
+    this.sound.volume = (this.volumeNum.value / 100);
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
@@ -52,6 +56,13 @@ class SceneManager {
     // }
 
     // update horizontal camera
+    //console.log("hi");
+    // this.slider.onclick = function() {
+    //   console.log("hi");
+    // }
+
+    this.sound.volume = (this.volumeNum.value / 100);
+
     let leftPoint = this.game.surfaceWidth / 3;
     let rightPoint = this.game.surfaceWidth - leftPoint;
     if (this.x < this.ninja.x - rightPoint) {
