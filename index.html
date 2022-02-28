@@ -30,7 +30,7 @@
     <script src="main.js" defer></script>
   </head>
 
-  <style>
+  <style lang="postcss" scoped>
     #main {
       position: relative;
       width: 1000px;
@@ -133,6 +133,73 @@
       height: 16px;
       width: 16px;
     }
+
+    .slider-cont {
+      box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider {
+      position: relative;
+      width: 300px;
+      height: 8px;
+    }
+
+    .slider input[type="range"] {
+      position: absolute;
+      left: -2px;
+      top: 0;
+      width: 304px;
+      height: 8px;
+      -webkit-appearance: none;
+      background: transparent;
+      z-index: 99;
+    }
+
+    .slider input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border: 2px solid rgb(9, 205, 240);
+      cursor: pointer;
+      box-shadow: 0 0 0 1px #fff;
+      border-radius: 50%;
+    }
+
+    .slider input::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .slider progress {
+      width: 300px;
+      height: 8px;
+      -webkit-appearance: none;
+      position: absolute;
+      top: 0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .slider progress::-webkit-progress-bar {
+      background: #f0f0f0;
+    }
+
+    .slider progress::-webkit-progress-value {
+      background: rgb(9, 205, 240);
+    }
+
+    .sliderValue {
+      font-family: "Google Sans Regular";
+      width: 28px;
+      height: 20px;
+      margin-left: 10px;
+      text-align: center;
+    }
+
   </style>
   <body>
     <!-- <audio controls autoplay>
@@ -175,10 +242,30 @@
         </div>
       </div>
     </div>
+
+    <div class="slider-cont">
+      <div class="slider">
+        <input type="range" min="0" max="100" value="50">
+        <progress min="0" max="100" value="50"></progress>
+      </div>
+      <div class="sliderValue">50</div>
+    </div>
+
   </body>
   <script>
     document.getElementById('open-shop').addEventListener('click', () => {
       document.getElementById('shop').style.display = 'block';
     });
   </script>
+  <script>
+    window.onload = function() {
+      slider = document.querySelector(".slider input");
+      slider.oninput = function() {
+        progressBar = document.querySelector(".slider progress");
+        progressBar.value = slider.value;
+        sliderValue = document.querySelector(".sliderValue");
+        sliderValue.innerHTML = slider.value;
+      }
+    }
+  </script> 
 </html>
