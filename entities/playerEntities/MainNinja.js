@@ -62,7 +62,7 @@ class MainNinja {
     loadAnimations() {
         this.animations["idlehud"] = new Animator(this.spritesheet, 3800 + 30, 1500, 135, 190, 4, 0.3, 10, false, true);
 
-        this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80, 3, 0.2, 0, false, true);
+        this.animations["invicible"] = new Animator(this.miscellaneous, 140, 0, 150, 80, 3, 0.5, 0, false, true);
 
         this.animations["couch" + "right"] = new Animator(this.spritesheet, 3800 + 30, 0, 154.5, 300, 3, 0.3, 0, false, true);
         this.animations["couch" + "left"] = new Animator(this.spritesheet, 3306.5, 0, 154.5, 300, 3, 0.3, 0, true, true);
