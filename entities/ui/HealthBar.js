@@ -51,6 +51,8 @@ class dmgIndicator {
     Object.assign(this, {game, x, y, dmg, color});
     this.velocity = -32;
     this.elaspsed = 0;
+    
+
   };
 
   update() {
@@ -60,7 +62,8 @@ class dmgIndicator {
   }
 
   draw(ctx) {
-    ctx.font = "normal normal 900 12px ";
+    
+    ctx.font = "normal normal 900 50px Elephant";
     ctx.fillStyle = this.color ? this.color : "orange";
     ctx.fillText(this.dmg, 
       this.x - this.game.camera.x + 60, 
