@@ -148,7 +148,7 @@ class Slime {
       249,
       246,
       1,
-      0.5,
+      0.2,
       0,
       false,
       true
@@ -160,7 +160,7 @@ class Slime {
       249,
       246,
       1,
-      0.5,
+      0.,
       0,
       true,
       true
@@ -182,7 +182,6 @@ class Slime {
   };
 
   move(action) {
-    //this.action = "walk";
     let speed = 0;
     if (action === 'moveleft') {
       this.facing = 'left';
@@ -299,6 +298,7 @@ class Slime {
           }
         }
         self.hp -= entity.hitBox.hbDmg;
+        self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y, entity.hitBox.hbDmg));
         if (!self.boss) {
           self.action = 'dmg';
         }
@@ -336,8 +336,22 @@ class Slime {
   }
 
   dropLoot() {
-    const coin = new Coin(this.game, this.x, this.y, false);
-    this.game.addEntity(coin);
+    if (this.boss) {
+      for (let i = 0; i < 50; i++) {
+        let randx = Math.random() * 20 - 10;
+        let randy = Math.random() * 20 - 10;
+        console.log();
+        const coin = new Coin(this.game, this.x + 2*randx, this.y + randy, false);
+        this.game.addEntity(coin);
+      }
+      const key = new Key(this.game, this.x, this.y);
+      this.game.addEntity(key);
+    } else {
+      for (let i = 0; i < 5; i++) {
+        const coin = new Coin(this.game, this.x, this.y, false);
+        this.game.addEntity(coin);
+      }
+    }
   }
 
   draw(ctx) {
@@ -377,15 +391,6 @@ class Slime {
         this.y + offsetY - this.game.camera.y,
         this.scale
       );
-    // } else {
-    //   this.animations['walk' + this.facing].drawFrame(
-    //     this.game.clockTick,
-    //     ctx,
-    //     this.x + offsetX - this.game.camera.x,
-    //     this.y + offsetY - this.game.camera.y,
-    //     this.scale
-    //   );
-      // attack effects
       if (this.action === "attack")
       this.animations['attack'].drawFrame(
         this.game.clockTick,
@@ -394,9 +399,9 @@ class Slime {
         this.y + offsetY - this.game.camera.y + 140 * this.scale,
         this.scale
       );
-    //}
 
     this.healthBar.draw(ctx);
+
     let debug = false
     if (debug) {
       ctx.strokeStyle = 'Red';

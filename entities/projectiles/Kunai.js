@@ -30,20 +30,6 @@ class Kunai {
         if (this.animations[this.state + this.facing].animationFinish) {
             this.removeFromWorld = true;
         }
-        // collision detection
-        // let self = this;
-        // this.game.entities.forEach(function (entity) {
-        //     if (entity.BB && self.hitBox && self.hitBox.collide(entity.BB)) {
-        //         if (entity instanceof Slime) {
-        //             console.log("hello");
-        //             //self.animations[self.state + self.facing].animationFinish = true;
-        //             //self.removeFromWorld = true;
-        //             //self.hitBox = undefined;
-        //         }
-                
-        //     }
-        // });
-
     };
 
     updateHB() {

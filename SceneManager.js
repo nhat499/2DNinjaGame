@@ -19,7 +19,7 @@ class SceneManager {
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
-
+    
     //let knight = new Knight(this.game, 600, 100);
     //this.game.addEntity(knight);
     //let slime = new Slime(this.game, 1000, -100);

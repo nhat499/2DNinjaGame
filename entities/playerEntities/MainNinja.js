@@ -297,7 +297,7 @@ class MainNinja {
                     //self.updateBB();     
                 }
 
-                if (entity instanceof Portal && self.game.up) {
+                if (entity instanceof Portal && self.game.up && entity.open) {
                     self.game.camera.loadLevel(level[entity.level]);
                 }
 
@@ -360,16 +360,6 @@ class MainNinja {
                 if (!self.invicible) {
                     if (entity instanceof Slime || entity instanceof Ghost || entity instanceof Ninja || entity instanceof Knight) { // touch dmg
                         self.takeDamage(entity.BB);
-                        //self.hurtSound.play();
-                        // if (self.facing === "left") {
-                        //     self.velocity.x = 300;
-                        // } else {
-                        //     self.velocity.x = -300;
-                        // }
-                        // self.invicible = true;
-                        // self.action = "dizzy";
-                        // self.hitBox = undefined;
-                        // self.velocity.y = -200;
                     }
                 }
 
@@ -377,11 +367,6 @@ class MainNinja {
             if (!self.invicible) {
                 if (entity.monsterHB && self.BB.collide(entity.monsterHB)) { // got hit
                     self.takeDamage(entity.monsterHB);
-                    // self.hurtSound.play();
-                    // self.action = "dizzy";
-                    // self.invicible = true;
-                    // self.velocity.y = -200;
-                    // self.hitBox = undefined;
                     if (entity instanceof Slime) { // bounce attack
                         self.invicible = true;
                         self.hitBox = undefined;
@@ -418,22 +403,6 @@ class MainNinja {
                     this.action = "idle";
                 }
             }
-            
-
-            // if (this.animations["throw" + this.facing].currentFrame() === 1) { // need help (multiple times)
-            //     let kunai = new Kunai(this.game, this.x, this.y);
-            //     this.game.addEntity(kunai); // need to remove kunai when animation finishes
-            // }
-            // if (this.animations["throw" + this.facing].animationStart) {
-            //     this.animations["throw" + this.facing].animationStart = false;
- 
-                
-            // }
-            // if (this.animations["throw" + this.facing].animationFinish) {
-            //     this.game.throw = false;
-            //     this.action = "idle";
-            //     this.animations["throw" + this.facing].animationStart = true;
-            // }
         }
     }
     attackMech() {
@@ -505,6 +474,8 @@ class MainNinja {
     takeDamage(hitBox) {
         if (hitBox && this.hp > 0 && hitBox.hbDmg > 0) {
             this.hp -= hitBox.hbDmg;
+            this.game.addEntity(
+                new dmgIndicator(this.game,this.BB.x,this.BB.y,hitBox.hbDmg, "blue"))
             this.hurtSound.play();
             if (this.facing === "left") {
                 this.velocity.x = 300;
@@ -592,7 +563,7 @@ class MainNinja {
             this.game.surfaceHeight - 75, 
             hpBarWidth,
             hpBarHeight,
-            this.hp, this.maxHP);
+            this.hp, this.maxHP, true);
         this.animations["idlehud"].drawFrame(this.game.clockTick, ctx,
             15,
             this.game.surfaceHeight - 55 - 100,
