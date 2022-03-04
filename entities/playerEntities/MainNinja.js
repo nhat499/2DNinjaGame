@@ -401,7 +401,7 @@ class MainNinja {
     };
 
     throwMech() {
-        if (this.action != "attack" && (this.game.throw || this.action === "throw")) {
+        if (this.action.substring(0,6) != "attack" && (this.game.throw || this.action === "throw")) {
             if (this.action != "throw") {
                 if (this.velocity.y === 0) {
                     this.velocity.x = 0;
