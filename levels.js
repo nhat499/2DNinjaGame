@@ -47,9 +47,9 @@ let level = {
         portals: [{x: 0, y: 572, nextLevel: "level1"}],
     
         stumps: [],
-        slimes:[],
-        knights: [{x: 600, y: 0}, {x: 900, y: 0} ,{x: 1000, y: 0}, {x: 1200, y: 0}],
-        ninjas: [{x: 1500, y: 0},  {x: 1700, y: 0}, {x: 1900, y: 0}, {x: 2100, y: 0}],
+        slimes:[{x: 600, y: 0, boss: true}],
+        knights: [],//[{x: 600, y: 0}, {x: 900, y: 0} ,{x: 1000, y: 0}, {x: 1200, y: 0}],
+        ninjas: [], //[{x: 1500, y: 0},  {x: 1700, y: 0}, {x: 1900, y: 0}, {x: 2100, y: 0}],
         ghosts: []
     }
 }   

@@ -65,12 +65,18 @@ class SceneManager {
     }
 
     // update verticle camera
-    let upperPoint = this.game.surfaceHeight / 2.5;
-    let lowerPoint = this.game.surfaceHeight - upperPoint;
-    if (this.y > this.ninja.y - upperPoint) {
-      this.y = this.ninja.y - upperPoint;
-    } else if (this.y < this.ninja.y - lowerPoint) {
-      this.y = this.ninja.y - lowerPoint;
+    // let upperPoint = this.game.surfaceHeight / 2.5;
+    // let lowerPoint = this.game.surfaceHeight - upperPoint;
+    // if (this.y > this.ninja.y - upperPoint) {
+    //   this.y = this.ninja.y - upperPoint;
+    // } else if (this.y < this.ninja.y - lowerPoint) {
+    //   this.y = this.ninja.y - lowerPoint;
+    // }
+    let midpoint = this.game.surfaceHeight / 2;
+    if (this.y > this.ninja.y - midpoint) {
+      this.y = this.ninja.y - midpoint;
+    } else if (this.y < this.ninja.y - midpoint) {
+      this.y = this.ninja.y - midpoint;
     }
 
     if (this.title && this.game.click) {

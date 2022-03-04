@@ -4,7 +4,7 @@ class Kunai {
         //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3}; 
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/Miscellaneous.png");
         this.scale = 1;
-        this.attackDmg = 1;
+        this.attackDmg = 10;
         // state variable
         this.state = "throw";
         this.facing = "left";
@@ -31,11 +31,24 @@ class Kunai {
             this.removeFromWorld = true;
         }
         // collision detection
+        // let self = this;
+        // this.game.entities.forEach(function (entity) {
+        //     if (entity.BB && self.hitBox && self.hitBox.collide(entity.BB)) {
+        //         if (entity instanceof Slime) {
+        //             console.log("hello");
+        //             //self.animations[self.state + self.facing].animationFinish = true;
+        //             //self.removeFromWorld = true;
+        //             //self.hitBox = undefined;
+        //         }
+                
+        //     }
+        // });
+
     };
 
     updateHB() {
-        this.lasthitBox = this.HB;
-        this.hitBox = new BoundingBox(this.x,this.y, 50, 50);
+        this.lasthitBox = this.hitBox;
+        this.hitBox = new BoundingBox(this.x,this.y, 50, 50, this.attackDmg);
     }
 
     draw(ctx) {                 // must have draw method
@@ -43,9 +56,16 @@ class Kunai {
             this.x - this.game.camera.x, 
             this.y - this.game.camera.y, 0.5);
 
-        this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, 
-            this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+        let debug = true;
+        if (debug) {
+            if (this.hitBox) {
+                this.game.ctx.strokeStyle = "red"; // the outline of shape
+                this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, 
+                this.hitBox.y - this.game.camera.y, this.hitBox.width, this.hitBox.height);
+            }
+
+        }
+
     };
 
 

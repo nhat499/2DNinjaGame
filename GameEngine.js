@@ -89,6 +89,9 @@ class GameEngine {
                     break;
                 case "KeyS":
                     self.slide = false;
+                    break;
+                case "KeyD":
+                    self.throw = false;
             }
         }, false);
 

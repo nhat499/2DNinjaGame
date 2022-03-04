@@ -20,8 +20,8 @@ class Slime {
 
     this.maxHP = this.boss ? 1000 : 100;
     this.hp = this.maxHP;
-    this.baseDmg = this.boss ? 15 : 5;
-    this.dmg = this.baseDmg;
+    this.baseDmg = this.boss ? 30 : 15;
+    this.attackDmg = this.baseDmg;
 
     // state variable
     this.facing = 'left'; // 0 right, 1 = left;
@@ -29,7 +29,18 @@ class Slime {
 
     // animation
     this.animations = []; // list of animations
+    this.loadAnimation();
 
+    // phyiscs variable
+    this.velocity = { x: 0, y: 0 };
+    this.fallAcc = 562 * 3;
+
+    this.actionDecider = ['moveleft', 'moveright', 'stay', 'attack'];
+
+    this.healthBar = new HealthBar(this, 0, 0);
+  }
+
+  loadAnimation () {
     this.animations['idleleft'] = new Animator(
       this.spritesheet,
       3159,
@@ -68,6 +79,31 @@ class Slime {
       true
     );
     this.animations['walkright'] = new Animator(
+      this.spritesheet,
+      1416,
+      242,
+      249,
+      244,
+      7,
+      0.25,
+      0,
+      true,
+      true
+    );
+
+    this.animations['attackleft'] = new Animator(
+      this.spritesheet,
+      3159,
+      242,
+      249,
+      244,
+      7,
+      0.25,
+      0,
+      false,
+      true
+    );
+    this.animations['attackright'] = new Animator(
       this.spritesheet,
       1416,
       242,
@@ -143,15 +179,7 @@ class Slime {
       false,
       true
     );
-
-    // phyiscs variable
-    this.velocity = { x: 0, y: 0 };
-    this.fallAcc = 562 * 3;
-
-    this.actionDecider = ['moveleft', 'moveright', 'stay', 'attack'];
-
-    this.healthBar = new HealthBar(this, 0, 0);
-  }
+  };
 
   move(action) {
     //this.action = "walk";
@@ -230,7 +258,7 @@ class Slime {
 
     let self = this;
     this.game.entities.forEach(function (entity) {
-      if (entity.BB && self.BB.collide(entity.BB)) {
+      if (entity.BB && self.BB && self.BB.collide(entity.BB)) {
         if (
           (entity instanceof Ground || entity instanceof Platform) &&
           self.lastBB.bottom <= entity.BB.top
@@ -270,9 +298,16 @@ class Slime {
             self.velocity.y = -300;
           }
         }
-        self.hp -= entity.attackDmg;
+        self.hp -= entity.hitBox.hbDmg;
         if (!self.boss) {
           self.action = 'dmg';
+        }
+        if (entity instanceof Kunai) {
+          entity.removeFromWorld = true;
+        }
+        if (self.hp <= 0) {
+          self.action = "dying";
+          self.attackDmg = 0;
         }
       }
     });
@@ -285,7 +320,8 @@ class Slime {
       this.x,
       this.y,
       140 * this.scale,
-      130 * this.scale
+      130 * this.scale,
+      this.attackDmg
     );
   }
 
@@ -294,7 +330,8 @@ class Slime {
       this.x - 300,
       this.y + 125 * this.scale,
       140 * this.scale + 600,
-      3
+      3, 
+      this.attackDmg * 2
     );
   }
 
@@ -332,7 +369,7 @@ class Slime {
     if (this.action === 'idle' && this.facing === 'right')
       offsetX = -90 * this.scale;
 
-    if (this.action != 'attack') {
+    //if (this.action != 'attack') {
       this.animations[this.action + this.facing].drawFrame(
         this.game.clockTick,
         ctx,
@@ -340,15 +377,16 @@ class Slime {
         this.y + offsetY - this.game.camera.y,
         this.scale
       );
-    } else {
-      this.animations['walk' + this.facing].drawFrame(
-        this.game.clockTick,
-        ctx,
-        this.x + offsetX - this.game.camera.x,
-        this.y + offsetY - this.game.camera.y,
-        this.scale
-      );
+    // } else {
+    //   this.animations['walk' + this.facing].drawFrame(
+    //     this.game.clockTick,
+    //     ctx,
+    //     this.x + offsetX - this.game.camera.x,
+    //     this.y + offsetY - this.game.camera.y,
+    //     this.scale
+    //   );
       // attack effects
+      if (this.action === "attack")
       this.animations['attack'].drawFrame(
         this.game.clockTick,
         ctx,
@@ -356,7 +394,7 @@ class Slime {
         this.y + offsetY - this.game.camera.y + 140 * this.scale,
         this.scale
       );
-    }
+    //}
 
     this.healthBar.draw(ctx);
     let debug = false
