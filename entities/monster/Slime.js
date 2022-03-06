@@ -266,12 +266,22 @@ class Slime {
           self.y = entity.BB.top - 130 * self.scale;
         }
 
+        if (entity instanceof InvWall) {
+          if (self.lastBB.left >= entity.BB.right) {
+            self.velocity.x = 0;
+            self.x = entity.BB.right;
+          } else if (self.lastBB.right <= entity.BB.left) {
+            self.velocity.x = 0;
+            self.x = entity.BB.left - 140 * self.scale;
+          }
+        }
+
         if (entity instanceof Wall && self.BB.bottom > entity.BB.top) {
           if (self.lastBB.left >= entity.BB.right) {
             // left collision
             self.velocity.x = 0;
             self.x = entity.BB.right;
-          } else if (self.lastBB.right <= entity.BB.left) {
+          } else if (self.lastBB.right <= entity.BB.left ) {
             // right collision
             self.velocity.x = 0;
             self.x = entity.BB.left - 140 * self.scale;

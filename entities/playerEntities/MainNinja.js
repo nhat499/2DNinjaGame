@@ -14,19 +14,8 @@ class MainNinja {
             y: 0
         };
         // Sound from Zapsplat.com
-        this.attackSound = new Audio();
-        this.attackSound.src = "sound_effects/sword-1b.wav";
-        this.attackSound.volume = 0.2;
-        this.hurtSound = new Audio();
-        this.hurtSound.src = "sound_effects/hurtSound.mp3";
-        this.footStep = new Audio();
-        this.footStep.src = "sound_effects/footStep.mp3";
-        this.footStep.playbackRate = 1.5;
-        this.footStep.volume = 0.1;
-        this.jumpSound = new Audio();
-        this.jumpSound.src = "sound_effects/jumpSound.mp3";
-        this.jumpSound.playbackRate = 8;
-        this.jumpSound.volume = 0.1;
+        this.sounds = [];
+        this.loadSound();
 
         this.fallAcc = 562 * 3;
         // state variable
@@ -58,6 +47,24 @@ class MainNinja {
 
     };
 
+    loadSound() {
+        this.sounds["attackSound"] = new Audio();
+        this.sounds["attackSound"].src = "sound_effects/sword-1b.wav";
+        this.sounds["attackSound"].volume = 0.2;
+
+        this.sounds["hurtSound"] = new Audio();
+        this.sounds["hurtSound"].src = "sound_effects/hurtSound.mp3";
+
+        this.sounds["footStep"] = new Audio();
+        this.sounds["footStep"].src = "sound_effects/footStep.mp3";
+        this.sounds["footStep"].playbackRate = 1.5;
+        this.sounds["footStep"].volume = 0.2;
+
+        this.sounds["jumpSound"]= new Audio();
+        this.sounds["jumpSound"].src = "sound_effects/jumpSound.mp3";
+        this.sounds["jumpSound"].playbackRate = 8;
+        this.sounds["jumpSound"].volume = 0.2;
+    }
 
     loadAnimations() {
         this.animations["idlehud"] = new Animator(this.spritesheet, 3800 + 30, 1500, 135, 190, 4, 0.3, 10, false, true);
@@ -107,9 +114,6 @@ class MainNinja {
         this.animations["throw" + "left"] = new Animator(this.spritesheet, 3132, 4200, 208, 300, 3, 0.1, 16, true, true);
     };
 
-
-
-    //update() {}
     collectCoins(qty) {
         this.coins += qty;
         localStorage.setItem('coins', this.coins);
@@ -126,21 +130,13 @@ class MainNinja {
         // logic to update it's state, background have no state, just have x,y
         const TICK = this.game.clockTick;
 
-        const MIN_WALK = 4.453125 * 3;
         const MAX_WALK = 93.75 * 3;
         const MAX_RUN = 153.75 * 3;
-        const ACC_WALK = 133.59375 * 3;
-        const ACC_RUN = 200.390625 * 3;
-        const DEC_REL = 182.8125;
-        const DEC_SLIDE = 300;
-        const MIN_SKID = 33.75;
 
-        const STOP_FALL = 1575;
-        const WALK_FALL = 1800;
-        const RUN_FALL = 2025 * 3;
-        const STOP_FALL_A = 450;
-        const WALK_FALL_A = 421.875;
-        const RUN_FALL_A = 562.5;
+        const DEC_REL = 182.8125;
+
+
+
 
         const MAX_FALL = 270 * 3;
 
@@ -153,13 +149,13 @@ class MainNinja {
                 this.velocity.x = 0; // set horizontal velocity to 0
                 this.action = "idle"; // be in "idle" state
                 if (this.game.left && !this.game.right && !this.game.attack && !this.game.throw) { // if only the left-arrow key is down then...
-                    this.footStep.play();
+                    this.sounds["footStep"].play();
                     this.facing = "left"; // make character face left
                     this.action = "run"; // make character run
                     this.velocity.x -= MAX_RUN; // negative horizontal velocity so that character moves towards the left
                 }
                 if (this.game.right && !this.game.left && !this.game.attack) { // if only the right-arrow key is down then...
-                    this.footStep.play();
+                    this.sounds["footStep"].play();
                     this.facing = "right"; // make character face left
                     this.action = "run"; // make character run 
                     this.velocity.x += MAX_RUN; // positive horizontal velocity so that character moves towards the right
@@ -187,7 +183,7 @@ class MainNinja {
             if (this.game.jump && this.action.substring(0, 6) != "attack") { // jump key press
                 this.velocity.y -= 3000; // 1st jump
                 ///this.fallAcc = STOP_FALL;
-                this.jumpSound.play();
+                this.sounds["jumpSound"].play();
                 this.action = "jump";
                 this.game.jump = false;
             }
@@ -200,7 +196,7 @@ class MainNinja {
             if (this.doubleJump && this.game.jump) {
                 if (this.action === "attack3") this.hitBox = undefined;
                 this.velocity.y = -6000;
-                this.jumpSound.play();
+                this.sounds["jumpSound"].play();
                 this.action = "jump2";
                 if (this.facing === "right" && this.velocity.x < 0) this.velocity.x = 400;
                 if (this.facing === "right" && this.velocity.x > 0) this.velocity.x = 400;
@@ -252,6 +248,7 @@ class MainNinja {
 
         // attack mechanic 3 //
         this.attackMech();
+        this.potionMech();
 
         if (this.invicible) {
             if (this.animations["invicible"].animationFinish) {
@@ -297,7 +294,8 @@ class MainNinja {
                     //self.updateBB();     
                 }
 
-                if (entity instanceof Portal && self.game.up && entity.open) {
+                if (entity.open && entity instanceof Portal && self.game.up) {
+                    self.game.camera.currLv = entity.level;
                     self.game.camera.loadLevel(level[entity.level]);
                 }
 
@@ -312,21 +310,24 @@ class MainNinja {
                         self.velocity.x = 0;
                         self.x = entity.BB.right;
                         self.velocity.y = 0;
-                        self.y = self.y;
                     } else if (self.lastBB.right <= entity.BB.left) { // right collision
                         if (self.velocity.y !== 0) {
                             self.action = "grabWall";
                         }
-
                         self.game.attack = false;
                         self.hitBox = undefined
                         self.doubleJump = true;
                         self.velocity.x = 0;
                         self.x = entity.BB.left - 60;
                         self.velocity.y = 0;
-                        self.y = self.y;
                     }
                     //self.updateBB();
+                }
+
+                if (entity instanceof Ground) {
+                    if (self.lastBB.top >= entity.BB.bottom) { // top collision
+                        self.y = entity.BB.bottom - 20;
+                    }
                 }
 
                 if (entity instanceof Stump && self.BB.bottom > entity.BB.top) {
@@ -405,9 +406,10 @@ class MainNinja {
             }
         }
     }
+
     attackMech() {
         if (this.action != "throw" && (this.game.attack || this.action.substring(0, 6) === "attack")) {
-            this.attackSound.play();
+            this.sounds["attackSound"].play();
             if (this.action.substring(0, 6) != "attack") {
                 if (this.velocity.y === 0) {
                     this.velocity.x = 0;
@@ -444,6 +446,19 @@ class MainNinja {
         }
     }
 
+    potionMech() {
+        if (this.game.camera.potion.cdTimer >= 0) {
+            // display cool down
+            this.game.camera.potion.cdTimer -= this.game.clockTick;
+            //console.log(this.game.camera.potion.cdTimer);
+        } else if (this.game.potion && this.game.camera.potion.quantity > 0) {
+            this.hp += 100;
+            if (this.hp > this.maxHP) this.hp = this.maxHP;
+            this.game.camera.potion.quantity -= 1;
+            this.game.camera.potion.cdTimer = 10;
+        }
+    }
+
     updateBB() {
         let slideBuffer = 0;
         if (this.action === "slide") slideBuffer = 32;
@@ -476,7 +491,7 @@ class MainNinja {
             this.hp -= hitBox.hbDmg;
             this.game.addEntity(
                 new dmgIndicator(this.game,this.BB.x,this.BB.y,hitBox.hbDmg, "blue"))
-            this.hurtSound.play();
+            this.sounds["hurtSound"].play();
             if (this.facing === "left") {
                 this.velocity.x = 300;
             } else {
@@ -555,7 +570,7 @@ class MainNinja {
         let hpBarWidth = 300;
         let hpBarHeight = 30;
         ctx.beginPath();
-        ctx.strokeStyle = "#4c473b";
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 6;
         ctx.arc(60,this.game.surfaceHeight - 60,50, 0, 2 * Math.PI);
         ctx.stroke();

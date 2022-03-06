@@ -15,6 +15,7 @@ class GameEngine {
         this.attack = false;
         this.slide = false;
         this.throw = false;
+        this.potion = false;
     }
 
     init(ctx) { // call after the page has loaded
@@ -64,6 +65,9 @@ class GameEngine {
                     break;
                 case "KeyD":
                     self.throw = true;
+                    break;
+                case "KeyQ":
+                    self.potion = true;       
             }
         }, false);
 
@@ -92,6 +96,9 @@ class GameEngine {
                     break;
                 case "KeyD":
                     self.throw = false;
+                    break;
+                case "KeyQ":
+                    self.potion = false;
             }
         }, false);
 
@@ -109,7 +116,7 @@ class GameEngine {
             self.mouse = getXandY(e);
         }, false);
 
-        this.ctx.canvas.addEventListener("click", function (e) {
+        this.ctx.canvas.addEventListener("mouseup", function (e) {
             self.click = getXandY(e);
         }, false);
 
@@ -135,19 +142,22 @@ class GameEngine {
     }
 
     update() {
-        let entitiesCount = this.entities.length;
-        for (let i = 0; i < entitiesCount; i++) {
-            let entity = this.entities[i];
-            if (!entity.removeFromWorld) {
-                entity.update();              // update all entites
+        if (!this.pause) {
+            let entitiesCount = this.entities.length;
+            for (let i = 0; i < entitiesCount; i++) {
+                let entity = this.entities[i];
+                if (!entity.removeFromWorld) {
+                    entity.update();              // update all entites
+                }
+            }
+            
+            for (let i = this.entities.length -1; i >= 0; i--) {
+                if (this.entities[i].removeFromWorld) {
+                    this.entities.splice(i, 1);       // delete entities if they are removeFromWorld
+                }
             }
         }
         this.camera.update();
-        for (let i = this.entities.length -1; i >= 0; i--) {
-            if (this.entities[i].removeFromWorld) {
-                this.entities.splice(i, 1);       // delete entities if they are removeFromWorld
-            }
-        }
 
         // add new things
         // this.entities = this.entities.concat(this.entitiesToAdd);
@@ -155,10 +165,8 @@ class GameEngine {
     }
 
     loop() {
-        if (!this.pause) {
-            this.clockTick = this.timer.tick();
-            this.update();
-            this.draw();
-        }
+        this.clockTick = this.timer.tick();
+        this.update();
+        this.draw();
     }
 }
