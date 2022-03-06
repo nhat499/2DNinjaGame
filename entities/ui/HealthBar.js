@@ -17,21 +17,15 @@ class HealthBar {
       5, this.entity.hp, this.entity.maxHP)
   }
 
-  drawDmgLine(ctx, dmg, lines) {
-    dmgLine = dmg / lines;
-    ctx.fillStyle = "Orange";
-    ctx.fillText("test",this.entity.x - this.entity.game.camera.x + this.offsetX,  this.entity.y - this.entity.game.camera.y - 50 + this.offsetY);
-  }
-
   drawHUDHpBar(ctx,x,y,w,h,currHP,maxHP, mainCharacter) {
     if (currHP < maxHP || mainCharacter) {
       ctx.beginPath();
-      ctx.strokeStyle = '#4c473b';
+      ctx.strokeStyle = "black";
       ctx.rect(x,y,w,h);
       ctx.stroke();
       ctx.closePath();
       ctx.beginPath();
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = '#4c473b'; //black
       ctx.rect(x,y,w,h);
       ctx.fill();
       ctx.closePath();
@@ -42,6 +36,10 @@ class HealthBar {
       ctx.fillStyle = width/w <= 0.2 ? "red" : width/w <= 0.5? "orange" : "lightGreen";
       ctx.fill();
       ctx.closePath();
+      ctx.beginPath();
+      ctx.font = h+"px serif";
+      ctx.fillStyle = "black";
+      ctx.fillText(currHP + "/" + maxHP, x + (w/3), y + h - 4, w/3);
     }
   }
 }
@@ -49,10 +47,8 @@ class HealthBar {
 class dmgIndicator {
   constructor(game, x, y, dmg, color) {
     Object.assign(this, {game, x, y, dmg, color});
-    this.velocity = -32;
+    this.velocity = -128;
     this.elaspsed = 0;
-    
-
   };
 
   update() {
@@ -62,12 +58,12 @@ class dmgIndicator {
   }
 
   draw(ctx) {
-    
     ctx.font = "normal normal 900 50px Elephant";
     ctx.fillStyle = this.color ? this.color : "orange";
     ctx.fillText(this.dmg, 
-      this.x - this.game.camera.x + 60, 
+      this.x - this.game.camera.x, 
       this.y - this.game.camera.y);
   }
 
 }
+

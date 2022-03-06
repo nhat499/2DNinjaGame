@@ -4,11 +4,12 @@ class Ground {
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/floorTileSet.png");
 
         this.BB = new BoundingBox(this.x, this.y, this.w, 128);
+
+        this.game.addEntity(new InvWall(this.game, this.x - 3, this.y - 3));
+        this.game.addEntity(new InvWall(this.game, this.x + this.w, this.y - 3));
     };
 
-    update() {
-        
-    };
+    update() {};
 
     draw(ctx) {
         let blockCount = this.w / 128;
@@ -82,18 +83,16 @@ class Platform {
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/floorTileSet.png");
 
         this.BB = new BoundingBox(this.x - 128, this.y, this.w + 256, 64);
-        //this.leftBB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
-        //this.rightBB = new BoundingBox(this.x + this.w - PARAMS.BLOCKWIDTH, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
+        // this.invBBL = new BoundingBox(this.x - 128 - 3, this.y - 3, 3,3);
+        // this.invBBR = new BoundingBox(this.x -128 +  this.w + 256, this.y - 3, 3, 3);
+
+        
+        this.game.addEntity(new InvWall(this.game, this.x - 128 - 3, this.y - 3));
+        this.game.addEntity(new InvWall(this.game, this.x -128 +  this.w + 256, this.y - 3));
     };
 
-    update() {
-        //this.BB = new BoundingBox(this.x, this.y, this.w, this.h);
-    };
+    update() {};
 
-    // drawMinimap(ctx, mmX, mmY) {
-    //     ctx.fillStyle = "Brown";
-    //     ctx.fillRect(mmX + this.x / PARAMS.BITWIDTH, mmY + this.y / PARAMS.BITWIDTH, this.w / PARAMS.BITWIDTH, PARAMS.SCALE * 2);
-    // };
 
     draw(ctx) {
         let blockCount = this.w / 128;
@@ -126,3 +125,24 @@ class Platform {
         ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     }
 };
+
+class InvWall {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+        //this.spritesheet = ASSET_MANAGER.getAssset("sprites/floorTileSet.png");
+
+        this.BB = new BoundingBox(this.x, this.y, 3,3);
+    };
+    update() {};
+    draw(ctx) {
+        let debug = false;
+        if (debug) {
+            this.debug(ctx);
+        }
+    };
+
+    debug(ctx) {
+        ctx.strokeStyle = "Red";
+        ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+    }
+}

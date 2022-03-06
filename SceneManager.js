@@ -9,7 +9,7 @@ class SceneManager {
     this.gameOver = false;
     this.title = true;
     this.level = level;
-
+    this.currLv = "level1"
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
@@ -42,13 +42,15 @@ class SceneManager {
     this.game.addEntity(this.ninja);
 
     this.coinAnimation = new Coin(this.game, 820, 6, true);
+    this.potion = new Potion(this.game, 25, this.game.surfaceHeight - 225)
 
     document
       .getElementById('buy-health-potion')
       .addEventListener('click', () => {
         if (this.ninja.coins >= 25) {
           this.ninja.spendCoins(25);
-          this.ninja.hp = this.ninja.maxHP;
+          //this.ninja.hp = this.ninja.maxHP;
+          this.potion.quantity += 1;
         }
       });
 
@@ -75,27 +77,37 @@ class SceneManager {
       this.x = this.ninja.x - leftPoint;
     }
 
-    // update verticle camera
-    // let upperPoint = this.game.surfaceHeight / 2.5;
-    // let lowerPoint = this.game.surfaceHeight - upperPoint;
-    // if (this.y > this.ninja.y - upperPoint) {
-    //   this.y = this.ninja.y - upperPoint;
-    // } else if (this.y < this.ninja.y - lowerPoint) {
-    //   this.y = this.ninja.y - lowerPoint;
-    // }
-    let midpoint = this.game.surfaceHeight / 2;
-    if (this.y > this.ninja.y - midpoint) {
-      this.y = this.ninja.y - midpoint;
-    } else if (this.y < this.ninja.y - midpoint) {
-      this.y = this.ninja.y - midpoint;
+    //update verticle camera
+    let upperPoint = this.game.surfaceHeight / 2.5;
+    let lowerPoint = this.game.surfaceHeight - upperPoint;
+    if (this.y > this.ninja.y - upperPoint) {
+      this.y = this.ninja.y - upperPoint;
+    } else if (this.y < this.ninja.y - lowerPoint) {
+      this.y = this.ninja.y - lowerPoint;
     }
+    // let midpoint = this.game.surfaceHeight / 2;
+    // if (this.y > this.ninja.y - midpoint) {
+    //   this.y = this.ninja.y - midpoint;
+    // } else if (this.y < this.ninja.y - midpoint) {
+    //   this.y = this.ninja.y - midpoint;
+    // }
 
     if (this.title && this.game.click) {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
         // click start game
         this.title = false;
         this.sound.play();
-        this.loadLevel(this.level.level1);
+        this.loadLevel(this.level[this.currLv]);
+      }
+    }
+
+ 
+    if (this.gameOver && this.game.click) {
+      if (this.game.click.y > 410 && this.game.click.y < 450) {
+        //restart game
+        this.loadLevel(this.level[this.currLv]);
+        this.gameOver = false;
+        this.game.pause = false;
       }
     }
 
@@ -182,8 +194,14 @@ class SceneManager {
       // ctx.filter = 'grayscale(1)';
       ctx.fillStyle = 'red';
       ctx.font = '50px serif';
-      ctx.fillText('GAME OVER', 385, 450);
+      ctx.fillText('GAME OVER', 385, 350);
       this.game.pause = true;
+
+      ctx.fillStyle =
+        this.game.mouse && this.game.mouse.y > 410 && this.game.mouse.y < 450
+          ? 'Grey'
+          : 'White';
+      ctx.fillText('Retry', 450, 450);
     }
 
     if (!this.title) {
@@ -192,6 +210,7 @@ class SceneManager {
       ctx.fillText(this.ninja.coins ?? 0, 870, 40);
 
       this.coinAnimation.draw(ctx);
+      this.potion.draw(ctx);
     }
   }
 }

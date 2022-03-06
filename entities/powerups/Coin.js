@@ -53,24 +53,38 @@ class Coin {
 
       this.game.entities.forEach((e) => {
         if (e.BB && self.BB.collide(e.BB)) {
-          if ( e instanceof MainNinja && this.fallAcc === 0) {
+          if ( e instanceof MainNinja && self.fallAcc === 0) {
           self.removeFromWorld = true;
           self.coinCollectedSound.play();
           e.collectCoins(1);
           }
-          if (e instanceof Ground) {
-            this.fallAcc = 0;
-            self.verlocityY = 0;
-            self.verlocityX = 0;
+          if (e instanceof Ground || e instanceof Platform) {
+            if (self.lastBB.bottom <= e.BB.top) { // landing
+              self.fallAcc = 0;
+              self.y = e.BB.top - 45;
+              self.verlocityY = 0;
+              self.verlocityX = 0;
+            }
+          }
+          if (e instanceof Wall) {
+            console.log("wall")
+            if (self.lastBB.left >= e.BB.right) { // left collision
+              console.log("left")
+              self.x = e.BB.right;
+            } else if (self.lastBB.right <= e.BB.left) { // right ocllsion
+              self.x = e.BB.left - 30;
+              console.log("right")
+            }
           }
         }
       });
+      this.updateBB();
     }
   }
 
   updateBB() {
     if (!this.animationOnly) {
-      this.lastBB = this.lastBB;
+      this.lastBB = this.BB;
       this.BB = new BoundingBox(this.x, this.y, 30, 45);
     }
   }
@@ -101,5 +115,40 @@ class Coin {
         this.BB.width,
         this.BB.height);
     }
+  }
+}
+
+class Potion {
+  constructor(game, x, y) {
+    Object.assign(this, { game, x, y });
+
+    this.spritesheet = ASSET_MANAGER.getAssset('sprites/Object/potion.png');
+    this.scale = 0.15;
+    this.animation = new Animator(this.spritesheet,0,0, 512,512,1,1,0,false,true);
+    this.quantity = 0;
+    this.cdTimer = 0;
+  }
+
+  update() {}
+
+  draw(ctx) {
+    this.animation.drawFrame(this.game.clockTick, ctx,this.x,this.y,this.scale);
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.font = "20px serif";
+    ctx.fillText(this.quantity + "x", this.x + 25, this.y + 90, 40);
+    ctx.strokeText(this.quantity+ "x", this.x + 25, this.y + 90, 40); 
+    
+    ctx.fill();
+    ctx.stroke();
+
+    if (this.cdTimer > 0) {
+      ctx.fillText(Math.round(this.cdTimer) + "s", this.x + 30, this.y + 50, 40);
+      ctx.strokeText(Math.round(this.cdTimer)+ "s", this.x + 30, this.y + 50, 40); 
+    }
+
+
+    
   }
 }

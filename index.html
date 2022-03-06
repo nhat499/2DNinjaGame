@@ -218,7 +218,7 @@
         width="1000"
         height="750"
         style="background: lightblue"
-        tabindex="0"
+        tabindex="1"
         autofocus
       ></canvas>
       <div id="open-shop">Shop</div>
@@ -230,7 +230,7 @@
         <div class="shop-item">
           <div class="shop-item-img-wrapper">
             <img
-              src="https://static.wikia.nocookie.net/shop-titans/images/4/47/Healing_Potion.png"
+              src="sprites/Object/potion.png"
             />
           </div>
           <div class="shop-item-content">
@@ -262,6 +262,7 @@
 
   </body>
   <script>
+    //document.getElementById("gameWorld").focus();
     document.getElementById('open-shop').addEventListener('click', () => {
       document.getElementById('shop').style.display = 'block';
     });
