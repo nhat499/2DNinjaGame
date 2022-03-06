@@ -9,7 +9,8 @@ class SceneManager {
     this.gameOver = false;
     this.title = true;
     this.level = level;
-    this.currLv = "level1"
+    //this.currLv = "level1"
+    this.currLv = "level1";
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
@@ -40,7 +41,7 @@ class SceneManager {
 
     //this.game.addEntity(this.knight);
     //this.game.addEntity(this.ghost);
-    this.ninja = new MainNinja(this.game, 0, 170);
+    this.ninja = new MainNinja(this.game, 0, 170); 
     this.game.addEntity(this.ninja);
 
     this.coinAnimation = new Coin(this.game, 820, 6, true);
@@ -171,6 +172,7 @@ class SceneManager {
       this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y));
     }
     this.ninja = new MainNinja(this.game, 0, 170);
+    //this.ninja = new MainNinja(this.game, 2900, -150);
     this.game.addEntity(this.ninja);
   }
 
