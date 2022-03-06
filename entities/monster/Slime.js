@@ -412,8 +412,7 @@ class Slime {
 
     this.healthBar.draw(ctx);
 
-    let debug = false
-    if (debug) {
+    if (debugStat) {
       ctx.strokeStyle = 'Red';
       ctx.strokeRect(
         this.BB.x - this.game.camera.x,

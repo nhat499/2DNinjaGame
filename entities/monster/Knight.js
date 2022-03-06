@@ -204,8 +204,7 @@ class Knight {
             this.y - this.game.camera.y, 0.4);
     
 
-    let debug = false;
-    if (debug) {
+    if (debugStat) {
         this.debug(ctx);
     }  
        

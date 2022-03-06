@@ -560,8 +560,7 @@ class MainNinja {
         // draw character hud
         this.drawCharacterHud(ctx);
 
-        let debug = false;
-        if (debug) {
+        if (debugStat) {
             this.debug(ctx);
         }
     };

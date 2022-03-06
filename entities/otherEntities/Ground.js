@@ -19,8 +19,7 @@ class Ground {
             this.y - this.game.camera.y, 
             128, 128);
         }
-        let debug = false;
-        if (debug) {
+        if (debugStat) {
             ctx.strokeStyle = "Red";
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
@@ -69,8 +68,7 @@ class Wall {
         //     ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
 
-        let debug = false;
-        if (debug) {
+        if (debugStat) {
             ctx.strokeStyle = "Red";
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
         }
@@ -114,8 +112,7 @@ class Platform {
             this.y - this.game.camera.y, 
             128, 128);
         
-        let debug = false;
-        if (debug) {
+        if (debugStat) {
             this.debug(ctx);
         }
         
@@ -135,8 +132,7 @@ class InvWall {
     };
     update() {};
     draw(ctx) {
-        let debug = false;
-        if (debug) {
+        if (debugStat) {
             this.debug(ctx);
         }
     };
