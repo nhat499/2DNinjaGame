@@ -21,13 +21,10 @@ class SceneManager {
 
     this.checkbox.addEventListener('change', function() {
       if (this.checked) {
-        console.log("Checkbox is checked..");
         debugStat = true;
       } else {
-        console.log("Checkbox is not checked..");
         if (debugStat == true) {
           debugStat = false;
-          console.log("it's false now");
         }
       }
     });
