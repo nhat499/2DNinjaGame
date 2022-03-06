@@ -90,6 +90,7 @@ class SceneManager {
       }
     }
 
+ 
     if (this.gameOver && this.game.click) {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
         //restart game

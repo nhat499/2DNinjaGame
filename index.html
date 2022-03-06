@@ -218,8 +218,8 @@
         width="1000"
         height="750"
         style="background: lightblue"
-        tabindex="0"
-        focus
+        tabindex="1"
+        autofocus
       ></canvas>
       <div id="open-shop">Shop</div>
       <div id="shop">
@@ -256,7 +256,7 @@
 
   </body>
   <script>
-    document.querySelector("canvas").focus();
+    //document.getElementById("gameWorld").focus();
     document.getElementById('open-shop').addEventListener('click', () => {
       document.getElementById('shop').style.display = 'block';
     });

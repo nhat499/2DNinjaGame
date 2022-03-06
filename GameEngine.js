@@ -116,8 +116,12 @@ class GameEngine {
             self.mouse = getXandY(e);
         }, false);
 
-        this.ctx.canvas.addEventListener("mouseup", function (e) {
+        this.ctx.canvas.addEventListener("mousedown", function (e) {
             self.click = getXandY(e);
+        }, false);
+
+        this.ctx.canvas.addEventListener("mouseup", function (e) {
+            self.click = undefined;
         }, false);
 
         this.ctx.canvas.addEventListener("wheel", function (e) {
