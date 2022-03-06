@@ -16,6 +16,17 @@ class SceneManager {
     //this.sound.volume = 0.3;
 
     this.volumeNum = document.getElementById('volumeTracker');
+
+    this.checkbox = document.getElementById('debug');
+
+    this.checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        console.log("Checkbox is checked..");
+      } else {
+        console.log("Checkbox is not checked..");
+      }
+    });
+
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);

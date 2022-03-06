@@ -50,28 +50,28 @@ ASSET_MANAGER.downloadAll(function () {              // function() is a call bac
 // drawing notes
 
 // ctx.fillStyle = "white"; // the inside of shape
-    // ctx.strokeStyle = "white"; // the outline of shape
-    // ctx.fillRect(x,y,w,h) // draw rectangle and fill
-    // ctx.strokeRect(x,y,w,h) // draw outline of rect
+//     ctx.strokeStyle = "white"; // the outline of shape
+//     ctx.fillRect(x,y,w,h) // draw rectangle and fill
+//     ctx.strokeRect(x,y,w,h) // draw outline of rect
 
-    // cirle
-    // ctx.beginPath();
-            // x , y,  r,                  0: start at 0 radian, end at : 2*pi radian 
-    // ctx.arc(50, 50, 25, 0, 2*math.pi); 
-    // ctx.fill(); fill in the arc
-    // ctx. stroke();   outline the arc
+//     cirle
+//     ctx.beginPath();
+//             x , y,  r,                  0: start at 0 radian, end at : 2*pi radian 
+//     ctx.arc(50, 50, 25, 0, 2*math.pi); 
+//     ctx.fill(); fill in the arc
+//     ctx. stroke();   outline the arc
 
-    // line segment
-    // ctx beginPath();
-    // ctx.moveTo(100, 100); // pick up pen to new point;
-    // ctx.lineTo(200,100); // start from ^ and draw to here
-    // ctx.stroke(); // draws
+//     line segment
+//     ctx beginPath();
+//     ctx.moveTo(100, 100); // pick up pen to new point;
+//     ctx.lineTo(200,100); // start from ^ and draw to here
+//     ctx.stroke(); // draws
 
-    // ctx.drawImage(img, dx, dy); // draw regular size
-    // ctx.drawImage(img, dx, dy, dw, dh); // draw and scale img
-    // ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); // draw a part of the image
+//     ctx.drawImage(img, dx, dy); // draw regular size
+//     ctx.drawImage(img, dx, dy, dw, dh); // draw and scale img
+//     ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh); // draw a part of the image
 
-    // transformations : translation, reflection, rotation
-    // translation: move the origan of the canvas from (0,0) to new point
-    // refelction: refelct horizaontally or vertically // save memmory
-    // rotation: rotate the canvas not the image
+//     transformations : translation, reflection, rotation
+//     translation: move the origan of the canvas from (0,0) to new point
+//     refelction: refelct horizaontally or vertically // save memmory
+//     rotation: rotate the canvas not the image
