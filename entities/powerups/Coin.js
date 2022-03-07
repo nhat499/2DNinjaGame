@@ -145,7 +145,7 @@ class Potion {
       true
     );
 
-    this.quantity = parseInt(localStorage.getItem('coins') ?? 0, 10);
+    this.quantity = parseInt(localStorage.getItem(this.name) ?? 0, 10);
 
     this.cdTimer = 0;
   }
