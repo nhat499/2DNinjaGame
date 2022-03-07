@@ -359,10 +359,10 @@ class Slime {
   dropLoot() {
     if (this.boss) {
       for (let i = 0; i < 50; i++) {
-        let randx = Math.random() * 20 - 10;
-        let randy = Math.random() * 20 - 10;
+        // let randx = Math.random() * 20 - 10;
+        // let randy = Math.random() * 20 - 10;
         console.log();
-        const coin = new Coin(this.game, this.x + 2*randx, this.y + randy, false);
+        const coin = new Coin(this.game, this.x, this.y, false);
         this.game.addEntity(coin);
       }
       const key = new Key(this.game, this.x, this.y);

@@ -2,7 +2,7 @@ class Portal {
     constructor(game, x, y, level) {
         Object.assign(this, { game, x, y, level});
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/Object/portal.png");
-        this.active = false;
+        this.open = false;
         this.BB = new BoundingBox(this.x + 20, this.y, 90, 128);
         //this.leftBB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
         //this.rightBB = new BoundingBox(this.x + this.w - PARAMS.BLOCKWIDTH, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
@@ -19,7 +19,7 @@ class Portal {
     // };
 
     draw(ctx) {
-        if (this.active) {
+        if (this.open) {
             ctx.drawImage(this.spritesheet, this.x - this.game.camera.x,
                 this.y - this.game.camera.y, 128, 128);
         }
