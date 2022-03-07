@@ -9,8 +9,8 @@
     />
 
     <title>2D ninja game</title>
-    <script type='text/javascript' > 
-      var debugStat = false; 
+    <script type="text/javascript">
+      var debugStat = false;
     </script>
     <script src="AssetManager.js" defer></script>
     <script src="timer.js" defer></script>
@@ -154,7 +154,7 @@
       height: 8px;
     }
 
-    .slider input[type="range"] {
+    .slider input[type='range'] {
       position: absolute;
       left: -2px;
       top: 0;
@@ -199,20 +199,18 @@
     }
 
     .sliderValue {
-      font-family: "Google Sans Regular";
+      font-family: 'Google Sans Regular';
       width: 28px;
       height: 20px;
       margin-left: 10px;
       text-align: center;
     }
-
   </style>
   <body>
     <!-- <audio controls autoplay>
         <source src="./music/edson1.wav" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio> -->
-    <h1>hello world</h1>
     <box></box>
 
     <div id="main">
@@ -232,9 +230,7 @@
         </div>
         <div class="shop-item">
           <div class="shop-item-img-wrapper">
-            <img
-              src="sprites/Object/potion.png"
-            />
+            <img src="sprites/Object/potion.png" />
           </div>
           <div class="shop-item-content">
             <div class="shop-item-title">Health Potion</div>
@@ -250,19 +246,18 @@
     </div>
 
     <div>
-      <br>
-      <input type="checkbox" id="debug"> Debug 
-      <input type="checkbox" id="mute"> Mute
-  </div>
+      <br />
+      <input type="checkbox" id="debug" /> Debug
+      <input type="checkbox" id="mute" /> Mute
+    </div>
 
     <div class="slider-cont">
       <div class="slider">
-        <input type="range" min="0" max="100" value="50">
+        <input type="range" min="0" max="100" value="50" />
         <progress id="volumeTracker" min="0" max="100" value="50"></progress>
       </div>
       <div class="sliderValue">50</div>
     </div>
-
   </body>
   <script>
     //document.getElementById("gameWorld").focus();
@@ -271,15 +266,14 @@
     });
   </script>
   <script>
-    window.onload = function() {
-      slider = document.querySelector(".slider input");
-      slider.oninput = function() {
-        progressBar = document.querySelector(".slider progress");
+    window.onload = function () {
+      slider = document.querySelector('.slider input');
+      slider.oninput = function () {
+        progressBar = document.querySelector('.slider progress');
         progressBar.value = slider.value;
-        sliderValue = document.querySelector(".sliderValue");
+        sliderValue = document.querySelector('.sliderValue');
         sliderValue.innerHTML = slider.value;
-
-      }
-    }
-  </script> 
+      };
+    };
+  </script>
 </html>
