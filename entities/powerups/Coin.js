@@ -67,13 +67,10 @@ class Coin {
             }
           }
           if (e instanceof Wall) {
-            console.log("wall")
             if (self.lastBB.left >= e.BB.right) { // left collision
-              console.log("left")
               self.x = e.BB.right;
             } else if (self.lastBB.right <= e.BB.left) { // right ocllsion
               self.x = e.BB.left - 30;
-              console.log("right")
             }
           }
         }

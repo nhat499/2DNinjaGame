@@ -1,6 +1,6 @@
 class BoundingBox {
-    constructor(x, y, width, height, hbDmg) {
-        Object.assign(this, {x, y, width, height, hbDmg});
+    constructor(x, y, width, height, hbDmg, name) {
+        Object.assign(this, {x, y, width, height, hbDmg, name});
 
         this.left = x;
         this.top = y;
@@ -16,5 +16,16 @@ class BoundingBox {
                return true; 
             } 
         return false;
+    }
+
+    isEqual(OtherBB) {
+        if (this.x === OtherBB.x 
+            && this.y === OtherBB.y 
+            && this.height === OtherBB.height 
+            && this.width === OtherBB.width) {
+                return true;
+            } else {
+                return false;
+            }
     }
 }

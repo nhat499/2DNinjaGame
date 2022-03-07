@@ -30,7 +30,7 @@ class MainNinja {
 
         //
         this.attackDmg = 50;
-
+        this.att3Freq = 0.1;
 
         // hp
         this.maxHP = 150;
@@ -101,8 +101,8 @@ class MainNinja {
         this.animations["attack1" + "right"] = new Animator(this.spritesheet, 3800, 2800, 425, 300, 6, 0.05, 0, false, true);
         this.animations["attack1" + "left"] = new Animator(this.spritesheet, 1250, 2800, 425, 300, 6, 0.05, 0, true, true);
 
-        this.animations["attack2" + "right"] = new Animator(this.spritesheet, 3800, 3100, 420, 400, 8, 0.05, 0, false, true);
-        this.animations["attack2" + "left"] = new Animator(this.spritesheet, 440, 3100, 420, 400, 8, 0.05, 0, true, true);
+        this.animations["attack2" + "right"] = new Animator(this.spritesheet, 3800, 3100, 420, 400, 8, 0.02, 0, false, true);
+        this.animations["attack2" + "left"] = new Animator(this.spritesheet, 440, 3100, 420, 400, 8, 0.02, 0, true, true);
 
         this.animations["attack3" + "right"] = new Animator(this.spritesheet, 3800 + 40, 3500, 400, 400, 4, 0.05, 0, false, true);
         this.animations["attack3" + "left"] = new Animator(this.spritesheet, 2160 + 40, 3500, 400, 400, 4, 0.05, 0, true, true);
@@ -425,8 +425,21 @@ class MainNinja {
                 }
                 this.updateHB(this.action, this.facing);
             } else {
-                if (this.action != "attack3") this.hitBox = undefined; else this.updateHB(this.action, this.facing);
-                
+                // if (this.action != "attack3"){
+                //     this.hitBox = undefined; 
+                // } else {  
+                //     this.updateHB(this.action, this.facing);
+                // }
+                this.hitBox = undefined;
+                if (this.action === "attack3") {
+                    this.att3Freq -= this.game.clockTick;
+                    if (this.att3Freq <= 0) {
+                        this.att3Freq = 0.1;
+                        this.updateHB(this.action, this.facing);
+                    }
+                }
+
+
                 if ((this.action === "attack2")) { // up attack
                     this.action = "attack2";
                 } else if ((this.action === "attack1")) { // left or right attack
@@ -453,6 +466,9 @@ class MainNinja {
             //console.log(this.game.camera.potion.cdTimer);
         } else if (this.game.potion && this.game.camera.potion.quantity > 0) {
             this.hp += 100;
+            //show heal amout
+            let healIndicator = new dmgIndicator(this.game, this.BB.x, this.BB.y, 100, "lightgreen");
+            this.game.addEntity(healIndicator);
             if (this.hp > this.maxHP) this.hp = this.maxHP;
             this.game.camera.potion.quantity -= 1;
             this.game.camera.potion.cdTimer = 10;
@@ -469,21 +485,32 @@ class MainNinja {
     }
 
     updateHB(attack, facing) {
+        let offsetX = 0;
+        let offsetY = 20;
+        let width = 130;
+        let height = 100;
+        let dmgModifer = 1;
         // right facing
         if (facing === "right") {
-            this.hitBox = this.hitBox = new BoundingBox(this.x + 60, this.y + 20, 130, 100, this.attackDmg);
+            offsetX = 60;
+            // this.hitBox = new BoundingBox(this.x + 60, this.y + 20, 130, 100, this.attackDmg);
         }
-
         // left facing
         if (facing === "left") {
-            this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130, 100, this.attackDmg);
+            offsetX = -130;
+            // this.hitBox = new BoundingBox(this.x - 130, this.y + 20, 130, 100, this.attackDmg);
         }
-
-
         // jump attack bounding box
         if (attack === "attack3") {
-            this.hitBox = new BoundingBox(this.x - 70, this.y - 20, 200, 200, 0.1 * this.attackDmg)
+            offsetY = -20;
+            offsetX = -70;
+            width = 200;
+            height = 200;
+            dmgModifer= 0.7;
+            // this.hitBox = new BoundingBox(this.x - 70, this.y - 20, 200, 200, 0.1 * this.attackDmg)
         }
+
+        this.hitBox = new BoundingBox(this.x + offsetX, this.y + offsetY, width, height, dmgModifer * this.attackDmg, attack);
     }
 
     takeDamage(hitBox) {

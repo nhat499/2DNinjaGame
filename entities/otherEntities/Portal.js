@@ -19,12 +19,13 @@ class Portal {
     // };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x,
-            this.y - this.game.camera.y, 128, 128);
+        if (this.active) {
+            ctx.drawImage(this.spritesheet, this.x - this.game.camera.x,
+                this.y - this.game.camera.y, 128, 128);
+        }
 
-        //ctx.drawImage(this.spritesheet,128, 0, 128,128, this.x + (i * 128) - this.game.camera.x, this.y - this.game.camera.y, 128, 128);
 
-        let debug = true;
+        let debug = false;
         if (debug) {
             ctx.strokeStyle = "Red";
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);

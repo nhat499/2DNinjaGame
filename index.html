@@ -38,6 +38,13 @@
       width: 1000px;
     }
 
+    #Controls {
+      position: absolute;
+      left : 1050px;
+      top : 20px;
+      width: 300px;
+    }
+
     #open-shop {
       position: absolute;
       right: 20px;
@@ -205,11 +212,6 @@
 
   </style>
   <body>
-    <!-- <audio controls autoplay>
-        <source src="./music/edson1.wav" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio> -->
-    <h1>hello world</h1>
     <box></box>
 
     <div id="main">
@@ -218,8 +220,8 @@
         width="1000"
         height="750"
         style="background: lightblue"
-        tabindex="1"
-        autofocus
+        tabindex="0"
+        focus
       ></canvas>
       <div id="open-shop">Shop</div>
       <div id="shop">
@@ -244,6 +246,17 @@
           </div>
         </div>
       </div>
+      
+      <div id="Controls">
+        <h3>Controls</h3>
+        <p>Movement: Arrows key left and right</p>
+        <p>Portal: Arrows key up</p>
+        <p>Attack: Key A  and/or directional key (Left, right, and Up) can also be use mid Air</p>
+        <p>Throw: Key D</p>
+        <p>Jump: Key SpaceBar can be use a secound time to jump mid-air</p>
+        <p>Use Potion: Key Q</p>
+      </div>
+
     </div>
 
     <div class="slider-cont">
@@ -256,7 +269,12 @@
 
   </body>
   <script>
-    //document.getElementById("gameWorld").focus();
+    window.addEventListener("keydown", function(e) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
+
     document.getElementById('open-shop').addEventListener('click', () => {
       document.getElementById('shop').style.display = 'block';
     });
@@ -269,7 +287,6 @@
         progressBar.value = slider.value;
         sliderValue = document.querySelector(".sliderValue");
         sliderValue.innerHTML = slider.value;
-
       }
     }
   </script> 

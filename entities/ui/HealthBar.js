@@ -36,10 +36,13 @@ class HealthBar {
       ctx.fillStyle = width/w <= 0.2 ? "red" : width/w <= 0.5? "orange" : "lightGreen";
       ctx.fill();
       ctx.closePath();
-      ctx.beginPath();
-      ctx.font = h+"px serif";
-      ctx.fillStyle = "black";
-      ctx.fillText(currHP + "/" + maxHP, x + (w/3), y + h - 4, w/3);
+      if (mainCharacter) {
+        ctx.beginPath();
+        ctx.font = h+"px serif";
+        ctx.fillStyle = "black";
+        ctx.fillText(currHP + "/" + maxHP, x + (w/3), y + h - 4, w/3);
+      }
+
     }
   }
 }

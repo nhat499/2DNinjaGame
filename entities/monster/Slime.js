@@ -4,7 +4,7 @@ class Slime {
     Object.assign(this, { game, x, y, boss });
     //this.BB = new BoundingBox(this.x + 30, this.y + 55, 65, 65);
     this.BB = new BoundingBox(this.x, this.y, 70, 65);
-
+    //this.CanbeHit = true;
     //this.verlocity = {x: -PARAMS.BITWIDTH, y: PARAMS.BLOCKWIDTH * 3};
     this.spritesheet = ASSET_MANAGER.getAssset('sprites/slime.png');
     this.scale = 0.5;
@@ -294,21 +294,32 @@ class Slime {
         if (entity.facing === 'left') {
           if (!self.boss) {
             self.facing = 'right';
-            self.velocity.x = -100;
+            self.velocity.x = -50;
           }
         } else {
           if (!self.boss) {
             self.facing = 'left';
-            self.velocity.x = 100;
+            self.velocity.x = 50;
           }
         }
         if (entity.action === 'attack2') {
           if (!self.boss) {
-            self.velocity.y = -300;
+            self.velocity.y = -600;
           }
         }
-        self.hp -= entity.hitBox.hbDmg;
-        self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y, entity.hitBox.hbDmg));
+        //if (entity.hitBox.name != "attack3") {
+          self.hp -= entity.hitBox.hbDmg;
+          self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y , entity.hitBox.hbDmg, "orange"));
+        //} else {
+          // if (self.action != "dmg") {
+          //   console.log("1")
+          //   self.hp -= entity.hitBox.hbDmg;
+          //   self.CanbeHit = false;
+          //   self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y,entity.hitBox.hbDmg, "orange", entity.hitBox.name));
+          // }
+
+        //}
+
         if (!self.boss) {
           self.action = 'dmg';
         }
