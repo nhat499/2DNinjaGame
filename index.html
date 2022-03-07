@@ -43,8 +43,8 @@
 
     #Controls {
       position: absolute;
-      left : 1050px;
-      top : 20px;
+      left: 1050px;
+      top: 20px;
       width: 300px;
     }
 
@@ -245,18 +245,35 @@
             )
           </div>
         </div>
+        <div class="shop-item">
+          <div class="shop-item-img-wrapper">
+            <img src="sprites/Object/potion_purple.png" />
+          </div>
+          <div class="shop-item-content">
+            <div class="shop-item-title">Attack Potion</div>
+            <div class="shop-item-description">Increase attack by 50%</div>
+          </div>
+          <div class="item-btn" id="buy-speed-potion">
+            Buy (25
+            <div class="coin"></div>
+            )
+          </div>
+        </div>
       </div>
-      
+
       <div id="Controls">
         <h3>Controls</h3>
         <p>Movement: Arrows key left and right</p>
         <p>Portal: Arrows key up</p>
-        <p>Attack: Key A  and/or directional key (Left, right, and Up) can also be use mid Air</p>
+        <p>
+          Attack: Key A and/or directional key (Left, right, and Up) can also be
+          use mid Air
+        </p>
         <p>Throw: Key D</p>
         <p>Jump: Key SpaceBar can be use a secound time to jump mid-air</p>
-        <p>Use Potion: Key Q</p>
+        <p>Use Health Potion: Key Q</p>
+        <p>Use Attack Potion: Key W</p>
       </div>
-
     </div>
 
     <div>
@@ -274,11 +291,19 @@
     </div>
   </body>
   <script>
-    window.addEventListener("keydown", function(e) {
-    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
-        e.preventDefault();
-    }
-}, false);
+    window.addEventListener(
+      'keydown',
+      function (e) {
+        if (
+          ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(
+            e.code
+          ) > -1
+        ) {
+          e.preventDefault();
+        }
+      },
+      false
+    );
 
     document.getElementById('open-shop').addEventListener('click', () => {
       document.getElementById('shop').style.display = 'block';
