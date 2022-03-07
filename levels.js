@@ -14,7 +14,7 @@ let level = {
         walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
             {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
     
-        portals: [{x: 3512, y: 572, nextLevel:"testingLevel"}],
+        portals: [{x: 3512, y: 572, nextLevel:"level2"}],
     
         //tree stump locations
         stumps: [],

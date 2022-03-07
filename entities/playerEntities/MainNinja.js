@@ -272,6 +272,12 @@ class MainNinja {
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.updateBB(); //bounding box;
+        // fall off map
+        if (this.y > 2500) {
+            this.action = "die"
+            this.hp = 0;
+        }
+
 
         // collision handling
         let self = this;
