@@ -31,7 +31,7 @@ class Kunai {
             this.removeFromWorld = true;
         }
     };
-
+    
     updateHB() {
         this.lasthitBox = this.hitBox;
         this.hitBox = new BoundingBox(this.x,this.y, 50, 50, this.attackDmg);
@@ -42,8 +42,9 @@ class Kunai {
             this.x - this.game.camera.x, 
             this.y - this.game.camera.y, 0.5);
 
-        let debug = true;
-        if (debug) {
+            
+        let debug = false;
+        if (debugStat) {
             if (this.hitBox) {
                 this.game.ctx.strokeStyle = "red"; // the outline of shape
                 this.game.ctx.strokeRect(this.hitBox.x - this.game.camera.x, 
