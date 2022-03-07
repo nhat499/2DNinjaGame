@@ -1,51 +1,50 @@
 let ASSET_MANAGER = new AssetManager();
 let gameEngine = new GameEngine();
 
-
 // queue download of all images
-ASSET_MANAGER.queueDownLoad("sprites/BG.png");
-ASSET_MANAGER.queueDownLoad("sprites/Object/potion.png");
-ASSET_MANAGER.queueDownLoad("sprites/slime.png");
-ASSET_MANAGER.queueDownLoad("sprites/ghost1.png");
-ASSET_MANAGER.queueDownLoad("sprites/entities/knight5.png");
-ASSET_MANAGER.queueDownLoad("sprites/theSlashSheet.png");
-ASSET_MANAGER.queueDownLoad("sprites/entities/ninja.png");
-ASSET_MANAGER.queueDownLoad("sprites/slashBlue.png");
-ASSET_MANAGER.queueDownLoad("sprites/floorTileSet.png");
-ASSET_MANAGER.queueDownLoad("sprites/blueFlameRow.png");
-ASSET_MANAGER.queueDownLoad("sprites/orangeFireRow.png");
-ASSET_MANAGER.queueDownLoad("sprites/Miscellaneous.png");
-ASSET_MANAGER.queueDownLoad("sprites/Object/portal.png");
-ASSET_MANAGER.queueDownLoad("sprites/entities/ninjaMainSheet.png");
+ASSET_MANAGER.queueDownLoad('sprites/BG.png');
+ASSET_MANAGER.queueDownLoad('sprites/Object/potion.png');
+ASSET_MANAGER.queueDownLoad('sprites/Object/potion_purple.png');
+ASSET_MANAGER.queueDownLoad('sprites/slime.png');
+ASSET_MANAGER.queueDownLoad('sprites/ghost1.png');
+ASSET_MANAGER.queueDownLoad('sprites/entities/knight5.png');
+ASSET_MANAGER.queueDownLoad('sprites/theSlashSheet.png');
+ASSET_MANAGER.queueDownLoad('sprites/entities/ninja.png');
+ASSET_MANAGER.queueDownLoad('sprites/slashBlue.png');
+ASSET_MANAGER.queueDownLoad('sprites/floorTileSet.png');
+ASSET_MANAGER.queueDownLoad('sprites/blueFlameRow.png');
+ASSET_MANAGER.queueDownLoad('sprites/orangeFireRow.png');
+ASSET_MANAGER.queueDownLoad('sprites/Miscellaneous.png');
+ASSET_MANAGER.queueDownLoad('sprites/Object/portal.png');
+ASSET_MANAGER.queueDownLoad('sprites/entities/ninjaMainSheet.png');
 // ASSET_MANAGER.queueDownLoad();
 // ASSET_MANAGER.queueDownLoad();
 
-ASSET_MANAGER.downloadAll(function () {              // function() is a call back function, it is call when downloadAll finish running
-    //let slimeSpriteSheetLeft = ASSET_MANAGER.getAssset("sprites/slimeLeft.png");
-    //let slimeSpriteSheetRight = ASSET_MANAGER.getAssset("sprites/slimeRight.png");
-    let canvas = document.getElementById("gameWorld");  // orgin is top left corner
-    //canvas.appendChild(slimeSpriteSheet); // testing assemanager -> good
-    let ctx = canvas.getContext("2d"); // the pen need to update be4 drawing;
-    //console.log(ctx);
+ASSET_MANAGER.downloadAll(function () {
+  // function() is a call back function, it is call when downloadAll finish running
+  //let slimeSpriteSheetLeft = ASSET_MANAGER.getAssset("sprites/slimeLeft.png");
+  //let slimeSpriteSheetRight = ASSET_MANAGER.getAssset("sprites/slimeRight.png");
+  let canvas = document.getElementById('gameWorld'); // orgin is top left corner
+  //canvas.appendChild(slimeSpriteSheet); // testing assemanager -> good
+  let ctx = canvas.getContext('2d'); // the pen need to update be4 drawing;
+  //console.log(ctx);
 
-    //ctx.drawImage(slimeSpriteSheet, 20, 90, 230, 240, 0, 0, 230, 240);
-    
-    //let slime = new Slime(gameEngine, 700, 445);
-    //gameEngine.addEntity(slime);
+  //ctx.drawImage(slimeSpriteSheet, 20, 90, 230, 240, 0, 0, 230, 240);
 
-    // let knight = new Ninja(gameEngine, 300, 300);
+  //let slime = new Slime(gameEngine, 700, 445);
+  //gameEngine.addEntity(slime);
 
-    
-    // gameEngine.addEntity(knight);
-    
+  // let knight = new Ninja(gameEngine, 300, 300);
 
-    gameEngine.init(ctx);
-    //let ninja = new Ninja(gameEngine, 300, 300);
-    //gameEngine.addEntity(ninja);
-    new SceneManager(gameEngine);
+  // gameEngine.addEntity(knight);
 
-    //gameEngine.addEntity(new SceneManager(gameEngine));  for later, tells you what lv the game is one
-    gameEngine.start();
+  gameEngine.init(ctx);
+  //let ninja = new Ninja(gameEngine, 300, 300);
+  //gameEngine.addEntity(ninja);
+  new SceneManager(gameEngine);
+
+  //gameEngine.addEntity(new SceneManager(gameEngine));  for later, tells you what lv the game is one
+  gameEngine.start();
 });
 
 // drawing notes
@@ -57,8 +56,8 @@ ASSET_MANAGER.downloadAll(function () {              // function() is a call bac
 
 //     cirle
 //     ctx.beginPath();
-//             x , y,  r,                  0: start at 0 radian, end at : 2*pi radian 
-//     ctx.arc(50, 50, 25, 0, 2*math.pi); 
+//             x , y,  r,                  0: start at 0 radian, end at : 2*pi radian
+//     ctx.arc(50, 50, 25, 0, 2*math.pi);
 //     ctx.fill(); fill in the arc
 //     ctx. stroke();   outline the arc
 

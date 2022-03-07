@@ -10,7 +10,7 @@ class SceneManager {
     this.title = true;
     this.level = level;
     //this.currLv = "level1"
-    this.currLv = "level1";
+    this.currLv = 'level1';
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
@@ -20,7 +20,7 @@ class SceneManager {
 
     this.checkbox = document.getElementById('debug');
 
-    this.checkbox.addEventListener('change', function() {
+    this.checkbox.addEventListener('change', function () {
       if (this.checked) {
         debugStat = true;
       } else {
@@ -33,7 +33,7 @@ class SceneManager {
     //this.loadLevel1();
     //console.log(level1);
     //this.loadLevel(this.level);
-    
+
     //let knight = new Knight(this.game, 600, 100);
     //this.game.addEntity(knight);
     //let slime = new Slime(this.game, 1000, -100);
@@ -41,11 +41,22 @@ class SceneManager {
 
     //this.game.addEntity(this.knight);
     //this.game.addEntity(this.ghost);
-    // this.ninja = new MainNinja(this.game, 0, 170); 
+    // this.ninja = new MainNinja(this.game, 0, 170);
     // this.game.addEntity(this.ninja);
 
     this.coinAnimation = new Coin(this.game, 820, 6, true);
-    this.potion = new Potion(this.game, 25, this.game.surfaceHeight - 225)
+    this.healthPotion = new Potion(
+      this.game,
+      100,
+      this.game.surfaceHeight - 175,
+      'healthPotion'
+    );
+    this.speedPotion = new Potion(
+      this.game,
+      170,
+      this.game.surfaceHeight - 175,
+      'speedPotion'
+    );
 
     document
       .getElementById('buy-health-potion')
@@ -53,7 +64,17 @@ class SceneManager {
         if (this.ninja.coins >= 25) {
           this.ninja.spendCoins(25);
           //this.ninja.hp = this.ninja.maxHP;
-          this.potion.quantity += 1;
+          this.healthPotion.addQuantity(1);
+        }
+      });
+
+    document
+      .getElementById('buy-speed-potion')
+      .addEventListener('click', () => {
+        if (this.ninja.coins >= 25) {
+          this.ninja.spendCoins(25);
+          //this.ninja.hp = this.ninja.maxHP;
+          this.speedPotion.addQuantity(1);
         }
       });
 
@@ -70,7 +91,7 @@ class SceneManager {
 
     // update horizontal camera
 
-    this.sound.volume = (this.volumeNum.value / 100);
+    this.sound.volume = this.volumeNum.value / 100;
     if (this.ninja) {
       let leftPoint = this.game.surfaceWidth / 3;
       let rightPoint = this.game.surfaceWidth - leftPoint;
@@ -79,7 +100,7 @@ class SceneManager {
       } else if (this.x > this.ninja.x - leftPoint) {
         this.x = this.ninja.x - leftPoint;
       }
-  
+
       //update verticle camera
       let upperPoint = this.game.surfaceHeight / 2.5;
       let lowerPoint = this.game.surfaceHeight - upperPoint;
@@ -105,7 +126,6 @@ class SceneManager {
       }
     }
 
- 
     if (this.gameOver && this.game.click) {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
         //restart game
@@ -144,12 +164,14 @@ class SceneManager {
 
     for (let i = 0; i < level.grounds.length; i++) {
       let ground = level.grounds[i];
-      this.game.addEntity(new Ground(this.game, ground.x, ground.y, ground.width));
+      this.game.addEntity(
+        new Ground(this.game, ground.x, ground.y, ground.width)
+      );
     }
 
     for (let i = 0; i < level.portals.length; i++) {
       let portal = level.portals[i];
-      let thePort = new Portal(this.game, portal.x, portal.y, portal.nextLevel)
+      let thePort = new Portal(this.game, portal.x, portal.y, portal.nextLevel);
       this.game.addEntity(thePort);
     }
 
@@ -190,14 +212,14 @@ class SceneManager {
         this.game.mouse && this.game.mouse.y > 410 && this.game.mouse.y < 450
           ? 'Grey'
           : 'White';
-      ctx.font = '50px serif';
+      ctx.font = '50px Sans-serif';
       ctx.fillText('Start Game', 385, 450);
     }
 
     if (this.gameOver) {
       // ctx.filter = 'grayscale(1)';
       ctx.fillStyle = 'red';
-      ctx.font = '50px serif';
+      ctx.font = '50px Sans-serif';
       ctx.fillText('GAME OVER', 385, 350);
       this.game.pause = true;
 
@@ -209,12 +231,13 @@ class SceneManager {
     }
 
     if (!this.title) {
-      ctx.font = '40px serif';
+      ctx.font = '40px Sans-serif';
       ctx.fillStyle = 'black';
       ctx.fillText(this.ninja.coins ?? 0, 870, 40);
 
       this.coinAnimation.draw(ctx);
-      this.potion.draw(ctx);
+      this.healthPotion.draw(ctx);
+      this.speedPotion.draw(ctx);
     }
   }
 }
