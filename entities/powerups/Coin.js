@@ -145,7 +145,9 @@ class Potion {
       true
     );
 
-    this.quantity = parseInt(localStorage.getItem(this.name), 10) ?? 0;
+    this.quantity = localStorage.getItem(this.name)
+      ? parseInt(localStorage.getItem(this.name), 10)
+      : 0;
     this.cdTimer = 0;
   }
 
