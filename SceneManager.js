@@ -41,8 +41,8 @@ class SceneManager {
 
     //this.game.addEntity(this.knight);
     //this.game.addEntity(this.ghost);
-    this.ninja = new MainNinja(this.game, 0, 170); 
-    this.game.addEntity(this.ninja);
+    // this.ninja = new MainNinja(this.game, 0, 170); 
+    // this.game.addEntity(this.ninja);
 
     this.coinAnimation = new Coin(this.game, 820, 6, true);
     this.potion = new Potion(this.game, 25, this.game.surfaceHeight - 225)
@@ -71,29 +71,30 @@ class SceneManager {
     // update horizontal camera
 
     this.sound.volume = (this.volumeNum.value / 100);
-
-    let leftPoint = this.game.surfaceWidth / 3;
-    let rightPoint = this.game.surfaceWidth - leftPoint;
-    if (this.x < this.ninja.x - rightPoint) {
-      this.x = this.ninja.x - rightPoint;
-    } else if (this.x > this.ninja.x - leftPoint) {
-      this.x = this.ninja.x - leftPoint;
+    if (this.ninja) {
+      let leftPoint = this.game.surfaceWidth / 3;
+      let rightPoint = this.game.surfaceWidth - leftPoint;
+      if (this.x < this.ninja.x - rightPoint) {
+        this.x = this.ninja.x - rightPoint;
+      } else if (this.x > this.ninja.x - leftPoint) {
+        this.x = this.ninja.x - leftPoint;
+      }
+  
+      //update verticle camera
+      let upperPoint = this.game.surfaceHeight / 2.5;
+      let lowerPoint = this.game.surfaceHeight - upperPoint;
+      if (this.y > this.ninja.y - upperPoint) {
+        this.y = this.ninja.y - upperPoint;
+      } else if (this.y < this.ninja.y - lowerPoint) {
+        this.y = this.ninja.y - lowerPoint;
+      }
+      // let midpoint = this.game.surfaceHeight / 2;
+      // if (this.y > this.ninja.y - midpoint) {
+      //   this.y = this.ninja.y - midpoint;
+      // } else if (this.y < this.ninja.y - midpoint) {
+      //   this.y = this.ninja.y - midpoint;
+      // }
     }
-
-    //update verticle camera
-    let upperPoint = this.game.surfaceHeight / 2.5;
-    let lowerPoint = this.game.surfaceHeight - upperPoint;
-    if (this.y > this.ninja.y - upperPoint) {
-      this.y = this.ninja.y - upperPoint;
-    } else if (this.y < this.ninja.y - lowerPoint) {
-      this.y = this.ninja.y - lowerPoint;
-    }
-    // let midpoint = this.game.surfaceHeight / 2;
-    // if (this.y > this.ninja.y - midpoint) {
-    //   this.y = this.ninja.y - midpoint;
-    // } else if (this.y < this.ninja.y - midpoint) {
-    //   this.y = this.ninja.y - midpoint;
-    // }
 
     if (this.title && this.game.click) {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
@@ -114,7 +115,7 @@ class SceneManager {
       }
     }
 
-    if (this.ninja.hp <= 0 && !this.gameOver) {
+    if (this.ninja && this.ninja.hp <= 0 && !this.gameOver) {
       this.gameOver = true;
     }
   }
