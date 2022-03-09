@@ -630,6 +630,8 @@ class MainNinja {
       if (entity.BB && self.BB.collide(entity.BB)) {
         //if (self.velocity.y >= 0) { // falling
         // add more ground stuff here
+
+
         if (
           (entity instanceof Ground ||
             entity instanceof Platform ||
@@ -729,6 +731,7 @@ class MainNinja {
             entity instanceof Ninja ||
             entity instanceof Knight
           ) {
+            console.log("collision w/ enemy");
             // touch dmg
             self.takeDamage(entity.BB);
           }
@@ -738,7 +741,7 @@ class MainNinja {
         if (entity.monsterHB && self.BB.collide(entity.monsterHB)) {
           // got hit
           self.takeDamage(entity.monsterHB);
-          if (entity instanceof Slime) {
+          if (entity instanceof Slime || entity instanceof Knight) {
             // bounce attack
             self.invicible = true;
             self.hitBox = undefined;
@@ -934,6 +937,7 @@ class MainNinja {
 
   takeDamage(hitBox) {
     if (hitBox && this.hp > 0 && hitBox.hbDmg > 0) {
+      console.log("I'm hit");
       this.hp -= hitBox.hbDmg;
       this.game.addEntity(
         new dmgIndicator(this.game, this.BB.x, this.BB.y, hitBox.hbDmg, 'blue')
