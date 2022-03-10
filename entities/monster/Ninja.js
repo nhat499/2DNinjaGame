@@ -234,17 +234,24 @@ class Ninja {
                 ctx, this.x + offsetX - 120 - this.game.camera.x, this.y + offsetY - this.game.camera.y, 0.20);
         }
 
-        this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-
-        this.game.ctx.strokeStyle = "blue"; // alert range
-        this.game.ctx.strokeRect(this.alertBB.x - this.game.camera.x, this.alertBB.y - this.game.camera.y, this.alertBB.width, this.alertBB.height);
-
-        if (this.monsterHB) {
-            this.game.ctx.strokeStyle = "purple"; // attack range
-            this.game.ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, 
-            this.monsterHB.width, this.monsterHB.height);
+        if (debugStat) {
+            this.debug(ctx);
         }
+
     };
+
+        debug(ctx) {
+            this.game.ctx.strokeStyle = "red"; // the outline of shape
+            this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+
+            this.game.ctx.strokeStyle = "blue"; // alert range
+            this.game.ctx.strokeRect(this.alertBB.x - this.game.camera.x, this.alertBB.y - this.game.camera.y, this.alertBB.width, this.alertBB.height);
+
+            if (this.monsterHB) {
+                this.game.ctx.strokeStyle = "purple"; // attack range
+                this.game.ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, 
+                this.monsterHB.width, this.monsterHB.height);
+            }
+        }
 
 }

@@ -10,7 +10,7 @@ class SceneManager {
     this.title = true;
     this.level = level;
     //this.currLv = "level1"
-    this.currLv = 'level1';
+    this.currLv = 'level2';
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';

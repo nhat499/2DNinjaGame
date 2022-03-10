@@ -62,7 +62,7 @@ let level = {
     
         knights: [{x:1300, y:1100}, {x:3000, y: 1000}],//[{x: 600, y: -100}], //{x: 840, y: 0}, {x: 900, y: 0}, {x: 940, y: 0}, {x: 1000, y: 0}
     
-        ninjas: [],//[{x: 1100, y: 0}], {x: 1350, y: 1500}
+        ninjas: [{x: 250, y:1700}],//[{x: 1100, y: 0}], {x: 1350, y: 1500}
     
         ghosts: [{x: 2000, y: ghostHeight}, {x: 2500, y: ghostHeight}, {x: 3000, y: ghostHeight}, {x: 3500, y: ghostHeight}, {x: 4000, y: ghostHeight},
             {x: 4500, y: ghostHeight}, {x: 5000, y: ghostHeight}, {x: 5500, y: ghostHeight}, {x: 6000, y: ghostHeight}, {x: 6500, y: ghostHeight}, 
