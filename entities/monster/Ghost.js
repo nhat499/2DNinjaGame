@@ -197,8 +197,11 @@ class Ghost {
         // } else {
         //     this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx.scale(), this.x - this.game.camera.x, this.y, .25);
         // }
-
-        this.game.ctx.strokeStyle = "Red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+        if (debugStat) {
+            this.game.ctx.strokeStyle = "Red"; // the outline of shape
+            this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+          }
+        //this.game.ctx.strokeStyle = "Red"; // the outline of shape
+        //this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };
 }
