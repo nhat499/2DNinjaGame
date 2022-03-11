@@ -170,6 +170,9 @@ class Ninja {
                 if (entity.action === "attack2") {
                     self.velocity.y = -300;
                 }
+
+                self.hp -= entity.hitBox.hbDmg / 4;
+                self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y , entity.hitBox.hbDmg, "orange"));
             }
         });
         this.updateBB();
