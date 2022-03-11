@@ -8,6 +8,10 @@ class Ninja {
         this.fallAcc = 562 * 3;
         this.hp = 100;
         this.dmg = 5;
+
+        this.baseDmg = 25;
+        this.attackDmg = this.baseDmg;
+
         // state variable
         this.facing = "right"; // 0 right, 1 = left;
         this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
@@ -108,6 +112,7 @@ class Ninja {
             }
         } else if (this.action === "attack") {
             if (this.animations["attack" + this.facing].animationFinish) {
+                console.log('fart');
                 this.updateMonsterHB();
                 this.action = "idle";
                 this.velocity.x = 0;
@@ -183,7 +188,7 @@ class Ninja {
         let slideBuffer = 0;
         // if(this.action === "slide") slideBuffer = 64;
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y + slideBuffer, 55, 110 - slideBuffer);
+        this.BB = new BoundingBox(this.x, this.y + slideBuffer, 55, 110 - slideBuffer, this.attackDmg);
     }
 
     updateAlertBB() {
@@ -195,7 +200,7 @@ class Ninja {
         let bufferx = 0;
         if (this.facing === "right") bufferx = 10;
         if (this.facing === "left") bufferx = -80;
-        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100);
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100, this.attackDmg * 2);
     }
 
     // alert handeling
