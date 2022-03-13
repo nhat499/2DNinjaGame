@@ -150,7 +150,7 @@ class Knight {
             }
             self.handleAlert(self, entity);
             if (entity.hitBox && self.BB.collide(entity.hitBox) &&  self.hp > 0 ) { 
-                console.log("YOU HIT ME");
+                //console.log("YOU HIT ME");
                 if (entity.facing === "left") {
                     self.facing = "right";
                     self.velocity.x = -100;
@@ -189,6 +189,7 @@ class Knight {
         if (this.facing === "right") bufferx = 70;
         if (this.facing === "left") bufferx = 0;
         this.monsterHB = new BoundingBox(this.x + bufferx,this.y + buffery, 120,100, this.attackDmg * 2);
+
     }
 
 

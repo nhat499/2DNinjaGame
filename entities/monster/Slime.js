@@ -291,7 +291,7 @@ class Slime {
 
       if (entity.hitBox && self.BB.collide(entity.hitBox) && self.hp > 0) {
         self.sound.play();
-        console.log("you hit me");
+        //console.log("you hit me");
         if (entity.facing === 'left') {
           if (!self.boss) {
             self.facing = 'right';

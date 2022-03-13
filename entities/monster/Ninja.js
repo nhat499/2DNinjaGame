@@ -112,7 +112,6 @@ class Ninja {
             }
         } else if (this.action === "attack") {
             if (this.animations["attack" + this.facing].animationFinish) {
-                console.log('fart');
                 this.updateMonsterHB();
                 this.action = "idle";
                 this.velocity.x = 0;
