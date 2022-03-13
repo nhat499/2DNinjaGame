@@ -172,7 +172,6 @@ class Ghost {
              
             if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
                 self.action = "attack";
-                console.log('fart');
                 self.updateMonsterHB();
                 //this.action = "walk";
             }

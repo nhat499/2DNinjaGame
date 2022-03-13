@@ -195,6 +195,7 @@ class SceneManager {
       this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y));
     }
     this.ninja = new MainNinja(this.game, 0, 170);
+    //this.ninja = new MainNinja(this.game, 2600, -1600);
     // this.ninja = new MainNinja(this.game, 2000, 1100);
     this.game.addEntity(this.ninja);
   }
