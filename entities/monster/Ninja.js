@@ -8,6 +8,10 @@ class Ninja {
         this.fallAcc = 562 * 3;
         this.hp = 100;
         this.dmg = 5;
+
+        this.baseDmg = 25;
+        this.attackDmg = this.baseDmg;
+
         // state variable
         this.facing = "right"; // 0 right, 1 = left;
         this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
@@ -108,6 +112,7 @@ class Ninja {
             }
         } else if (this.action === "attack") {
             if (this.animations["attack" + this.facing].animationFinish) {
+                console.log('fart');
                 this.updateMonsterHB();
                 this.action = "idle";
                 this.velocity.x = 0;
@@ -131,6 +136,17 @@ class Ninja {
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 110;
                 }
+
+                if (entity instanceof InvWall) {
+                    if (self.lastBB.left >= entity.BB.right) {
+                      self.velocity.x = 0;
+                      self.x = entity.BB.right;
+                    } else if (self.lastBB.right <= entity.BB.left) {
+                      self.velocity.x = 0;
+                      self.x = entity.BB.left - 140 * self.scale;
+                    }
+                  }
+
                 if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                     if (self.lastBB.left >= entity.BB.right) { // left collision
                         self.velocity.x = 0;
@@ -159,6 +175,9 @@ class Ninja {
                 if (entity.action === "attack2") {
                     self.velocity.y = -300;
                 }
+
+                self.hp -= entity.hitBox.hbDmg / 4;
+                self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y , entity.hitBox.hbDmg, "orange"));
             }
         });
         this.updateBB();
@@ -169,7 +188,7 @@ class Ninja {
         let slideBuffer = 0;
         // if(this.action === "slide") slideBuffer = 64;
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y + slideBuffer, 55, 110 - slideBuffer);
+        this.BB = new BoundingBox(this.x, this.y + slideBuffer, 55, 110 - slideBuffer, this.attackDmg);
     }
 
     updateAlertBB() {
@@ -181,7 +200,7 @@ class Ninja {
         let bufferx = 0;
         if (this.facing === "right") bufferx = 10;
         if (this.facing === "left") bufferx = -80;
-        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100);
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100, this.attackDmg * 2);
     }
 
     // alert handeling
@@ -234,17 +253,24 @@ class Ninja {
                 ctx, this.x + offsetX - 120 - this.game.camera.x, this.y + offsetY - this.game.camera.y, 0.20);
         }
 
-        this.game.ctx.strokeStyle = "red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
-
-        this.game.ctx.strokeStyle = "blue"; // alert range
-        this.game.ctx.strokeRect(this.alertBB.x - this.game.camera.x, this.alertBB.y - this.game.camera.y, this.alertBB.width, this.alertBB.height);
-
-        if (this.monsterHB) {
-            this.game.ctx.strokeStyle = "purple"; // attack range
-            this.game.ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, 
-            this.monsterHB.width, this.monsterHB.height);
+        if (debugStat) {
+            this.debug(ctx);
         }
+
     };
+
+        debug(ctx) {
+            this.game.ctx.strokeStyle = "red"; // the outline of shape
+            this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+
+            this.game.ctx.strokeStyle = "blue"; // alert range
+            this.game.ctx.strokeRect(this.alertBB.x - this.game.camera.x, this.alertBB.y - this.game.camera.y, this.alertBB.width, this.alertBB.height);
+
+            if (this.monsterHB) {
+                this.game.ctx.strokeStyle = "purple"; // attack range
+                this.game.ctx.strokeRect(this.monsterHB.x - this.game.camera.x, this.monsterHB.y - this.game.camera.y, 
+                this.monsterHB.width, this.monsterHB.height);
+            }
+        }
 
 }

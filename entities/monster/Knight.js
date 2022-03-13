@@ -122,6 +122,17 @@ class Knight {
                     self.velocity.y = 0;
                     self.y = entity.BB.top - 115 - 50;
                 }
+
+                if (entity instanceof InvWall) {
+                    if (self.lastBB.left >= entity.BB.right) {
+                      self.velocity.x = 0;
+                      self.x = entity.BB.right;
+                    } else if (self.lastBB.right <= entity.BB.left) {
+                      self.velocity.x = 0;
+                      self.x = entity.BB.left - 140 * self.scale;
+                    }
+                  }
+
                 if (entity instanceof Wall && self.BB.bottom > entity.BB.top) { 
                     if (self.lastBB.left >= entity.BB.right) { // left collision
                         self.velocity.x = 0;
@@ -135,6 +146,7 @@ class Knight {
             }
             self.handleAlert(self, entity);
             if (entity.hitBox && self.BB.collide(entity.hitBox) &&  self.hp > 0 ) { 
+                console.log("YOU HIT ME");
                 if (entity.facing === "left") {
                     self.facing = "right";
                     self.velocity.x = -100;
@@ -142,12 +154,16 @@ class Knight {
                     self.facing = "left";
                     self.velocity.x = 100;
                 }
-                self.hp -= 0.5;
+                //self.hp -= 0.5;
                 self.action = "dmg";
                 if (entity.action === "attack2") {
                     self.velocity.y = -300;
                 }
+
+                self.hp -= entity.hitBox.hbDmg / 6;
+                self.game.addEntity(new dmgIndicator(self.game, self.BB.x,self.BB.y , entity.hitBox.hbDmg, "orange"));
             }
+            
         });
         this.updateBB();
         this.updateAlertBB();
