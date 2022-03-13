@@ -740,7 +740,7 @@ class MainNinja {
         if (entity.monsterHB && self.BB.collide(entity.monsterHB)) {
           // got hit
           self.takeDamage(entity.monsterHB);
-          if (entity instanceof Slime || entity instanceof Knight || entity instanceof Ninja) {
+          if (entity instanceof Slime || entity instanceof Knight || entity instanceof Ninja || entity instanceof Ghost) {
             // bounce attack
             self.invicible = true;
             self.hitBox = undefined;

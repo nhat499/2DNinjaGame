@@ -10,6 +10,9 @@ class Ghost {
         this.sound = new Audio();
         this.sound.src = "./sound_effects/sword-1b.wav";
 
+        this.baseDmg = 10;
+        this.attackDmg = this.baseDmg;
+
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
         this.facing = "left"; // 0 right, 1 = left;
@@ -67,6 +70,8 @@ class Ghost {
         if (this.hp <= 0) {
             this.removeFromWorld = true;
         }
+
+        this.monsterHB = undefined;
 
         //this.action = "walk";
 
@@ -166,7 +171,10 @@ class Ghost {
              }
              
             if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
-                self.action = "attack";  
+                self.action = "attack";
+                console.log('fart');
+                self.updateMonsterHB();
+                //this.action = "walk";
             }
 
             //  if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
@@ -187,6 +195,11 @@ class Ghost {
     updateBB() {
         this.lastBB = this.BB;
         this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
+    }
+
+    updateMonsterHB() {
+        let bufferx = 0;
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100, this.attackDmg * 2);
     }
 
     draw(ctx) {  // must have draw method
