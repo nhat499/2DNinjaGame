@@ -36,7 +36,7 @@ let level = {
     },
 
     level2: {
-        grounds: [{x: -456, y: 2000, width: 525}],
+        grounds: [{x: -456, y: 2000, width: 512}],
 
         // platform location
         platforms:[{x: 350, y: 2000, width: 128}, {x: 850, y:1900, width: 128}, {x: 1350, y:1800, width: 128}, 
