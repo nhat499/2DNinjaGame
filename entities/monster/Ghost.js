@@ -10,6 +10,9 @@ class Ghost {
         this.sound = new Audio();
         this.sound.src = "./sound_effects/sword-1b.wav";
 
+        this.baseDmg = 10;
+        this.attackDmg = this.baseDmg;
+
         // state variable
         this.action = "walk"; // 0 idle, 1 = moving, 2 = dying;
         this.facing = "left"; // 0 right, 1 = left;
@@ -67,6 +70,8 @@ class Ghost {
         if (this.hp <= 0) {
             this.removeFromWorld = true;
         }
+
+        this.monsterHB = undefined;
 
         //this.action = "walk";
 
@@ -166,7 +171,9 @@ class Ghost {
              }
              
             if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
-                self.action = "attack";  
+                self.action = "attack";
+                self.updateMonsterHB();
+                //this.action = "walk";
             }
 
             //  if (entity.BB && self.BB.collide(entity.BB) && entity instanceof MainNinja) {
@@ -189,6 +196,11 @@ class Ghost {
         this.BB = new BoundingBox(this.x, this.y, 50, 75); // height: 85
     }
 
+    updateMonsterHB() {
+        let bufferx = 0;
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y, 120,100, this.attackDmg * 2);
+    }
+
     draw(ctx) {  // must have draw method
         this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, 
             this.y - this.game.camera.y, .25);
@@ -197,8 +209,10 @@ class Ghost {
         // } else {
         //     this.animations[this.action + this.facing].drawFrame(this.game.clockTick, ctx.scale(), this.x - this.game.camera.x, this.y, .25);
         // }
+        if (debugStat) {
+            this.game.ctx.strokeStyle = "Red"; // the outline of shape
+            this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
+          }
 
-        this.game.ctx.strokeStyle = "Red"; // the outline of shape
-        this.game.ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y - this.game.camera.y, this.BB.width, this.BB.height);
     };
 }
