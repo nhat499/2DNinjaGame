@@ -73,6 +73,7 @@ class GameEngine {
             break;
           case 'KeyQ':
             self.healthPotion = true;
+	    break;
           case 'KeyW':
             self.speedPotion = true;
         }
@@ -110,7 +111,8 @@ class GameEngine {
             break;
           case 'KeyQ':
             self.healthPotion = false;
-          case 'KeyW':
+            break;
+	  case 'KeyW':
             self.speedPotion = false;
         }
       },

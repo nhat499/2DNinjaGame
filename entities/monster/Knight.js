@@ -10,6 +10,10 @@ class Knight {
         this.velocity = {x:0, y:0};
         this.fallAcc = 562 * 3;
         this.spriteOffsetX = 60;
+
+        this.baseDmg = 30;
+        this.attackDmg = this.baseDmg;
+
         // state variable
         this.facing = "left"; // 0 right, 1 = left;
         this.action = "idle"; // "idle" "run" "walk" "jump" "attack" "takeDmg" "die" "alert"
@@ -146,7 +150,7 @@ class Knight {
             }
             self.handleAlert(self, entity);
             if (entity.hitBox && self.BB.collide(entity.hitBox) &&  self.hp > 0 ) { 
-                console.log("YOU HIT ME");
+                //console.log("YOU HIT ME");
                 if (entity.facing === "left") {
                     self.facing = "right";
                     self.velocity.x = -100;
@@ -171,7 +175,7 @@ class Knight {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115);    
+        this.BB = new BoundingBox(this.x + 60, this.y + 50, 80, 115, this.attackDmg);    
     }
 
     updateAlertBB() {
@@ -184,7 +188,8 @@ class Knight {
         let buffery = 50;
         if (this.facing === "right") bufferx = 70;
         if (this.facing === "left") bufferx = 0;
-        this.monsterHB = new BoundingBox(this.x + bufferx,this.y + buffery, 120,100);
+        this.monsterHB = new BoundingBox(this.x + bufferx,this.y + buffery, 120,100, this.attackDmg * 2);
+
     }
 
 
