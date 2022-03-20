@@ -17,33 +17,16 @@ ASSET_MANAGER.queueDownLoad('sprites/orangeFireRow.png');
 ASSET_MANAGER.queueDownLoad('sprites/Miscellaneous.png');
 ASSET_MANAGER.queueDownLoad('sprites/Object/portal.png');
 ASSET_MANAGER.queueDownLoad('sprites/entities/ninjaMainSheet.png');
-// ASSET_MANAGER.queueDownLoad();
-// ASSET_MANAGER.queueDownLoad();
 
 ASSET_MANAGER.downloadAll(function () {
   // function() is a call back function, it is call when downloadAll finish running
-  //let slimeSpriteSheetLeft = ASSET_MANAGER.getAssset("sprites/slimeLeft.png");
-  //let slimeSpriteSheetRight = ASSET_MANAGER.getAssset("sprites/slimeRight.png");
   let canvas = document.getElementById('gameWorld'); // orgin is top left corner
   //canvas.appendChild(slimeSpriteSheet); // testing assemanager -> good
   let ctx = canvas.getContext('2d'); // the pen need to update be4 drawing;
-  //console.log(ctx);
-
-  //ctx.drawImage(slimeSpriteSheet, 20, 90, 230, 240, 0, 0, 230, 240);
-
-  //let slime = new Slime(gameEngine, 700, 445);
-  //gameEngine.addEntity(slime);
-
-  // let knight = new Ninja(gameEngine, 300, 300);
-
-  // gameEngine.addEntity(knight);
 
   gameEngine.init(ctx);
-  //let ninja = new Ninja(gameEngine, 300, 300);
-  //gameEngine.addEntity(ninja);
   new SceneManager(gameEngine);
 
-  //gameEngine.addEntity(new SceneManager(gameEngine));  for later, tells you what lv the game is one
   gameEngine.start();
 });
 
