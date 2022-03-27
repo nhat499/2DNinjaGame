@@ -7,23 +7,38 @@ let ghostHeight5 = -1250
 
 let level = {
     trainLevel: {
-        grounds: [{x: -456, y: 700, width: 4352}],
+        grounds: [{x: -456, y: 700, width: 1536}, {x: 824, y: 957, width: 768}, {x: 1336, y: 700, width: 2816}],
 
         // platform location
-        platforms:[], // {x: 1180, y: 550, width: 128}
+        platforms:[{x: 1900, y: 550, width: 128},
+            {x: 3140, y: 550, width: 128}], // {x: 1180, y: 550, width: 128}
        
         // walls
-        walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
-            {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
+        walls: [{x: -512, y: -708, height: 1536}, 
+            {x: 824, y: 701, height: 256},
+            {x: 1336, y: 701, height: 256},
+            {x: 2300, y: 230, height: 384},
+            {x: 2756, y: 188, height: 512},
+            {x: 3896, y: 0, height: 700}
+        ],
     
-        portals: [{x: 500, y: 572, nextLevel:"level1"}],
+        portals: [{x: 3770, y: 572, nextLevel:"level1"}],
+
+        signs: [{x: 30, y: 635, text: "arrow keys to move"}, 
+        {x: 824, y: 635, text: "Space to jump"},
+        {x: 1600, y: 635, text: "Double jump can be preform"},
+        {x: 2000, y: 485, text: "Walk toward wall to grab it"},
+        {x: 2200, y: 635, text: "Hold S to slide"},
+        {x: 2656, y: 635, text: "jump side to side to get up"},
+        {x: 3140, y: 485, text: "A to attack"}],
+        
     
         //tree stump locations
-        stumps: [],
+        stumps: [{x:1085, y:865}],
     
         // monster
         //slimes: [{x: 50, y: 350, boss: true}],
-        slimes: [],
+        slimes: [{x: 3856, y: 500}],
     
         knights: [],//[{x: 600, y: -100}], //{x: 840, y: 0}, {x: 900, y: 0}, {x: 940, y: 0}, {x: 1000, y: 0}
     
@@ -50,6 +65,8 @@ let level = {
     
         portals: [{x: 500, y: 572, nextLevel:"trainLevel"},{x: 3512, y: 572, nextLevel:"level2"}],
     
+        signs: [],
+
         //tree stump locations
         stumps: [],
     
@@ -88,6 +105,8 @@ let level = {
         walls: [{x: 3350, y: 0, height: 1600}, {x: 2900, y: 0, height: 1300}],
     
         portals: [{x: 3512, y: 572, nextLevel:"testingLevel"}],
+
+        signs: [],
     
         //tree stump locations
         stumps: [],
@@ -142,6 +161,8 @@ let level = {
         walls: [{x: -328, y: -708, height: 1536}],
 
         portals: [{x: 0, y: 572, nextLevel: "level1"}],
+
+        signs: [],
     
         stumps: [],
         slimes:[{x: 600, y: 0, boss: true}],
