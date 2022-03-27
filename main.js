@@ -13,6 +13,8 @@ ASSET_MANAGER.queueDownLoad('sprites/entities/ninja.png');
 ASSET_MANAGER.queueDownLoad('sprites/slashBlue.png');
 ASSET_MANAGER.queueDownLoad('sprites/floorTileSet.png');
 ASSET_MANAGER.queueDownLoad('sprites/blueFlameRow.png');
+ASSET_MANAGER.queueDownLoad("sprites/Object/Sign_1.png")
+ASSET_MANAGER.queueDownLoad("sprites/Object/ArrowKey.png")
 ASSET_MANAGER.queueDownLoad('sprites/orangeFireRow.png');
 ASSET_MANAGER.queueDownLoad('sprites/Miscellaneous.png');
 ASSET_MANAGER.queueDownLoad('sprites/Object/portal.png');

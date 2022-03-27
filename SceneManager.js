@@ -177,6 +177,12 @@ class SceneManager {
       this.game.addEntity(thePort);
     }
 
+    for (let i = 0; i <level.signs.length; i++) {
+      let sign = level.signs[i];
+      let theSign = new Sign(this.game, sign.x, sign.y, sign.text, sign.picture);
+      this.game.addEntity(theSign);
+    }
+
     for (let i = 0; i < level.slimes.length; i++) {
       let slime = level.slimes[i];
       this.game.addEntity(new Slime(this.game, slime.x, slime.y, slime.boss));
