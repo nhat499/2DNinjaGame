@@ -16,24 +16,22 @@ let level = {
         walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
             {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
     
-        portals: [{x: 3512, y: 572, nextLevel:"level1"}],
+        portals: [{x: 500, y: 572, nextLevel:"level1"}],
     
         //tree stump locations
         stumps: [],
     
         // monster
         //slimes: [{x: 50, y: 350, boss: true}],
-        slimes: [{x: 250, y: 350},{x: 1600, y: 350}, {x: 1200, y: 450}, {x: 1600, y: 350}, 
-            {x: 1600, y: -300}, {x: 1300, y: -300},{x: 1400, y: -300}, {x: 550, y: -650},
-            {x: 1600, y: -650}, {x: 1200, y: -650}, {x: 1600, y: -650},
-            {x: 1600, y: -1450}, {x: 1200, y: -650}, {x: 1400, y: -1650},
-            {x: 3000, y: -700, boss: true}],
+        slimes: [],
     
         knights: [],//[{x: 600, y: -100}], //{x: 840, y: 0}, {x: 900, y: 0}, {x: 940, y: 0}, {x: 1000, y: 0}
     
         ninjas: [],//[{x: 1100, y: 0}],
     
-        ghosts: []
+        ghosts: [],
+
+        mainNinja: [{x:0, y:570}]
     
     },
 
@@ -50,7 +48,7 @@ let level = {
         walls: [{x: -328, y: -708, height: 1536},{x: 1936, y: 1, height: 512}, 
             {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
     
-        portals: [{x: 3512, y: 572, nextLevel:"level2"}],
+        portals: [{x: 500, y: 572, nextLevel:"trainLevel"},{x: 3512, y: 572, nextLevel:"level2"}],
     
         //tree stump locations
         stumps: [],
@@ -67,8 +65,8 @@ let level = {
     
         ninjas: [],//[{x: 1100, y: 0}],
     
-        ghosts: []
-    
+        ghosts: [],
+        mainNinja: [{x:103, y:570}]
     },
 
     level2: {
@@ -127,8 +125,8 @@ let level = {
             {x: 3500, y: ghostHeight5}, {x: 2500, y: ghostHeight5}, {x: 3000, y: ghostHeight5}, {x: 3500, y: ghostHeight5}, {x: 4000, y: ghostHeight5},
             {x: 4500, y: ghostHeight5}, {x: 5000, y: ghostHeight5}, {x: 5500, y: ghostHeight5}, {x: 6000, y: ghostHeight5}, {x: 6500, y: ghostHeight5}, 
             {x: 7000, y: ghostHeight5}, {x: 7500, y: ghostHeight5}, {x: 8000, y: ghostHeight5}, {x: 8500, y: ghostHeight5}, {x: 9000, y: ghostHeight5}
-        ]
-    
+        ],
+        mainNinja: [{x:0, y:1830}]
     },
 
     testingLevel: {
@@ -149,6 +147,7 @@ let level = {
         slimes:[{x: 600, y: 0, boss: true}],
         knights: [],//[{x: 600, y: 0}, {x: 900, y: 0} ,{x: 1000, y: 0}, {x: 1200, y: 0}],
         ninjas: [], //[{x: 1500, y: 0},  {x: 1700, y: 0}, {x: 1900, y: 0}, {x: 2100, y: 0}],
-        ghosts: []
+        ghosts: [],
+        mainNinja: []
     }
 }   

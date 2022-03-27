@@ -1,21 +1,16 @@
 class MainNinja {
   constructor(game, x, y) {
     // all entites should have construture
-    Object.assign(this, {
-      game,
-      x,
-      y,
-    });
-    this.spritesheet = ASSET_MANAGER.getAssset(
-      'sprites/entities/ninjaMainSheet.png'
-    );
+    Object.assign(this, {game,x,y,});
+    this.spritesheet = ASSET_MANAGER.getAssset('sprites/entities/ninjaMainSheet.png');
     this.miscellaneous = ASSET_MANAGER.getAssset('sprites/Miscellaneous.png');
     //this.slashSheet = ASSET_MANAGER.getAssset("sprites/slashBlue.png");
+    
+    this.game.camera.ninja = this;
+    
     this.scale = 1;
-    this.velocity = {
-      x: 0,
-      y: 0,
-    };
+    this.velocity = {x: 0,y: 0,};
+
     // Sound from Zapsplat.com
     this.sounds = [];
     this.loadSound();
@@ -619,6 +614,7 @@ class MainNinja {
     this.y += this.velocity.y * TICK;
     this.updateBB(); //bounding box;
     // fall off map
+
     if (this.y > 2500) {
       this.action = 'die';
       this.hp = 0;
@@ -652,6 +648,7 @@ class MainNinja {
           //self.updateBB();
         }
 
+        // portal collision
         if (entity.open && entity instanceof Portal && self.game.up) {
           self.game.camera.currLv = entity.level;
           self.game.camera.loadLevel(level[entity.level]);

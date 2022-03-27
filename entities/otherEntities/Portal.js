@@ -2,7 +2,7 @@ class Portal {
     constructor(game, x, y, level) {
         Object.assign(this, { game, x, y, level});
         this.spritesheet = ASSET_MANAGER.getAssset("sprites/Object/portal.png");
-        this.open = false;
+        this.open = true;
         this.BB = new BoundingBox(this.x + 20, this.y, 90, 128);
         //this.leftBB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)
         //this.rightBB = new BoundingBox(this.x + this.w - PARAMS.BLOCKWIDTH, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2)

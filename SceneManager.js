@@ -4,13 +4,14 @@ class SceneManager {
     this.game.camera = this;
     this.x = 0; //horizontal scrolling
     this.y = 0;
+    this.velocity = {x: 0,y: 0,};
     //this.health = 0;
     // this.lives = 0;
     this.gameOver = false;
     this.title = true;
     this.level = level;
-    this.currLv = "level1"
-    //this.currLv = "trainLevel";
+    //this.currLv = "level1"
+    this.currLv = "trainLevel";
     this.sound = new Audio();
     this.sound.loop = true;
     this.sound.src = 'music/bgm1.mp3';
@@ -84,37 +85,39 @@ class SceneManager {
   }
 
   update() {
-    // if (this.title) {
-    //     this.
-    //   //this.sound.play();
-    // }
 
     // update horizontal camera
-
     this.sound.volume = this.volumeNum.value / 100;
     if (this.ninja) {
-      let leftPoint = this.game.surfaceWidth / 3;
+      let leftPoint = this.game.surfaceWidth / 4;
+      let midpointX = this.game.surfaceWidth / 2;
       let rightPoint = this.game.surfaceWidth - leftPoint;
-      if (this.x < this.ninja.x - rightPoint) {
-        this.x = this.ninja.x - rightPoint;
-      } else if (this.x > this.ninja.x - leftPoint) {
-        this.x = this.ninja.x - leftPoint;
+
+      if (this.x != this.ninja.x - midpointX) {
+        let acc = 1;
+        if (this.x < this.ninja.x - rightPoint || this.x > this.ninja.x - leftPoint) {
+          acc = 2;
+        }
+          this.velocity.x += acc * this.game.clockTick * (this.ninja.x - midpointX - this.x);
       }
 
+      
+
       //update verticle camera
-      let upperPoint = this.game.surfaceHeight / 2.5;
+      let upperPoint = this.game.surfaceHeight / 4;
+      let midpointY = this.game.surfaceHeight / 2;
       let lowerPoint = this.game.surfaceHeight - upperPoint;
-      if (this.y > this.ninja.y - upperPoint) {
-        this.y = this.ninja.y - upperPoint;
-      } else if (this.y < this.ninja.y - lowerPoint) {
-        this.y = this.ninja.y - lowerPoint;
+
+      if (this.y != this.ninja.y - midpointY) {
+        let acc = 1;
+        if (this.y > this.ninja.y - upperPoint || this.y < this.ninja.y - lowerPoint) {
+          acc = 3;
+        }
+        this.velocity.y += acc*this.game.clockTick*(this.ninja.y - midpointY - this.y);
       }
-      // let midpoint = this.game.surfaceHeight / 2;
-      // if (this.y > this.ninja.y - midpoint) {
-      //   this.y = this.ninja.y - midpoint;
-      // } else if (this.y < this.ninja.y - midpoint) {
-      //   this.y = this.ninja.y - midpoint;
-      // }
+
+      this.x = this.velocity.x;
+      this.y = this.velocity.y;
     }
 
     if (this.title && this.game.click) {
@@ -128,7 +131,8 @@ class SceneManager {
 
     if (this.gameOver && this.game.click) {
       if (this.game.click.y > 410 && this.game.click.y < 450) {
-        //restart game
+        //restart game // retry
+        this.ninja = undefined;
         this.loadLevel(this.level[this.currLv]);
         this.gameOver = false;
         this.game.pause = false;
@@ -141,7 +145,8 @@ class SceneManager {
   }
 
   loadLevel(level) {
-    this.clearEntities();
+    //this.clearEntities();
+    this.game.entities = [];
     this.x = 0;
     this.y = 0;
 
@@ -195,11 +200,20 @@ class SceneManager {
       this.game.addEntity(new Ghost(this.game, ghost.x, ghost.y));
     }
 
-    this.ninja = new MainNinja(this.game, 0, 170);
+    let mainNinja = level.mainNinja[0];
+    if (this.ninja === undefined) {
+      this.ninja = new MainNinja(this.game, mainNinja.x, mainNinja.y);
+      this.game.addEntity(this.ninja);
+    } else {
+      this.ninja.x = mainNinja.x;
+      this.ninja.y = mainNinja.y;
+      this.game.addEntity(this.ninja);
+    }
+    //this.game.addEntity(this.ninja);
+    
     //this.ninja = new MainNinja(this.game, 900, 1200);
     //this.ninja = new MainNinja(this.game, 2600, -1600);
     // this.ninja = new MainNinja(this.game, 2000, 1100);
-    this.game.addEntity(this.ninja);
   }
 
   clearEntities() {
