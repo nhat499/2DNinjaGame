@@ -85,9 +85,8 @@ class SceneManager {
   }
 
   update() {
-
-    // update horizontal camera
     this.sound.volume = this.volumeNum.value / 100;
+    // update horizontal camera
     if (this.ninja) {
       let leftPoint = this.game.surfaceWidth / 4;
       let midpointX = this.game.surfaceWidth / 2;
@@ -100,8 +99,6 @@ class SceneManager {
         }
           this.velocity.x += acc * this.game.clockTick * (this.ninja.x - midpointX - this.x);
       }
-
-      
 
       //update verticle camera
       let upperPoint = this.game.surfaceHeight / 4;
