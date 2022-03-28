@@ -85,9 +85,9 @@ class SceneManager {
   }
 
   update() {
-
-    // update horizontal camera
     this.sound.volume = this.volumeNum.value / 100;
+    // update horizontal camera
+    
     if (this.ninja) {
       let leftPoint = this.game.surfaceWidth / 4;
       let midpointX = this.game.surfaceWidth / 2;
@@ -99,6 +99,7 @@ class SceneManager {
           acc = 2;
         }
           this.velocity.x += acc * this.game.clockTick * (this.ninja.x - midpointX - this.x);
+          
       }
 
       
@@ -115,9 +116,25 @@ class SceneManager {
         }
         this.velocity.y += acc*this.game.clockTick*(this.ninja.y - midpointY - this.y);
       }
-
       this.x = this.velocity.x;
+
+      if (this.x <= this.mapSize.x) {
+        this.x = this.mapSize.x;
+        this.velocity.x = this.mapSize.x;
+      } else if (this.x >= this.mapSize.x + this.mapSize.width - this.game.surfaceWidth) {
+        this.x = this.mapSize.x + this.mapSize.width - this.game.surfaceWidth;
+        this.velocity.x = this.mapSize.x + this.mapSize.width - this.game.surfaceWidth;
+      }
+      
       this.y = this.velocity.y;
+      if (this.y <= this.mapSize.y) {
+        this.y = this.mapSize.y;
+        this.velocity.y = this.mapSize.y;
+      } else if (this.y >= this.mapSize.y + this.mapSize.height - this.game.surfaceHeight) {
+        this.y = this.mapSize.y + this.mapSize.height - this.game.surfaceHeight;
+        this.velocity.y = this.mapSize.y + this.mapSize.height - this.game.surfaceHeight;
+      }
+
     }
 
     if (this.title && this.game.click) {
@@ -149,6 +166,7 @@ class SceneManager {
     this.game.entities = [];
     this.x = 0;
     this.y = 0;
+    this.mapSize = level.mapSize[0];
 
     for (let i = 0; i < level.platforms.length; i++) {
       let platform = level.platforms[i];
