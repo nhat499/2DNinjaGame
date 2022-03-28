@@ -53,7 +53,7 @@ let level = {
 
     level1: {
         // width has to be a mutiple of 128
-        mapSize: [{x:-584,y: -1548,width: 5064, height: 2476}],
+        mapSize: [{x:-584,y: -1548,width: 4480, height: 2376}],
         grounds: [{x: -584, y: 700, width: 4480}, {x: 272, y: 0, width: 1920}, {x: 56, y: -500, width: 2304}],
 
         // platform location // width has to be mutiple for 128
