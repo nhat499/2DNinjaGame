@@ -53,8 +53,8 @@ let level = {
 
     level1: {
         // width has to be a mutiple of 128
-        mapSize: [{x:-584,y: -1548,width: 4480, height: 2376}],
-        grounds: [{x: -584, y: 700, width: 4480}, {x: 272, y: 0, width: 1920}, {x: 56, y: -500, width: 2304}],
+        mapSize: [{x:-1224,y: -1548,width: 4992, height: 2376}],
+        grounds: [{x: -1224, y: 700, width: 5120}, {x: 272, y: 0, width: 1920}, {x: 56, y: -500, width: 2304}],
 
         // platform location // width has to be mutiple for 128
         platforms:[{x: 1180, y: 550, width: 128}, {x: 1564, y:400, width: 128}, {x: 200, y:-190, width: 128}, 
@@ -62,7 +62,7 @@ let level = {
             {x: 1824, y:-1250, width: 128}, {x: 2208, y:-1401, width: 0}],
        
         // walls
-        walls: [{x: -584, y: -708, height: 1536}, {x: -328, y: -708, height: 1408},{x: 1936, y: 1, height: 512}, 
+        walls: [{x: -1224, y: -708, height: 1536}, {x: -328, y: -708, height: 1280},{x: 1936, y: 1, height: 512}, 
             {x: 2360, y: -1400, height: 2176}, {x: 3640, y: -1348, height: 2176}],
     
         portals: [{x: 500, y: 572, nextLevel:"trainLevel"},{x: 3512, y: 572, nextLevel:"level2"}],
@@ -85,7 +85,7 @@ let level = {
         ninjas: [],//[{x: 1100, y: 0}],
     
         ghosts: [],
-        mainNinja: [{x:103, y:570}]
+        mainNinja: [{x:-900, y:570}]
     },
 
     level2: {
